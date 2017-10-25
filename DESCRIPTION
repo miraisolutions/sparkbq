@@ -1,0 +1,27 @@
+Package: sparkbq
+Type: Package
+Title: Sparklyr extension package for Google BigQuery
+Version: 0.1.0
+Date: 2017-10-25
+Authors@R: c(person("Mirai Solutions GmbH", role = "aut",
+                    email = "info@mirai-solutions.com"),
+             person("Martin", "Studer", role = "cre",
+                    email = "martin.studer@mirai-solutions.com"),
+             person("Nicola", "Lambiase", role = c("ctb", "cph"),
+                    email = "nicola.lambiase@mirai-solutions.com"),
+             person("Ömer", "Demirel", role = c("ctb", "cph"),
+                    email = "omer.demirel@mirai-solutions.com"))
+URL: http://www.mirai-solutions.com
+BugReports: https://github.com/miraisolutions/sparkbq/issues
+Description: Connect R to Google BigQuery using spark-bigquery (https://github.com/miraisolutions/spark-bigquery)
+Depends:
+    R (>= 3.3.2)
+Imports:
+    sparklyr,
+    magrittr,
+    testthat
+License: TODO
+Copyright: See file COPYRIGHTS
+Encoding: UTF-8
+LazyData: yes
+RoxygenNote: 6.0.1
