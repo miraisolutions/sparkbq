@@ -29,3 +29,6 @@ TODO: verify whether it is possible to specify as first line of the
 \item{datasetLocation}{geographical location of the dataset (for example "EU" for Europe)
 This parameter can be found in the Google BigQuery web UI, under the "Dataset Details"}
 }
+\description{
+TODO
+}

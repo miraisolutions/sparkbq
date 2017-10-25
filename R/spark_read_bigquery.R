@@ -1,4 +1,5 @@
 #' @title Reading data from Google BigQuery table
+#' @description TODO
 #' @param sc \code{spark_connection} provided by sparklyr
 #' @param tableOrQuery either the name of a Google BigQuery table,
 #' or an SQL query string
