@@ -1,5 +1,7 @@
 #' @title Reading data from Google BigQuery table
-#' @description TODO
+#' @description This functions reads data stored in
+#' a Google BigQuery table using Mirai Solution's spark-bigquery
+#' datasource.
 #' @param sc \code{spark_connection} provided by sparklyr
 #' @param tableOrQuery either the name of a Google BigQuery table,
 #' or an SQL query string
@@ -11,7 +13,7 @@
 #' @param projectId id of the project to be used
 #' @param datasetId id of the dataset to be used for queries
 #' @param tableId id of the Google BigQuery table to be used for queries
-#' @param gcsBucket TODO
+#' @param gcsBucket Google Cloud Storage bucket used for temporary files
 #' @param datasetLocation geographical location of the dataset (for example "EU" for Europe)
 #' This parameter can be found in the Google BigQuery web UI, under the "Dataset Details"
 #' @import sparklyr

@@ -24,11 +24,13 @@ TODO: verify whether it is possible to specify as first line of the
 
 \item{tableId}{id of the Google BigQuery table to be used for queries}
 
-\item{gcsBucket}{TODO}
+\item{gcsBucket}{Google Cloud Storage bucket used for temporary files}
 
 \item{datasetLocation}{geographical location of the dataset (for example "EU" for Europe)
 This parameter can be found in the Google BigQuery web UI, under the "Dataset Details"}
 }
 \description{
-TODO
+This functions reads data stored in
+a Google BigQuery table using Mirai Solution's spark-bigquery
+datasource.
 }
