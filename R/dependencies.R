@@ -5,8 +5,8 @@ spark_dependencies <- function(spark_version, scala_version, ...) {
     jars = c(
       system.file(
         # TODO: check how to support multiplte spark/scala versions
-        sprintf("java/spark-bigquery-assembly-%s", sparkBigQueryVersion),
-        package = "spark-bigquery"
+        sprintf("java/spark-bigquery-assembly-%s.jar", sparkBigQueryVersion),
+        package = "sparkbq"
       )
     ),
     packages = c(
