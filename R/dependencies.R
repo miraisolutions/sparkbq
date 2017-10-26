@@ -1,6 +1,6 @@
 spark_dependencies <- function(spark_version, scala_version, ...) {
   # TODO: check how to support multiplte spark/scala versions
-  sparkBigQueryVersion = "0.2-SNAPSHOT"
+  sparkBigQueryVersion = "0.1.0-SNAPSHOT"
   sparklyr::spark_dependency(
     jars = c(
       system.file(
@@ -16,7 +16,6 @@ spark_dependencies <- function(spark_version, scala_version, ...) {
   )
 }
 
-#' @import sparklyr
 .onLoad <- function(libname, pkgname) {
   sparklyr::register_extension(pkgname)
 }

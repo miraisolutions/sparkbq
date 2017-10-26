@@ -2,35 +2,40 @@
 % Please edit documentation in R/spark_read_bigquery.R
 \name{spark_read_bigquery}
 \alias{spark_read_bigquery}
-\title{Reading data from Google BigQuery table}
+\title{Reading data from Google BigQuery}
 \usage{
-spark_read_bigquery(sc, tableOrQuery, projectId, datasetId, tableId, gcsBucket,
-  datasetLocation)
+spark_read_bigquery(sc, name, projectId, datasetId, tableId = NULL,
+  sqlQuery = NULL, gcsBucket, datasetLocation)
 }
 \arguments{
-\item{sc}{\code{spark_connection} provided by sparklyr}
+\item{sc}{\code{\link[sparklyr]{spark_connection}} provided by sparklyr}
 
-\item{tableOrQuery}{either the name of a Google BigQuery table,
-or an SQL query string
-TODO: verify whether it is possible to specify as first line of the
-      query \#legacySQL or \#standardSQL, and which flavor is the
-      default one (I guess legacySQL)
-      See: https://cloud.google.com/bigquery/docs/reference/legacy-sql
-      and: https://cloud.google.com/bigquery/docs/reference/standard-sql/}
+\item{name}{The name to assign to the newly generated table (see also
+\code{\link[sparklyr]{spark_read_source}})}
 
-\item{projectId}{id of the project to be used}
+\item{projectId}{Google Cloud Platform project ID for BigQuery}
 
-\item{datasetId}{id of the dataset to be used for queries}
+\item{datasetId}{Google BigQuery dataset ID (may contain letters, numbers and underscores)}
 
-\item{tableId}{id of the Google BigQuery table to be used for queries}
+\item{tableId}{Google BigQuery table ID (may contain letters, numbers and underscores).
+One of \code{tableId} or \code{sqlQuery} must be specified.}
 
-\item{gcsBucket}{Google Cloud Storage bucket used for temporary files}
+\item{sqlQuery}{Google BigQuery standard SQL query (SQL-2011 dialect).
+One of \code{tableId} or \code{sqlQuery} must be specified.}
 
-\item{datasetLocation}{geographical location of the dataset (for example "EU" for Europe)
+\item{gcsBucket}{Google Cloud Storage bucket used for temporary BigQuery files}
+
+\item{datasetLocation}{Google BigQuery dataset location ("EU" or "US")
 This parameter can be found in the Google BigQuery web UI, under the "Dataset Details"}
 }
 \description{
-This functions reads data stored in
-a Google BigQuery table using Mirai Solution's spark-bigquery
-datasource.
+This function reads data stored in a Google BigQuery table.
+}
+\references{
+\url{https://cloud.google.com/bigquery/docs/datasets}
+\url{https://cloud.google.com/bigquery/docs/tables}
+\url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
+}
+\seealso{
+\code{\link[sparklyr]{spark_read_source}}
 }

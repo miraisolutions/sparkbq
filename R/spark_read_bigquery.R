@@ -1,33 +1,44 @@
-#' @title Reading data from Google BigQuery table
-#' @description This functions reads data stored in
-#' a Google BigQuery table using Mirai Solution's spark-bigquery
-#' datasource.
-#' @param sc \code{spark_connection} provided by sparklyr
-#' @param tableOrQuery either the name of a Google BigQuery table,
-#' or an SQL query string
-#' TODO: verify whether it is possible to specify as first line of the
-#'       query \#legacySQL or \#standardSQL, and which flavor is the
-#'       default one (I guess legacySQL)
-#'       See: https://cloud.google.com/bigquery/docs/reference/legacy-sql
-#'       and: https://cloud.google.com/bigquery/docs/reference/standard-sql/
-#' @param projectId id of the project to be used
-#' @param datasetId id of the dataset to be used for queries
-#' @param tableId id of the Google BigQuery table to be used for queries
-#' @param gcsBucket Google Cloud Storage bucket used for temporary files
-#' @param datasetLocation geographical location of the dataset (for example "EU" for Europe)
+#' @title Reading data from Google BigQuery
+#' @description This function reads data stored in a Google BigQuery table.
+#' @param sc \code{\link[sparklyr]{spark_connection}} provided by sparklyr
+#' @param name The name to assign to the newly generated table (see also
+#' \code{\link[sparklyr]{spark_read_source}})
+#' @param projectId Google Cloud Platform project ID for BigQuery.
+#' @param datasetId Google BigQuery dataset ID (may contain letters, numbers and underscores).
+#' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
+#' @param tableId Google BigQuery table ID (may contain letters, numbers and underscores).
+#' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
+#' @param sqlQuery Google BigQuery standard SQL query (SQL-2011 dialect).
+#' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
+#' @param gcsBucket Google Cloud Storage bucket used for temporary BigQuery files
+#' @param datasetLocation Google BigQuery dataset location ("EU" or "US")
 #' This parameter can be found in the Google BigQuery web UI, under the "Dataset Details"
-#' @import sparklyr
+#' @references
+#' \url{https://cloud.google.com/bigquery/docs/datasets}
+#' \url{https://cloud.google.com/bigquery/docs/tables}
+#' \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
+#' @seealso \code{\link[sparklyr]{spark_read_source}}
+#' @importFrom sparklyr spark_read_source
 #' @export
-spark_read_bigquery <- function(sc, tableOrQuery, projectId, datasetId, tableId, gcsBucket, datasetLocation) {
+spark_read_bigquery <- function(sc, name, projectId, datasetId = NULL, tableId = NULL, sqlQuery = NULL, gcsBucket, datasetLocation) {
+  parameters <- list(
+    "bq.project.id" = projectId,
+    "bq.gcs.bucket" = gcsBucket,
+    "bq.dataset.location" = datasetLocation
+  )
+  
+  if(!is.null(datasetId) && !is.null(tableId)) {
+    parameters[["table"]] <- sprintf("%s:%s.%s", projectId, datasetId, tableId)
+  } else if(!is.null(sqlQuery)) {
+    parameters[["sqlQuery"]] <- sqlQuery
+  } else {
+    stop("Either both of 'datasetId' and 'tableId' or 'sqlQuery' must be specified.")
+  }
+  
   spark_read_source(
     sc,
-    name = tableOrQuery,
+    name = name,
     source = "com.miraisolutions.spark.bigquery",
-    options = list(
-      "bq.project.id" = projectId,
-      "bq.gcs.bucket" = gcsBucket,
-      "bq.dataset.location" = datasetLocation,
-      "tableReference" = sprintf("%s:%s.%s", projectId, datasetId, tableId)
-    )
+    options = parameters
   )
 }
