@@ -1,8 +1,8 @@
 #' @title Reading data from Google BigQuery
 #' @description This function reads data stored in a Google BigQuery table.
-#' @param sc \code{\link[sparklyr]{spark_connection}} provided by sparklyr
+#' @param sc \code{\link[sparklyr]{spark_connection}} provided by sparklyr.
 #' @param name The name to assign to the newly generated table (see also
-#' \code{\link[sparklyr]{spark_read_source}})
+#' \code{\link[sparklyr]{spark_read_source}}).
 #' @param projectId Google Cloud Platform project ID for BigQuery.
 #' @param datasetId Google BigQuery dataset ID (may contain letters, numbers and underscores).
 #' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
@@ -10,14 +10,15 @@
 #' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
 #' @param sqlQuery Google BigQuery standard SQL query (SQL-2011 dialect).
 #' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
-#' @param gcsBucket Google Cloud Storage bucket used for temporary BigQuery files
-#' @param datasetLocation Google BigQuery dataset location ("EU" or "US")
+#' @param gcsBucket Google Cloud Storage bucket used for temporary BigQuery files.
+#' @param datasetLocation Google BigQuery dataset location ("EU" or "US").
 #' This parameter can be found in the Google BigQuery web UI, under the "Dataset Details"
 #' @references
 #' \url{https://cloud.google.com/bigquery/docs/datasets}
 #' \url{https://cloud.google.com/bigquery/docs/tables}
 #' \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
-#' @seealso \code{\link[sparklyr]{spark_read_source}}
+#' @family Spark serialization routines
+#' @seealso \code{\link[sparklyr]{spark_read_source}}, \code{\link{spark_write_bigquery}}
 #' @importFrom sparklyr spark_read_source
 #' @export
 spark_read_bigquery <- function(sc, name, projectId, datasetId = NULL, tableId = NULL, sqlQuery = NULL, gcsBucket, datasetLocation) {

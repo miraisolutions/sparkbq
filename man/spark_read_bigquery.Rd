@@ -4,28 +4,29 @@
 \alias{spark_read_bigquery}
 \title{Reading data from Google BigQuery}
 \usage{
-spark_read_bigquery(sc, name, projectId, datasetId, tableId = NULL,
+spark_read_bigquery(sc, name, projectId, datasetId = NULL, tableId = NULL,
   sqlQuery = NULL, gcsBucket, datasetLocation)
 }
 \arguments{
-\item{sc}{\code{\link[sparklyr]{spark_connection}} provided by sparklyr}
+\item{sc}{\code{\link[sparklyr]{spark_connection}} provided by sparklyr.}
 
 \item{name}{The name to assign to the newly generated table (see also
-\code{\link[sparklyr]{spark_read_source}})}
+\code{\link[sparklyr]{spark_read_source}}).}
 
-\item{projectId}{Google Cloud Platform project ID for BigQuery}
+\item{projectId}{Google Cloud Platform project ID for BigQuery.}
 
-\item{datasetId}{Google BigQuery dataset ID (may contain letters, numbers and underscores)}
+\item{datasetId}{Google BigQuery dataset ID (may contain letters, numbers and underscores).
+Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.}
 
 \item{tableId}{Google BigQuery table ID (may contain letters, numbers and underscores).
-One of \code{tableId} or \code{sqlQuery} must be specified.}
+Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.}
 
 \item{sqlQuery}{Google BigQuery standard SQL query (SQL-2011 dialect).
-One of \code{tableId} or \code{sqlQuery} must be specified.}
+Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.}
 
-\item{gcsBucket}{Google Cloud Storage bucket used for temporary BigQuery files}
+\item{gcsBucket}{Google Cloud Storage bucket used for temporary BigQuery files.}
 
-\item{datasetLocation}{Google BigQuery dataset location ("EU" or "US")
+\item{datasetLocation}{Google BigQuery dataset location ("EU" or "US").
 This parameter can be found in the Google BigQuery web UI, under the "Dataset Details"}
 }
 \description{
@@ -37,5 +38,5 @@ This function reads data stored in a Google BigQuery table.
 \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
 }
 \seealso{
-\code{\link[sparklyr]{spark_read_source}}
+\code{\link[sparklyr]{spark_read_source}}, \code{\link{spark_write_bigquery}}
 }
