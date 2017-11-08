@@ -9,6 +9,7 @@
 #' This parameter can be found in the Google BigQuery web UI, under the "Dataset Details".
 #' @param mode Specifies the behavior when data or table already exist. One of "overwrite",
 #' "append", "ignore" or "error" (default).
+#' @param partition_by vector of column names used for partitioning
 #' @references
 #' \url{https://cloud.google.com/bigquery/docs/datasets}
 #' \url{https://cloud.google.com/bigquery/docs/tables}
@@ -17,7 +18,9 @@
 #' @seealso \code{\link[sparklyr]{spark_write_source}}, \code{\link{spark_read_bigquery}}
 #' @importFrom sparklyr spark_write_source
 #' @export
-spark_write_bigquery <- function(data, projectId, datasetId, tableId, gcsBucket, datasetLocation, mode = "error") {
+spark_write_bigquery <- function(data, projectId, datasetId, tableId,
+                                 gcsBucket, datasetLocation, mode = "error",
+                                 partition_by = NULL) {
   parameters <- list(
     "bq.project.id" = projectId,
     "bq.gcs.bucket" = gcsBucket,
@@ -29,6 +32,7 @@ spark_write_bigquery <- function(data, projectId, datasetId, tableId, gcsBucket,
     data,
     source = "com.miraisolutions.spark.bigquery",
     mode = mode,
-    options = parameters
+    options = parameters,
+    partition_by = partition_by
   )
 }

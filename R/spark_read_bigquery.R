@@ -13,6 +13,8 @@
 #' @param gcsBucket Google Cloud Storage bucket used for temporary BigQuery files.
 #' @param datasetLocation Google BigQuery dataset location ("EU" or "US").
 #' This parameter can be found in the Google BigQuery web UI, under the "Dataset Details"
+#' @param The number of partitions used to distribute the generated table.
+#' Use 0 (the default) to avoid partitioning.
 #' @references
 #' \url{https://cloud.google.com/bigquery/docs/datasets}
 #' \url{https://cloud.google.com/bigquery/docs/tables}
@@ -21,7 +23,9 @@
 #' @seealso \code{\link[sparklyr]{spark_read_source}}, \code{\link{spark_write_bigquery}}
 #' @importFrom sparklyr spark_read_source
 #' @export
-spark_read_bigquery <- function(sc, name, projectId, datasetId = NULL, tableId = NULL, sqlQuery = NULL, gcsBucket, datasetLocation) {
+spark_read_bigquery <- function(sc, name, projectId, datasetId = NULL, tableId = NULL, 
+                                sqlQuery = NULL, gcsBucket, datasetLocation,
+                                repartition = 0) {
   parameters <- list(
     "bq.project.id" = projectId,
     "bq.gcs.bucket" = gcsBucket,
@@ -40,6 +44,7 @@ spark_read_bigquery <- function(sc, name, projectId, datasetId = NULL, tableId =
     sc,
     name = name,
     source = "com.miraisolutions.spark.bigquery",
-    options = parameters
+    options = parameters,
+    repartition = repartition
   )
 }

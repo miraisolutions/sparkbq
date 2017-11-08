@@ -5,7 +5,7 @@
 \title{Writing data to Google BigQuery}
 \usage{
 spark_write_bigquery(data, projectId, datasetId, tableId, gcsBucket,
-  datasetLocation, mode)
+  datasetLocation, mode = "error", partition_by = NULL)
 }
 \arguments{
 \item{data}{Spark DataFrame to write to Google BigQuery.}
@@ -21,7 +21,10 @@ spark_write_bigquery(data, projectId, datasetId, tableId, gcsBucket,
 \item{datasetLocation}{Google BigQuery dataset location ("EU" or "US").
 This parameter can be found in the Google BigQuery web UI, under the "Dataset Details".}
 
-\item{mode}{Specifies the behavior when data or table already exist.}
+\item{mode}{Specifies the behavior when data or table already exist. One of "overwrite",
+"append", "ignore" or "error" (default).}
+
+\item{partition_by}{vector of column names used for partitioning}
 }
 \description{
 This function writes data to a Google BigQuery table.
@@ -33,4 +36,6 @@ This function writes data to a Google BigQuery table.
 }
 \seealso{
 \code{\link[sparklyr]{spark_write_source}}, \code{\link{spark_read_bigquery}}
+
+Other Spark serialization routines: \code{\link{spark_read_bigquery}}
 }
