@@ -1,5 +1,5 @@
 spark_dependencies <- function(spark_version, scala_version, ...) {
-  # TODO: check how to support multiplte spark/scala versions
+  # TODO: check how to support multiple spark/scala versions
   sparkBigQueryVersion = "0.1.0-SNAPSHOT"
   sparklyr::spark_dependency(
     jars = c(
