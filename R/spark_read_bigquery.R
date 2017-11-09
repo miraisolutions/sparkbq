@@ -12,20 +12,21 @@
 #' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
 #' @param gcsBucket Google Cloud Storage bucket used for temporary BigQuery files.
 #' @param datasetLocation Google BigQuery dataset location ("EU" or "US").
-#' This parameter can be found in the Google BigQuery web UI, under the "Dataset Details"
-#' @param The number of partitions used to distribute the generated table.
-#' Use 0 (the default) to avoid partitioning.
+#' This parameter can be found in the Google BigQuery web interface under "Dataset Details".
+#' @param ... Additional arguments passed to \code{\link[sparklyr]{spark_read_source}}.
+#' @return A \code{tbl_spark} which provides a \code{dplyr}-compatible reference to a
+#' Spark DataFrame. 
 #' @references
 #' \url{https://cloud.google.com/bigquery/docs/datasets}
 #' \url{https://cloud.google.com/bigquery/docs/tables}
 #' \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
 #' @family Spark serialization routines
 #' @seealso \code{\link[sparklyr]{spark_read_source}}, \code{\link{spark_write_bigquery}}
+#' @keywords database, connection
 #' @importFrom sparklyr spark_read_source
 #' @export
 spark_read_bigquery <- function(sc, name, projectId, datasetId = NULL, tableId = NULL, 
-                                sqlQuery = NULL, gcsBucket, datasetLocation,
-                                repartition = 0) {
+                                sqlQuery = NULL, gcsBucket, datasetLocation, ...) {
   parameters <- list(
     "bq.project.id" = projectId,
     "bq.gcs.bucket" = gcsBucket,
@@ -45,6 +46,6 @@ spark_read_bigquery <- function(sc, name, projectId, datasetId = NULL, tableId =
     name = name,
     source = "com.miraisolutions.spark.bigquery",
     options = parameters,
-    repartition = repartition
+    ...
   )
 }

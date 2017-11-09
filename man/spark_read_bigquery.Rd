@@ -5,7 +5,7 @@
 \title{Reading data from Google BigQuery}
 \usage{
 spark_read_bigquery(sc, name, projectId, datasetId = NULL, tableId = NULL,
-  sqlQuery = NULL, gcsBucket, datasetLocation, repartition = 0)
+  sqlQuery = NULL, gcsBucket, datasetLocation, ...)
 }
 \arguments{
 \item{sc}{\code{\link[sparklyr]{spark_connection}} provided by sparklyr.}
@@ -27,10 +27,13 @@ Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be sp
 \item{gcsBucket}{Google Cloud Storage bucket used for temporary BigQuery files.}
 
 \item{datasetLocation}{Google BigQuery dataset location ("EU" or "US").
-This parameter can be found in the Google BigQuery web UI, under the "Dataset Details"}
+This parameter can be found in the Google BigQuery web interface under "Dataset Details".}
 
-\item{The}{number of partitions used to distribute the generated table.
-Use 0 (the default) to avoid partitioning.}
+\item{...}{Additional arguments passed to \code{\link[sparklyr]{spark_read_source}}.}
+}
+\value{
+A \code{tbl_spark} which provides a \code{dplyr}-compatible reference to a
+Spark DataFrame.
 }
 \description{
 This function reads data stored in a Google BigQuery table.
@@ -45,3 +48,5 @@ This function reads data stored in a Google BigQuery table.
 
 Other Spark serialization routines: \code{\link{spark_write_bigquery}}
 }
+\keyword{connection}
+\keyword{database,}

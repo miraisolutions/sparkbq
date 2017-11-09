@@ -9,18 +9,19 @@
 #' This parameter can be found in the Google BigQuery web UI, under the "Dataset Details".
 #' @param mode Specifies the behavior when data or table already exist. One of "overwrite",
 #' "append", "ignore" or "error" (default).
-#' @param partition_by vector of column names used for partitioning
+#' @param ... Additional arguments passed to \code{\link[sparklyr]{spark_write_source}}.
+#' @return \code{NULL}. This is a side-effecting function.
 #' @references
 #' \url{https://cloud.google.com/bigquery/docs/datasets}
 #' \url{https://cloud.google.com/bigquery/docs/tables}
 #' \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
 #' @family Spark serialization routines
 #' @seealso \code{\link[sparklyr]{spark_write_source}}, \code{\link{spark_read_bigquery}}
+#' @keywords database, connection
 #' @importFrom sparklyr spark_write_source
 #' @export
-spark_write_bigquery <- function(data, projectId, datasetId, tableId,
-                                 gcsBucket, datasetLocation, mode = "error",
-                                 partition_by = NULL) {
+spark_write_bigquery <- function(data, projectId, datasetId, tableId, gcsBucket, 
+                                 datasetLocation, mode = "error", ...) {
   parameters <- list(
     "bq.project.id" = projectId,
     "bq.gcs.bucket" = gcsBucket,
@@ -33,6 +34,8 @@ spark_write_bigquery <- function(data, projectId, datasetId, tableId,
     source = "com.miraisolutions.spark.bigquery",
     mode = mode,
     options = parameters,
-    partition_by = partition_by
+    ...
   )
+  
+  invisible()
 }
