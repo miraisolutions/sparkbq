@@ -19,7 +19,6 @@ The following table provides an overview over supported versions of Spark, Scala
 | :-----: | ----- | ----- | --------------- | ------- |
 | 0.1.x | 2.2 | 2.11 | 1.2 | active development |
 
-The current development version of **sparkbq** requires a recent development version of sparklyr which 
 
 ## Example Usage
 
@@ -27,7 +26,7 @@ The current development version of **sparkbq** requires a recent development ver
 library(sparklyr)
 library(sparkbq)
 
-# Required when running outside of e.g. Google Cloud Platform
+# Required when running outside of Google Cloud Platform
 gcpJsonKeyfile <- "/path/to/your/gcp_json_keyfile.json"
 
 Sys.setenv("GOOGLE_APPLICATION_CREDENTIALS" = gcpJsonKeyfile)
