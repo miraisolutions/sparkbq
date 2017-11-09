@@ -4,8 +4,8 @@
 \alias{spark_read_bigquery}
 \title{Reading data from Google BigQuery}
 \usage{
-spark_read_bigquery(sc, name, projectId, datasetId = NULL, tableId = NULL,
-  sqlQuery = NULL, gcsBucket, datasetLocation, ...)
+spark_read_bigquery(sc, name, billingProjectId, projectId = billingProjectId,
+  datasetId = NULL, tableId = NULL, sqlQuery = NULL, gcsBucket, ...)
 }
 \arguments{
 \item{sc}{\code{\link[sparklyr]{spark_connection}} provided by sparklyr.}
@@ -13,7 +13,11 @@ spark_read_bigquery(sc, name, projectId, datasetId = NULL, tableId = NULL,
 \item{name}{The name to assign to the newly generated table (see also
 \code{\link[sparklyr]{spark_read_source}}).}
 
-\item{projectId}{Google Cloud Platform project ID for BigQuery.}
+\item{billingProjectId}{Google Cloud Platform project ID for billing purposes.
+This is the project on whose behalf to perform BigQuery operations.}
+
+\item{projectId}{Google Cloud Platform project ID of BigQuery data set.
+Defaults to \code{billingProjectId}.}
 
 \item{datasetId}{Google BigQuery dataset ID (may contain letters, numbers and underscores).
 Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.}
@@ -24,10 +28,8 @@ Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be sp
 \item{sqlQuery}{Google BigQuery standard SQL query (SQL-2011 dialect).
 Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.}
 
-\item{gcsBucket}{Google Cloud Storage bucket used for temporary BigQuery files.}
-
-\item{datasetLocation}{Google BigQuery dataset location ("EU" or "US").
-This parameter can be found in the Google BigQuery web interface under "Dataset Details".}
+\item{gcsBucket}{Google Cloud Storage bucket used for temporary BigQuery files.
+This should be the name of an existing storage bucket.}
 
 \item{...}{Additional arguments passed to \code{\link[sparklyr]{spark_read_source}}.}
 }

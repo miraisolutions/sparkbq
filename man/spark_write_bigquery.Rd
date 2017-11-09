@@ -4,22 +4,30 @@
 \alias{spark_write_bigquery}
 \title{Writing data to Google BigQuery}
 \usage{
-spark_write_bigquery(data, projectId, datasetId, tableId, gcsBucket,
-  datasetLocation, mode = "error", ...)
+spark_write_bigquery(data, billingProjectId, projectId = billingProjectId,
+  datasetId, tableId, gcsBucket, datasetLocation = NULL, mode = "error",
+  ...)
 }
 \arguments{
 \item{data}{Spark DataFrame to write to Google BigQuery.}
 
-\item{projectId}{Google Cloud Platform project ID for BigQuery.}
+\item{billingProjectId}{Google Cloud Platform project ID for billing purposes.
+This is the project on whose behalf to perform BigQuery operations.}
+
+\item{projectId}{Google Cloud Platform project ID of BigQuery data set.
+Defaults to \code{billingProjectId}.}
 
 \item{datasetId}{Google BigQuery dataset ID (may contain letters, numbers and underscores).}
 
 \item{tableId}{Google BigQuery table ID (may contain letters, numbers and underscores).}
 
-\item{gcsBucket}{Google Cloud Storage bucket used for temporary BigQuery files.}
+\item{gcsBucket}{Google Cloud Storage bucket used for temporary BigQuery files.
+This should be the name of an existing storage bucket.}
 
-\item{datasetLocation}{Google BigQuery dataset location ("EU" or "US").
-This parameter can be found in the Google BigQuery web UI, under the "Dataset Details".}
+\item{datasetLocation}{Google BigQuery dataset location ("EU" or "US"). Only needs to be
+specified if the data set does not yet exist. It is ignored if it specified and the
+data set already exists.
+This parameter can be found in the Google BigQuery web interface, under "Dataset Details".}
 
 \item{mode}{Specifies the behavior when data or table already exist. One of "overwrite",
 "append", "ignore" or "error" (default).}

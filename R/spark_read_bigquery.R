@@ -3,7 +3,10 @@
 #' @param sc \code{\link[sparklyr]{spark_connection}} provided by sparklyr.
 #' @param name The name to assign to the newly generated table (see also
 #' \code{\link[sparklyr]{spark_read_source}}).
-#' @param projectId Google Cloud Platform project ID for BigQuery.
+#' @param billingProjectId Google Cloud Platform project ID for billing purposes.
+#' This is the project on whose behalf to perform BigQuery operations.
+#' @param projectId Google Cloud Platform project ID of BigQuery data set.
+#' Defaults to \code{billingProjectId}.
 #' @param datasetId Google BigQuery dataset ID (may contain letters, numbers and underscores).
 #' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
 #' @param tableId Google BigQuery table ID (may contain letters, numbers and underscores).
@@ -11,8 +14,7 @@
 #' @param sqlQuery Google BigQuery standard SQL query (SQL-2011 dialect).
 #' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
 #' @param gcsBucket Google Cloud Storage bucket used for temporary BigQuery files.
-#' @param datasetLocation Google BigQuery dataset location ("EU" or "US").
-#' This parameter can be found in the Google BigQuery web interface under "Dataset Details".
+#' This should be the name of an existing storage bucket.
 #' @param ... Additional arguments passed to \code{\link[sparklyr]{spark_read_source}}.
 #' @return A \code{tbl_spark} which provides a \code{dplyr}-compatible reference to a
 #' Spark DataFrame. 
@@ -25,12 +27,12 @@
 #' @keywords database, connection
 #' @importFrom sparklyr spark_read_source
 #' @export
-spark_read_bigquery <- function(sc, name, projectId, datasetId = NULL, tableId = NULL, 
-                                sqlQuery = NULL, gcsBucket, datasetLocation, ...) {
+spark_read_bigquery <- function(sc, name, billingProjectId, projectId = billingProjectId, 
+                                datasetId = NULL, tableId = NULL, sqlQuery = NULL,
+                                gcsBucket, ...) {
   parameters <- list(
-    "bq.project.id" = projectId,
-    "bq.gcs.bucket" = gcsBucket,
-    "bq.dataset.location" = datasetLocation
+    "bq.project.id" = billingProjectId,
+    "bq.gcs.bucket" = gcsBucket
   )
   
   if(!is.null(datasetId) && !is.null(tableId)) {
