@@ -36,6 +36,13 @@ config[["spark.hadoop.google.cloud.auth.service.account.json.keyfile"]] <- gcpJs
 
 sc <- spark_connect(master = "local", config = config)
 
+# Set Google BigQuery default settings
+bigquery_defaults(
+  billingProjectId = "<your_billing_project_id>",
+  gcsBucket = "<your_gcs_bucket>",
+  datasetLocation = "US"
+)
+
 # Reading the public shakespeare data table
 # https://cloud.google.com/bigquery/public-data/
 # https://cloud.google.com/bigquery/sample-tables
@@ -43,11 +50,9 @@ shakespeare <-
   spark_read_bigquery(
     sc,
     name = "shakespeare",
-    billingProjectId = "<your_billing_project_id>",
     projectId = "bigquery-public-data",
     datasetId = "samples",
-    tableId = "shakespeare",
-    gcsBucket = "<your_gcs_bucket>")
+    tableId = "shakespeare")
 ```
 
 
