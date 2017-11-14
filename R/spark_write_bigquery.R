@@ -13,6 +13,7 @@
 #' specified if the data set does not yet exist. It is ignored if it specified and the
 #' data set already exists.
 #' This parameter can be found in the Google BigQuery web interface, under "Dataset Details".
+#' @param additionalParameters Additional Hadoop parameters
 #' @param mode Specifies the behavior when data or table already exist. One of "overwrite",
 #' "append", "ignore" or "error" (default).
 #' @param ... Additional arguments passed to \code{\link[sparklyr]{spark_write_source}}.
@@ -46,19 +47,20 @@
 #'   tableId = "mtcars",
 #'   gcsBucket = "<your_gcs_bucket>",
 #'   datasetLocation = "<your_dataset_location>",
-#'   mode = "overwrite")
+#'   mode = "overwrite",
+#'   additionalParameters = list("mapred.bq.dynamic.file.list.record.reader.poll.interval" = "500"))
 #' }
 #' @importFrom sparklyr spark_write_source
 #' @export
 spark_write_bigquery <- function(data, billingProjectId, projectId = billingProjectId,
                                  datasetId, tableId, gcsBucket, datasetLocation = NULL, 
-                                 mode = "error", ...) {
-  parameters <- list(
+                                 additionalParameters = NULL, mode = "error", ...) {
+  parameters <- c(list(
     "bq.project.id" = billingProjectId,
     "bq.gcs.bucket" = gcsBucket,
     "bq.dataset.location" = if(is.null(datasetLocation)) "" else datasetLocation,
     "table" = sprintf("%s:%s.%s", projectId, datasetId, tableId)
-  )
+  ), additionalParameters)
   
   spark_write_source(
     data,

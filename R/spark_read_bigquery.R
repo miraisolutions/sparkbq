@@ -15,6 +15,7 @@
 #' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
 #' @param gcsBucket Google Cloud Storage bucket used for temporary BigQuery files.
 #' This should be the name of an existing storage bucket.
+#' @param additionalParameters Additional Hadoop parameters
 #' @param ... Additional arguments passed to \code{\link[sparklyr]{spark_read_source}}.
 #' @return A \code{tbl_spark} which provides a \code{dplyr}-compatible reference to a
 #' Spark DataFrame. 
@@ -48,17 +49,18 @@
 #'     projectId = "bigquery-public-data",
 #'     datasetId = "samples",
 #'     tableId = "shakespeare",
-#'     gcsBucket = "<your_gcs_bucket>")
+#'     gcsBucket = "<your_gcs_bucket>",
+#'     additionalParameters = list("mapred.bq.dynamic.file.list.record.reader.poll.interval" = "500"))
 #' }
 #' @importFrom sparklyr spark_read_source
 #' @export
 spark_read_bigquery <- function(sc, name, billingProjectId, projectId = billingProjectId, 
                                 datasetId = NULL, tableId = NULL, sqlQuery = NULL,
-                                gcsBucket, ...) {
-  parameters <- list(
+                                gcsBucket, additionalParameters = NULL, ...) {
+  parameters <- c(list(
     "bq.project.id" = billingProjectId,
     "bq.gcs.bucket" = gcsBucket
-  )
+  ), additionalParameters)
   
   if(!is.null(datasetId) && !is.null(tableId)) {
     parameters[["table"]] <- sprintf("%s:%s.%s", projectId, datasetId, tableId)
