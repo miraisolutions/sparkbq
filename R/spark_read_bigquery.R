@@ -15,6 +15,10 @@
 #' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
 #' @param gcsBucket Google Cloud Storage bucket used for temporary BigQuery files.
 #' This should be the name of an existing storage bucket.
+#' @param datasetLocation Google BigQuery dataset location ("EU" or "US"). Only needs to be
+#' specified if \code{sqlQuery} is present. In this case the dataset location specifies
+#' the location of a temporary staging table. For table queries, the dataset location
+#' is derived automatically (see BigQuery dataset details).
 #' @param additionalParameters Additional Hadoop parameters
 #' @param ... Additional arguments passed to \code{\link[sparklyr]{spark_read_source}}.
 #' @return A \code{tbl_spark} which provides a \code{dplyr}-compatible reference to a
@@ -56,15 +60,18 @@
 #' @export
 spark_read_bigquery <- function(sc, name, billingProjectId, projectId = billingProjectId, 
                                 datasetId = NULL, tableId = NULL, sqlQuery = NULL,
-                                gcsBucket, additionalParameters = NULL, ...) {
+                                gcsBucket, datasetLocation = NULL, 
+                                additionalParameters = NULL, ...) {
   parameters <- c(list(
     "bq.project.id" = billingProjectId,
-    "bq.gcs.bucket" = gcsBucket
+    "bq.gcs.bucket" = gcsBucket,
+    "bq.dataset.location" = if(is.null(datasetLocation)) "" else datasetLocation
   ), additionalParameters)
   
   if(!is.null(datasetId) && !is.null(tableId)) {
     parameters[["table"]] <- sprintf("%s:%s.%s", projectId, datasetId, tableId)
   } else if(!is.null(sqlQuery)) {
+    if(is.null(datasetLocation)) stop("'datasetLocation' must be specified for the temporary staging table.")
     parameters[["sqlQuery"]] <- sqlQuery
   } else {
     stop("Either both of 'datasetId' and 'tableId' or 'sqlQuery' must be specified.")
