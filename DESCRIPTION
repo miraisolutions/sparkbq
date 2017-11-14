@@ -17,8 +17,9 @@ Description: The 'sparkbq' package is a 'sparklyr' extension package providing a
   Google BigQuery.
 Depends: R (>= 3.3.2)
 Imports: sparklyr
-Suggests: testthat
+Suggests: dplyr, testthat
 License: GPL-3 | file LICENSE
+SystemRequirements: Java (>= 1.8), Spark 2.2.x
 Copyright: See file COPYRIGHTS
 Encoding: UTF-8
 LazyData: yes
