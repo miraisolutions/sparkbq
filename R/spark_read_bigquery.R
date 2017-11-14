@@ -5,7 +5,8 @@
 #' \code{\link[sparklyr]{spark_read_source}}).
 #' @param billingProjectId Google Cloud Platform project ID for billing purposes.
 #' This is the project on whose behalf to perform BigQuery operations.
-#' @param projectId Google Cloud Platform project ID of BigQuery data set.
+#' Defaults to \code{default_billing_project_id()}.
+#' @param projectId Google Cloud Platform project ID of BigQuery dataset.
 #' Defaults to \code{billingProjectId}.
 #' @param datasetId Google BigQuery dataset ID (may contain letters, numbers and underscores).
 #' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
@@ -14,11 +15,13 @@
 #' @param sqlQuery Google BigQuery standard SQL query (SQL-2011 dialect).
 #' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
 #' @param gcsBucket Google Cloud Storage bucket used for temporary BigQuery files.
-#' This should be the name of an existing storage bucket.
+#' This should be the name of an existing storage bucket. Defaults to
+#' \code{default_gcs_bucket()}.
 #' @param datasetLocation Google BigQuery dataset location ("EU" or "US"). Only needs to be
 #' specified if \code{sqlQuery} is present. In this case the dataset location specifies
 #' the location of a temporary staging table. For table queries, the dataset location
-#' is derived automatically (see BigQuery dataset details).
+#' is derived automatically (see BigQuery dataset details). Defaults to
+#' \code{default_dataset_location()}.
 #' @param additionalParameters Additional Hadoop parameters
 #' @param ... Additional arguments passed to \code{\link[sparklyr]{spark_read_source}}.
 #' @return A \code{tbl_spark} which provides a \code{dplyr}-compatible reference to a
@@ -28,7 +31,8 @@
 #' \url{https://cloud.google.com/bigquery/docs/tables}
 #' \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
 #' @family Spark serialization routines
-#' @seealso \code{\link[sparklyr]{spark_read_source}}, \code{\link{spark_write_bigquery}}
+#' @seealso \code{\link[sparklyr]{spark_read_source}}, \code{\link{spark_write_bigquery}},
+#' \code{\link{bigquery_defaults}}
 #' @keywords database, connection
 #' @examples
 #' \dontrun{
@@ -42,6 +46,11 @@
 #' 
 #' sc <- spark_connect(master = "local", config = config)
 #' 
+#' bigquery_defaults(
+#'   billingProjectId = "<your_billing_project_id>",
+#'   gcsBucket = "<your_gcs_bucket>",
+#'   datasetLocation = "US")
+#' 
 #' # Reading the public shakespeare data table
 #' # https://cloud.google.com/bigquery/public-data/
 #' # https://cloud.google.com/bigquery/sample-tables
@@ -49,23 +58,21 @@
 #'   spark_read_bigquery(
 #'     sc,
 #'     name = "shakespeare",
-#'     billingProjectId = "<your_billing_project_id>",
 #'     projectId = "bigquery-public-data",
 #'     datasetId = "samples",
 #'     tableId = "shakespeare",
-#'     gcsBucket = "<your_gcs_bucket>",
 #'     additionalParameters = list("mapred.bq.dynamic.file.list.record.reader.poll.interval" = "500"))
 #' }
 #' @importFrom sparklyr spark_read_source
 #' @export
-spark_read_bigquery <- function(sc, name, billingProjectId, projectId = billingProjectId, 
-                                datasetId = NULL, tableId = NULL, sqlQuery = NULL,
-                                gcsBucket, datasetLocation = NULL, 
+spark_read_bigquery <- function(sc, name, billingProjectId = default_billing_project_id(), 
+                                projectId = billingProjectId, datasetId = NULL, tableId = NULL, 
+                                sqlQuery = NULL, gcsBucket = default_gcs_bucket(), 
+                                datasetLocation = default_dataset_location(),
                                 additionalParameters = NULL, ...) {
   parameters <- c(list(
     "bq.project.id" = billingProjectId,
-    "bq.gcs.bucket" = gcsBucket,
-    "bq.dataset.location" = if(is.null(datasetLocation)) "" else datasetLocation
+    "bq.gcs.bucket" = gcsBucket
   ), additionalParameters)
   
   if(!is.null(datasetId) && !is.null(tableId)) {
@@ -73,6 +80,7 @@ spark_read_bigquery <- function(sc, name, billingProjectId, projectId = billingP
   } else if(!is.null(sqlQuery)) {
     if(is.null(datasetLocation)) stop("'datasetLocation' must be specified for the temporary staging table.")
     parameters[["sqlQuery"]] <- sqlQuery
+    parameters[["bq.dataset.location"]] = if(is.null(datasetLocation)) "" else datasetLocation
   } else {
     stop("Either both of 'datasetId' and 'tableId' or 'sqlQuery' must be specified.")
   }
