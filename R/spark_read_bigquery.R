@@ -25,6 +25,31 @@
 #' @family Spark serialization routines
 #' @seealso \code{\link[sparklyr]{spark_read_source}}, \code{\link{spark_write_bigquery}}
 #' @keywords database, connection
+#' @examples
+#' \dontrun{
+#' # Required when running outside of Google Cloud Platform
+#' gcpJsonKeyfile <- "/path/to/your/gcp_json_keyfile.json"
+#' 
+#' Sys.setenv("GOOGLE_APPLICATION_CREDENTIALS" = gcpJsonKeyfile)
+#' # or
+#' config <- spark_config()
+#' config[["spark.hadoop.google.cloud.auth.service.account.json.keyfile"]] <- gcpJsonKeyfile
+#' 
+#' sc <- spark_connect(master = "local", config = config)
+#' 
+#' # Reading the public shakespeare data table
+#' # https://cloud.google.com/bigquery/public-data/
+#' # https://cloud.google.com/bigquery/sample-tables
+#' shakespeare <-
+#'   spark_read_bigquery(
+#'     sc,
+#'     name = "shakespeare",
+#'     billingProjectId = "<your_billing_project_id>",
+#'     projectId = "bigquery-public-data",
+#'     datasetId = "samples",
+#'     tableId = "shakespeare",
+#'     gcsBucket = "<your_gcs_bucket>")
+#' }
 #' @importFrom sparklyr spark_read_source
 #' @export
 spark_read_bigquery <- function(sc, name, billingProjectId, projectId = billingProjectId, 
