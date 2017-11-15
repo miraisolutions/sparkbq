@@ -3,7 +3,7 @@ sparkbq sources can be obtained from GitHub:
 - sparkbq R Package: https://github.com/miraisolutions/sparkbq
 - spark-bigquery Scala Sources: https://github.com/miraisolutions/spark-bigquery
 
-Due to dependency version mismatches between Apache Spark and Google client 
+Due to dependency version mismatches between Apache Spark and Google client
 libraries (e.g. Google Guava), the included spark-bigquery fat JAR was built
 using shading to relocate relevant Google classes.
 
