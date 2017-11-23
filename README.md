@@ -25,6 +25,7 @@ The following table provides an overview over supported versions of Spark, Scala
 ``` r
 library(sparklyr)
 library(sparkbq)
+library(dplyr)
 
 # Required when running outside of Google Cloud Platform
 gcpJsonKeyfile <- "/path/to/your/gcp_json_keyfile.json"
@@ -46,13 +47,15 @@ bigquery_defaults(
 # Reading the public shakespeare data table
 # https://cloud.google.com/bigquery/public-data/
 # https://cloud.google.com/bigquery/sample-tables
-shakespeare <- 
+hamlet <- 
   spark_read_bigquery(
     sc,
     name = "shakespeare",
     projectId = "bigquery-public-data",
     datasetId = "samples",
-    tableId = "shakespeare")
+    tableId = "shakespeare") %>%
+  filter(corpus == "hamlet") %>%
+  collect()
 ```
 
 
