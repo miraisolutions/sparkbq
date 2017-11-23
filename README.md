@@ -54,7 +54,7 @@ hamlet <-
     projectId = "bigquery-public-data",
     datasetId = "samples",
     tableId = "shakespeare") %>%
-  filter(corpus == "hamlet") %>%
+  filter(corpus == "hamlet") %>% # NOTE: predicate pushdown to BigQuery!
   collect()
 ```
 
