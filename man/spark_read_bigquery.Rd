@@ -6,9 +6,9 @@
 \usage{
 spark_read_bigquery(sc, name, billingProjectId = default_billing_project_id(),
   projectId = billingProjectId, datasetId = NULL, tableId = NULL,
-  sqlQuery = NULL, gcsBucket = default_gcs_bucket(),
+  sqlQuery = NULL, useLegacySql = FALSE, gcsBucket = default_gcs_bucket(),
   datasetLocation = default_dataset_location(), additionalParameters = NULL,
-  ...)
+  memory = FALSE, ...)
 }
 \arguments{
 \item{sc}{\code{\link[sparklyr]{spark_connection}} provided by sparklyr.}
@@ -29,20 +29,29 @@ Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be sp
 \item{tableId}{Google BigQuery table ID (may contain letters, numbers and underscores).
 Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.}
 
-\item{sqlQuery}{Google BigQuery standard SQL query (SQL-2011 dialect).
-Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.}
+\item{sqlQuery}{Google BigQuery SQL query. Either both of \code{datasetId} and \code{tableId}
+or \code{sqlQuery} must be specified. The query must be either specified in standard SQL
+(SQL-2011) or BigQuery legacy SQL form (see argument \code{useLegacySql}). Tables
+are specified as `<project_id>.<dataset_id>.<table_id>` in standard SQL form and
+as [<project_id>:<dataset_id>.<table_id>] in legacy SQL form.}
+
+\item{useLegacySql}{\code{logical} specifying whether the SQL query specified with
+\code{sqlQuery} is a BigQuery standard SQL query (SQL-2011 dialect) or a BigQuery
+legacy SQL query. Defaults to \code{FALSE} (i.e. standard SQL is used).}
 
 \item{gcsBucket}{Google Cloud Storage bucket used for temporary BigQuery files.
 This should be the name of an existing storage bucket. Defaults to
 \code{default_gcs_bucket()}.}
 
-\item{datasetLocation}{Google BigQuery dataset location ("EU" or "US"). Only needs to be
-specified if \code{sqlQuery} is present. In this case the dataset location specifies
-the location of a temporary staging table. For table queries, the dataset location
-is derived automatically (see BigQuery dataset details). Defaults to
-\code{default_dataset_location()}.}
+\item{datasetLocation}{Google BigQuery dataset location ("EU" or "US") used for
+temporary staging tables. Defaults to \code{default_dataset_location()}.}
 
 \item{additionalParameters}{Additional Hadoop parameters}
+
+\item{memory}{\code{logical} specifying whether data should be loaded eagerly into
+memory, i.e. whether the table should be cached. Note that eagerly caching prevents
+predicate pushdown (e.g. in conjunction with \code{\link[dplyr]{filter}}) and therefore
+the default is \code{FALSE}. See also \code{\link[sparklyr]{spark_read_source}}.}
 
 \item{...}{Additional arguments passed to \code{\link[sparklyr]{spark_read_source}}.}
 }
@@ -87,6 +96,7 @@ shakespeare <-
 \url{https://cloud.google.com/bigquery/docs/datasets}
 \url{https://cloud.google.com/bigquery/docs/tables}
 \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
+\url{https://cloud.google.com/bigquery/docs/reference/legacy-sql}
 }
 \seealso{
 \code{\link[sparklyr]{spark_read_source}}, \code{\link{spark_write_bigquery}},

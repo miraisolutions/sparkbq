@@ -71,7 +71,7 @@ spark_write_bigquery <- function(data, billingProjectId = default_billing_projec
   
   spark_write_source(
     data,
-    source = "com.miraisolutions.spark.bigquery",
+    source = "bigquery",
     mode = mode,
     options = parameters,
     ...

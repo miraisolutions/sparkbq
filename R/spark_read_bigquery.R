@@ -13,7 +13,10 @@
 #' @param tableId Google BigQuery table ID (may contain letters, numbers and underscores).
 #' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
 #' @param sqlQuery Google BigQuery SQL query. Either both of \code{datasetId} and \code{tableId}
-#' or \code{sqlQuery} must be specified.
+#' or \code{sqlQuery} must be specified. The query must be either specified in standard SQL
+#' (SQL-2011) or BigQuery legacy SQL form (see argument \code{useLegacySql}). Tables
+#' are specified as `<project_id>.<dataset_id>.<table_id>` in standard SQL form and
+#' as [<project_id>:<dataset_id>.<table_id>] in legacy SQL form.
 #' @param useLegacySql \code{logical} specifying whether the SQL query specified with
 #' \code{sqlQuery} is a BigQuery standard SQL query (SQL-2011 dialect) or a BigQuery
 #' legacy SQL query. Defaults to \code{FALSE} (i.e. standard SQL is used).
@@ -23,6 +26,10 @@
 #' @param datasetLocation Google BigQuery dataset location ("EU" or "US") used for
 #' temporary staging tables. Defaults to \code{default_dataset_location()}.
 #' @param additionalParameters Additional Hadoop parameters
+#' @param memory \code{logical} specifying whether data should be loaded eagerly into
+#' memory, i.e. whether the table should be cached. Note that eagerly caching prevents
+#' predicate pushdown (e.g. in conjunction with \code{\link[dplyr]{filter}}) and therefore
+#' the default is \code{FALSE}. See also \code{\link[sparklyr]{spark_read_source}}.
 #' @param ... Additional arguments passed to \code{\link[sparklyr]{spark_read_source}}.
 #' @return A \code{tbl_spark} which provides a \code{dplyr}-compatible reference to a
 #' Spark DataFrame. 
@@ -71,7 +78,7 @@ spark_read_bigquery <- function(sc, name, billingProjectId = default_billing_pro
                                 sqlQuery = NULL, useLegacySql = FALSE, 
                                 gcsBucket = default_gcs_bucket(), 
                                 datasetLocation = default_dataset_location(),
-                                additionalParameters = NULL, ...) {
+                                additionalParameters = NULL, memory = FALSE, ...) {
   parameters <- c(list(
     "bq.project.id" = billingProjectId,
     "bq.gcs.bucket" = gcsBucket,
@@ -90,8 +97,9 @@ spark_read_bigquery <- function(sc, name, billingProjectId = default_billing_pro
   spark_read_source(
     sc,
     name = name,
-    source = "com.miraisolutions.spark.bigquery",
+    source = "bigquery",
     options = parameters,
+    memory = memory,
     ...
   )
 }
