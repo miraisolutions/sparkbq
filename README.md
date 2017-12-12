@@ -9,7 +9,7 @@
 devtools::install_github("miraisolutions/sparkbq", ref = "develop")
 ```
 
-NOTE: The current development version of **sparkbq** requires a recent version of sparklyr which addresses [sparklyr#1101](https://github.com/rstudio/sparklyr/issues/1101). You can install the latest version of sparklyr through `
+**NOTE**: The current development version of **sparkbq** requires a recent version of sparklyr which addresses [sparklyr#1101](https://github.com/rstudio/sparklyr/issues/1101). You can install the latest version of sparklyr through `
 devtools::install_github("rstudio/sparklyr")`.
 
 
