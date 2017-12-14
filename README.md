@@ -1,6 +1,6 @@
 # sparkbq: Google BigQuery Support for Sparklyr
 
-**sparkbq** is a [sparklyr](https://spark.rstudio.com/) [extension](https://spark.rstudio.com/articles/guides-extensions.html) package providing an integration with [Google BigQuery](https://cloud.google.com/bigquery/). It builds on top of [spark-bigquery](https://github.com/miraisolutions/spark-bigquery) which provides a Google BigQuery data source to [Apache Spark](https://spark.apache.org/).
+**sparkbq** is a [sparklyr](https://spark.rstudio.com/) [extension](https://spark.rstudio.com/articles/guides-extensions.html) package providing an integration with [Google BigQuery](https://cloud.google.com/bigquery/). It builds on top of [spark-bigquery](https://github.com/miraisolutions/spark-bigquery), which provides a Google BigQuery data source to [Apache Spark](https://spark.apache.org/).
 
 ## Version Information
 
@@ -9,11 +9,13 @@
 devtools::install_github("miraisolutions/sparkbq", ref = "develop")
 ```
 
-**NOTE**: The current development version of **sparkbq** requires a recent version of sparklyr which addresses [sparklyr#1101](https://github.com/rstudio/sparklyr/issues/1101). You can install the latest version of sparklyr through `
+**NOTES**: 
+- The current development version of **sparkbq** requires a recent version of sparklyr which addresses [sparklyr#1101](https://github.com/rstudio/sparklyr/issues/1101). You can install the latest version of sparklyr through `
 devtools::install_github("rstudio/sparklyr")`.
 
+- The underlying [spark-bigquery](https://github.com/miraisolutions/spark-bigquery) extends [Spotify's spark-bigquery library](https://github.com/spotify/spark-bigquery), which runs queries in [batch mode](https://cloud.google.com/bigquery/docs/running-queries) instead of the interactive mode by default. This may cause queries pending for some time before they could finally run. A [possible improvement](https://github.com/spotify/spark-bigquery/issues/53) has already been accepted by Spotify and will be part of their next release (v0.2.2+).
 
-The following table provides an overview over supported versions of Spark, Scala and [Google Dataproc](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions):
+The following table provides an overview over supported versions of Spark, Scala, and [Google Dataproc](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions):
 
 | sparkbq | Spark | Scala | Google Dataproc | Comment |
 | :-----: | ----- | ----- | --------------- | ------- |
