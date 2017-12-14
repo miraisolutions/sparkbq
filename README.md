@@ -13,7 +13,7 @@ devtools::install_github("miraisolutions/sparkbq", ref = "develop")
 - The current development version of **sparkbq** requires a recent version of sparklyr which addresses [sparklyr#1101](https://github.com/rstudio/sparklyr/issues/1101). You can install the latest version of sparklyr through `
 devtools::install_github("rstudio/sparklyr")`.
 
-- The underlying [spark-bigquery](https://github.com/miraisolutions/spark-bigquery) extends [Spotify's spark-bigquery library](https://github.com/spotify/spark-bigquery), which runs queries in [batch mode](https://cloud.google.com/bigquery/docs/running-queries) instead of the interactive mode by default. This may cause queries pending for some time before they could finally run. A [possible improvement](https://github.com/spotify/spark-bigquery/issues/53) has already been accepted by Spotify and will be part of their next release (v0.2.2+).
+- Underlying [spark-bigquery](https://github.com/miraisolutions/spark-bigquery) extends [Spotify's spark-bigquery library](https://github.com/spotify/spark-bigquery), which runs queries in [batch mode](https://cloud.google.com/bigquery/docs/running-queries) instead of the interactive mode by default. This may cause queries pending for some time before they could finally run. A [possible improvement](https://github.com/spotify/spark-bigquery/issues/53) has already been accepted by Spotify and will be part of their next release (v0.2.2+).
 
 The following table provides an overview over supported versions of Spark, Scala, and [Google Dataproc](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions):
 
