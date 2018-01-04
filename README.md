@@ -35,7 +35,7 @@ library(dplyr)
 gcpJsonKeyfile <- "/path/to/your/gcp_json_keyfile.json"
 
 Sys.setenv("GOOGLE_APPLICATION_CREDENTIALS" = gcpJsonKeyfile)
-# or
+
 config <- spark_config()
 config[["spark.hadoop.google.cloud.auth.service.account.json.keyfile"]] <- gcpJsonKeyfile
 
