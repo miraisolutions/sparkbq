@@ -1,0 +1,253 @@
+sparkbq sources can be obtained from GitHub:
+
+- sparkbq R Package: https://github.com/miraisolutions/sparkbq
+- spark-bigquery Scala Sources: https://github.com/miraisolutions/spark-bigquery
+
+Due to dependency version mismatches between Apache Spark and Google client
+libraries (e.g. Google Guava), the included spark-bigquery fat JAR was built
+using shading to relocate relevant Google classes.
+
+The provided fat JAR includes the following open source components:
+
+- Joda Time
+  Description: Date and time library to replace JDK date handling
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/joda-time/joda-time/2.9.3/joda-time-2.9.3.jar
+  Sources JAR file: http://central.maven.org/maven2/joda-time/joda-time/2.9.3/joda-time-2.9.3-sources.jar
+
+- Apache HttpClient
+  Description: Apache HttpComponents Client
+  License: The Apache Software License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  JAR file: http://central.maven.org/maven2/org/apache/httpcomponents/httpclient/4.0.1/httpclient-4.0.1.jar
+  Sources JAR file: http://central.maven.org/maven2/org/apache/httpcomponents/httpclient/4.0.1/httpclient-4.0.1-sources.jar
+
+- Apache HttpCore
+  Description: Apache HttpComponents Core (blocking I/O)
+  License: http://www.apache.org/licenses/LICENSE-2.0.html
+  JAR file: http://central.maven.org/maven2/org/apache/httpcomponents/httpcore/4.0.1/httpcore-4.0.1.jar
+  Sources JAR file: http://central.maven.org/maven2/org/apache/httpcomponents/httpcore/4.0.1/httpcore-4.0.1-sources.jar
+
+- Servlet API
+  Description: Servlet API
+  License: http://www.apache.org/licenses/LICENSE-2.0
+  JAR file: http://central.maven.org/maven2/org/mortbay/jetty/servlet-api/2.5-20081211/servlet-api-2.5-20081211.jar
+  Sources JAR file: http://central.maven.org/maven2/org/mortbay/jetty/servlet-api/2.5-20081211/servlet-api-2.5-20081211-sources.jar
+
+- Bigquery Connector.jar
+  Description: Hadoop 2 MapReduce input and output formats for use with BigQuery
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/com/google/cloud/bigdataoss/bigquery-connector/0.10.2-hadoop2/bigquery-connector-0.10.2-hadoop2.jar
+  Sources JAR file: http://central.maven.org/maven2/com/google/cloud/bigdataoss/bigquery-connector/0.10.2-hadoop2/bigquery-connector-0.10.2-hadoop2-sources.jar
+
+- Gcs Connector.jar
+  Description: An implementation of org.apache.hadoop.fs.FileSystem targeting Google Cloud Storage
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/com/google/cloud/bigdataoss/gcs-connector/1.6.1-hadoop2/gcs-connector-1.6.1-hadoop2.jar
+  Sources JAR file: http://central.maven.org/maven2/com/google/cloud/bigdataoss/gcs-connector/1.6.1-hadoop2/gcs-connector-1.6.1-hadoop2-sources.jar
+
+- Gcsio.jar
+  Description: An implementation of org.apache.hadoop.fs.FileSystem targeting Google Cloud Storage
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/com/google/cloud/bigdataoss/gcsio/1.6.1/gcsio-1.6.1.jar
+  Sources JAR file: http://central.maven.org/maven2/com/google/cloud/bigdataoss/gcsio/1.6.1/gcsio-1.6.1-sources.jar
+
+- Util
+  Description: Util
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/com/google/cloud/bigdataoss/util/1.6.1/util-1.6.1.jar
+  Sources JAR file: http://central.maven.org/maven2/com/google/cloud/bigdataoss/util/1.6.1/util-1.6.1-sources.jar
+
+- Util Hadoop
+  Description: Util Hadoop
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/com/google/cloud/bigdataoss/util-hadoop/1.6.1-hadoop2/util-hadoop-1.6.1-hadoop2.jar
+  Sources JAR file: http://central.maven.org/maven2/com/google/cloud/bigdataoss/util-hadoop/1.6.1-hadoop2/util-hadoop-1.6.1-hadoop2-sources.jar
+
+- Netty/All In One
+  Description: Netty/All In One
+  License: http://www.apache.org/licenses/LICENSE-2.0
+  JAR file: http://central.maven.org/maven2/io/netty/netty/3.4.0.Final/netty-3.4.0.Final.jar
+  Sources JAR file: http://central.maven.org/maven2/io/netty/netty/3.4.0.Final/netty-3.4.0.Final-sources.jar
+
+- Jetty :: Server Core
+  Description: The core jetty server artifact.
+  License: http://www.apache.org/licenses/LICENSE-2.0
+  JAR file: http://central.maven.org/maven2/org/mortbay/jetty/jetty/6.1.26/jetty-6.1.26.jar
+  Sources JAR file: http://central.maven.org/maven2/org/mortbay/jetty/jetty/6.1.26/jetty-6.1.26-sources.jar
+
+- Jetty :: Utilities
+  Description: Utility classes for Jetty
+  License: http://www.apache.org/licenses/LICENSE-2.0
+  JAR file: http://central.maven.org/maven2/org/mortbay/jetty/jetty-util/6.1.26/jetty-util-6.1.26.jar
+  Sources JAR file: http://central.maven.org/maven2/org/mortbay/jetty/jetty-util/6.1.26/jetty-util-6.1.26-sources.jar
+
+- Spark Avro
+  Description: spark-avro
+  License: http://www.apache.org/licenses/LICENSE-2.0
+  JAR file: http://central.maven.org/maven2/com/databricks/spark-avro_2.11/4.0.0/spark-avro_2.11-4.0.0.jar
+  Sources JAR file: http://central.maven.org/maven2/com/databricks/spark-avro_2.11/4.0.0/spark-avro_2.11-4.0.0-sources.jar
+
+- Spark Bigquery
+  Description: spark-bigquery
+  License: http://opensource.org/licenses/Apache-2.0
+  JAR file: N/A (waiting for next released version integrating https://github.com/spotify/spark-bigquery/pull/47)
+  Sources JAR file: N/A
+
+- Google APIs Client Library For Java
+  Description: Google APIs Client Library For Java
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/com/google/api-client/google-api-client/1.20.0/google-api-client-1.20.0.jar
+  Sources JAR file: http://central.maven.org/maven2/com/google/api-client/google-api-client/1.20.0/google-api-client-1.20.0-sources.jar
+
+- Jackson 2 Extensions To The Google APIs Client Library For Java
+  Description: Jackson 2 Extensions To The Google APIs Client Library For Java
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/com/google/api-client/google-api-client-jackson2/1.20.0/google-api-client-jackson2-1.20.0.jar
+  Sources JAR file: http://central.maven.org/maven2/com/google/api-client/google-api-client-jackson2/1.20.0/google-api-client-jackson2-1.20.0-sources.jar
+
+- Java 6 (and Higher) Extensions To The Google API Client Library For Java.
+  Description: Java 6 (and Higher) Extensions To The Google API Client Library For Java.
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/com/google/api-client/google-api-client-java6/1.20.0/google-api-client-java6-1.20.0.jar
+  Sources JAR file: http://central.maven.org/maven2/com/google/api-client/google-api-client-java6/1.20.0/google-api-client-java6-1.20.0-sources.jar
+
+- BigQuery API V2 Rev363 1.23.0
+  Description: BigQuery API V2 Rev363 1.23.0
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/com/google/apis/google-api-services-bigquery/v2-rev319-1.20.0/google-api-services-bigquery-v2-rev319-1.20.0.jar
+  Sources JAR file: http://central.maven.org/maven2/com/google/apis/google-api-services-bigquery/v2-rev319-1.20.0/google-api-services-bigquery-v2-rev319-1.20.0-sources.jar
+
+- Cloud Storage JSON API V1 Rev116 1.23.0
+  Description: Cloud Storage JSON API V1 Rev116 1.23.0
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/com/google/apis/google-api-services-storage/v1-rev35-1.20.0/google-api-services-storage-v1-rev35-1.20.0.jar
+  Sources JAR file: http://central.maven.org/maven2/com/google/apis/google-api-services-storage/v1-rev35-1.20.0/google-api-services-storage-v1-rev35-1.20.0-sources.jar
+
+- FindBugs Jsr305
+  Description: JSR305 Annotations for Findbugs
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/com/google/code/findbugs/jsr305/2.0.3/jsr305-2.0.3.jar
+  Sources JAR file: http://central.maven.org/maven2/com/google/code/findbugs/jsr305/2.0.3/jsr305-2.0.3-sources.jar
+
+- Gson
+  Description: Gson
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/com/google/code/gson/gson/2.3/gson-2.3.jar
+  Sources JAR file: http://central.maven.org/maven2/com/google/code/gson/gson/2.3/gson-2.3-sources.jar
+
+- Guava: Google Core Libraries For Java
+  Description: Guava is a suite of core and expanded libraries that include utility classes, google's collections, io classes, and much much more.
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/com/google/guava/guava/18.0/guava-18.0.jar
+  Sources JAR file: http://central.maven.org/maven2/com/google/guava/guava/18.0/guava-18.0-sources.jar
+
+- Google HTTP Client Library For Java
+  Description: Google HTTP Client Library for Java. Functionality that works on all supported Java platforms, including Java 5 (or higher) desktop (SE) and web (EE), Android, and Google App Engine.
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/com/google/http-client/google-http-client/1.20.0/google-http-client-1.20.0.jar
+  Sources JAR file: http://central.maven.org/maven2/com/google/http-client/google-http-client/1.20.0/google-http-client-1.20.0-sources.jar
+
+- Jackson 2 Extensions To The Google HTTP Client Library For Java.
+  Description: Jackson 2 Extensions To The Google HTTP Client Library For Java.
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/com/google/http-client/google-http-client-jackson2/1.20.0/google-http-client-jackson2-1.20.0.jar
+  Sources JAR file: http://central.maven.org/maven2/com/google/http-client/google-http-client-jackson2/1.20.0/google-http-client-jackson2-1.20.0-sources.jar
+
+- Google OAuth Client Library For Java
+  Description: Google OAuth Client Library for Java. Functionality that works on all supported Java platforms, including Java 5 (or higher) desktop (SE) and web (EE), Android, and Google App Engine.
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/com/google/oauth-client/google-oauth-client/1.20.0/google-oauth-client-1.20.0.jar
+  Sources JAR file: http://central.maven.org/maven2/com/google/oauth-client/google-oauth-client/1.20.0/google-oauth-client-1.20.0-sources.jar
+
+- Java 6 (and Higher) Extensions To The Google OAuth Client Library For Java.
+  Description: Java 6 (and Higher) Extensions To The Google OAuth Client Library For Java.
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/com/google/oauth-client/google-oauth-client-java6/1.20.0/google-oauth-client-java6-1.20.0.jar
+  Sources JAR file: http://central.maven.org/maven2/com/google/oauth-client/google-oauth-client-java6/1.20.0/google-oauth-client-java6-1.20.0-sources.jar
+
+- Apache Commons Codec
+  Description: The Apache Commons Codec package contains simple encoder and decoders for various formats such as Base64 and Hexadecimal. In addition to these widely used encoders and decoders, the codec package also maintains a collection of phonetic encoding utilities.
+  License: The Apache Software License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  JAR file: http://central.maven.org/maven2/commons-codec/commons-codec/1.3/commons-codec-1.3.jar
+  Sources JAR file: http://central.maven.org/maven2/commons-codec/commons-codec/1.3/commons-codec-1.3-sources.jar
+
+- Apache Commons Collections
+  Description: Types that extend and augment the Java Collections Framework.
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar
+  Sources JAR file: http://central.maven.org/maven2/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1-sources.jar
+
+- Apache Avro
+  Description: Avro core components
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/org/apache/avro/avro/1.7.7/avro-1.7.7.jar
+  Sources JAR file: http://central.maven.org/maven2/org/apache/avro/avro/1.7.7/avro-1.7.7-sources.jar
+
+- Apache Avro IPC
+  Description: Avro inter-process communication components
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/org/apache/avro/avro-ipc/1.7.7/avro-ipc-1.7.7.jar
+  Sources JAR file: http://central.maven.org/maven2/org/apache/avro/avro-ipc/1.7.7/avro-ipc-1.7.7-sources.jar
+
+- Apache Avro Mapred API
+  Description: An org.apache.hadoop.mapred compatible API for using Avro Serializatin in Hadoop
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/org/apache/avro/avro-mapred/1.7.7/avro-mapred-1.7.7.jar
+  Sources JAR file: http://central.maven.org/maven2/org/apache/avro/avro-mapred/1.7.7/avro-mapred-1.7.7-sources.jar
+
+- Apache Commons Compress
+  Description: Apache Commons Compress software defines an API for working with compression and archive formats. These include: bzip2, gzip, pack200, lzma, xz, Snappy, traditional Unix Compress, DEFLATE, LZ4, Brotli and ar, cpio, jar, tar, zip, dump, 7z, arj.
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/org/apache/commons/commons-compress/1.4.1/commons-compress-1.4.1.jar
+  Sources JAR file: http://central.maven.org/maven2/org/apache/commons/commons-compress/1.4.1/commons-compress-1.4.1-sources.jar
+
+- Apache Velocity
+  Description: Apache Velocity is a general purpose template engine.
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/org/apache/velocity/velocity/1.7/velocity-1.7.jar
+  Sources JAR file: http://central.maven.org/maven2/org/apache/velocity/velocity/1.7/velocity-1.7-sources.jar
+
+- Jackson
+  Description: Jackson is a high-performance JSON processor (parser, generator)
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/org/codehaus/jackson/jackson-core-asl/1.9.13/jackson-core-asl-1.9.13.jar
+  Sources JAR file: http://central.maven.org/maven2/org/codehaus/jackson/jackson-core-asl/1.9.13/jackson-core-asl-1.9.13-sources.jar
+
+- Data Mapper For Jackson
+  Description: Data Mapper package is a high-performance data binding package built on Jackson JSON processor
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/org/codehaus/jackson/jackson-mapper-asl/1.9.13/jackson-mapper-asl-1.9.13.jar
+  Sources JAR file: http://central.maven.org/maven2/org/codehaus/jackson/jackson-mapper-asl/1.9.13/jackson-mapper-asl-1.9.13-sources.jar
+
+- Snappy Java
+  Description: snappy-java: A fast compression/decompression library
+  License: http://www.apache.org/licenses/LICENSE-2.0.txt
+  JAR file: http://central.maven.org/maven2/org/xerial/snappy/snappy-java/1.0.5/snappy-java-1.0.5.jar
+  Sources JAR file: http://central.maven.org/maven2/org/xerial/snappy/snappy-java/1.0.5/snappy-java-1.0.5-sources.jar
+
+- ParaNamer Core
+  Description: ParaNamer Core
+  License: BSD 3-Clause (https://github.com/paul-hammant/paranamer/blob/master/LICENSE.txt)
+  JAR file: http://central.maven.org/maven2/com/thoughtworks/paranamer/paranamer/2.3/paranamer-2.3.jar
+  Sources JAR file: http://central.maven.org/maven2/com/thoughtworks/paranamer/paranamer/2.3/paranamer-2.3-sources.jar
+
+- SLF4J API Module
+  Description: The slf4j API
+  License: http://opensource.org/licenses/MIT
+  JAR file: http://central.maven.org/maven2/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar
+  Sources JAR file: http://central.maven.org/maven2/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21-sources.jar
+
+- SLF4J Simple Binding
+  Description: SLF4J Simple binding
+  License: http://www.opensource.org/licenses/mit-license.php
+  JAR file: http://central.maven.org/maven2/org/slf4j/slf4j-simple/1.7.21/slf4j-simple-1.7.21.jar
+  Sources JAR file: http://central.maven.org/maven2/org/slf4j/slf4j-simple/1.7.21/slf4j-simple-1.7.21-sources.jar
+
+- XZ For Java
+  Description: XZ data compression
+  License: Public Domain (https://creativecommons.org/publicdomain/mark/1.0/)
+  JAR file: http://central.maven.org/maven2/org/tukaani/xz/1.0/xz-1.0.jar
+  Sources JAR file: http://central.maven.org/maven2/org/tukaani/xz/1.0/xz-1.0-sources.jar
+
+This list is auto-generated using the SBT sbt-license-report plugin
+and using information provided by https://mvnrepository.com/.

@@ -4,8 +4,11 @@
 \alias{spark_read_bigquery}
 \title{Reading data from Google BigQuery}
 \usage{
-spark_read_bigquery(sc, name, billingProjectId, projectId = billingProjectId,
-  datasetId = NULL, tableId = NULL, sqlQuery = NULL, gcsBucket, ...)
+spark_read_bigquery(sc, name, billingProjectId = default_billing_project_id(),
+  projectId = billingProjectId, datasetId = NULL, tableId = NULL,
+  sqlQuery = NULL, useLegacySql = FALSE, gcsBucket = default_gcs_bucket(),
+  datasetLocation = default_dataset_location(), additionalParameters = NULL,
+  memory = FALSE, ...)
 }
 \arguments{
 \item{sc}{\code{\link[sparklyr]{spark_connection}} provided by sparklyr.}
@@ -14,9 +17,10 @@ spark_read_bigquery(sc, name, billingProjectId, projectId = billingProjectId,
 \code{\link[sparklyr]{spark_read_source}}).}
 
 \item{billingProjectId}{Google Cloud Platform project ID for billing purposes.
-This is the project on whose behalf to perform BigQuery operations.}
+This is the project on whose behalf to perform BigQuery operations.
+Defaults to \code{default_billing_project_id()}.}
 
-\item{projectId}{Google Cloud Platform project ID of BigQuery data set.
+\item{projectId}{Google Cloud Platform project ID of BigQuery dataset.
 Defaults to \code{billingProjectId}.}
 
 \item{datasetId}{Google BigQuery dataset ID (may contain letters, numbers and underscores).
@@ -25,11 +29,29 @@ Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be sp
 \item{tableId}{Google BigQuery table ID (may contain letters, numbers and underscores).
 Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.}
 
-\item{sqlQuery}{Google BigQuery standard SQL query (SQL-2011 dialect).
-Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.}
+\item{sqlQuery}{Google BigQuery SQL query. Either both of \code{datasetId} and \code{tableId}
+or \code{sqlQuery} must be specified. The query must be either specified in standard SQL
+(SQL-2011) or BigQuery legacy SQL form (see argument \code{useLegacySql}). Tables
+are specified as `<project_id>.<dataset_id>.<table_id>` in standard SQL form and
+as [<project_id>:<dataset_id>.<table_id>] in legacy SQL form.}
+
+\item{useLegacySql}{\code{logical} specifying whether the SQL query specified with
+\code{sqlQuery} is a BigQuery standard SQL query (SQL-2011 dialect) or a BigQuery
+legacy SQL query. Defaults to \code{FALSE} (i.e. standard SQL is used).}
 
 \item{gcsBucket}{Google Cloud Storage bucket used for temporary BigQuery files.
-This should be the name of an existing storage bucket.}
+This should be the name of an existing storage bucket. Defaults to
+\code{default_gcs_bucket()}.}
+
+\item{datasetLocation}{Google BigQuery dataset location ("EU" or "US") used for
+temporary staging tables. Defaults to \code{default_dataset_location()}.}
+
+\item{additionalParameters}{Additional Hadoop parameters}
+
+\item{memory}{\code{logical} specifying whether data should be loaded eagerly into
+memory, i.e. whether the table should be cached. Note that eagerly caching prevents
+predicate pushdown (e.g. in conjunction with \code{\link[dplyr]{filter}}) and therefore
+the default is \code{FALSE}. See also \code{\link[sparklyr]{spark_read_source}}.}
 
 \item{...}{Additional arguments passed to \code{\link[sparklyr]{spark_read_source}}.}
 }
@@ -40,13 +62,45 @@ Spark DataFrame.
 \description{
 This function reads data stored in a Google BigQuery table.
 }
+\examples{
+\dontrun{
+# Required when running outside of Google Cloud Platform
+gcpJsonKeyfile <- "/path/to/your/gcp_json_keyfile.json"
+
+Sys.setenv("GOOGLE_APPLICATION_CREDENTIALS" = gcpJsonKeyfile)
+# or
+config <- spark_config()
+config[["spark.hadoop.google.cloud.auth.service.account.json.keyfile"]] <- gcpJsonKeyfile
+
+sc <- spark_connect(master = "local", config = config)
+
+bigquery_defaults(
+  billingProjectId = "<your_billing_project_id>",
+  gcsBucket = "<your_gcs_bucket>",
+  datasetLocation = "US")
+
+# Reading the public shakespeare data table
+# https://cloud.google.com/bigquery/public-data/
+# https://cloud.google.com/bigquery/sample-tables
+shakespeare <-
+  spark_read_bigquery(
+    sc,
+    name = "shakespeare",
+    projectId = "bigquery-public-data",
+    datasetId = "samples",
+    tableId = "shakespeare",
+    additionalParameters = list("mapred.bq.dynamic.file.list.record.reader.poll.interval" = "500"))
+}
+}
 \references{
 \url{https://cloud.google.com/bigquery/docs/datasets}
 \url{https://cloud.google.com/bigquery/docs/tables}
 \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
+\url{https://cloud.google.com/bigquery/docs/reference/legacy-sql}
 }
 \seealso{
-\code{\link[sparklyr]{spark_read_source}}, \code{\link{spark_write_bigquery}}
+\code{\link[sparklyr]{spark_read_source}}, \code{\link{spark_write_bigquery}},
+\code{\link{bigquery_defaults}}
 
 Other Spark serialization routines: \code{\link{spark_write_bigquery}}
 }

@@ -4,17 +4,20 @@
 \alias{spark_write_bigquery}
 \title{Writing data to Google BigQuery}
 \usage{
-spark_write_bigquery(data, billingProjectId, projectId = billingProjectId,
-  datasetId, tableId, gcsBucket, datasetLocation = NULL, mode = "error",
-  ...)
+spark_write_bigquery(data, billingProjectId = default_billing_project_id(),
+  projectId = billingProjectId, datasetId, tableId,
+  gcsBucket = default_gcs_bucket(),
+  datasetLocation = default_dataset_location(), additionalParameters = NULL,
+  mode = "error", ...)
 }
 \arguments{
 \item{data}{Spark DataFrame to write to Google BigQuery.}
 
 \item{billingProjectId}{Google Cloud Platform project ID for billing purposes.
-This is the project on whose behalf to perform BigQuery operations.}
+This is the project on whose behalf to perform BigQuery operations.
+Defaults to \code{default_billing_project_id()}.}
 
-\item{projectId}{Google Cloud Platform project ID of BigQuery data set.
+\item{projectId}{Google Cloud Platform project ID of BigQuery dataset.
 Defaults to \code{billingProjectId}.}
 
 \item{datasetId}{Google BigQuery dataset ID (may contain letters, numbers and underscores).}
@@ -22,12 +25,14 @@ Defaults to \code{billingProjectId}.}
 \item{tableId}{Google BigQuery table ID (may contain letters, numbers and underscores).}
 
 \item{gcsBucket}{Google Cloud Storage bucket used for temporary BigQuery files.
-This should be the name of an existing storage bucket.}
+This should be the name of an existing storage bucket. Defaults to
+\code{default_gcs_bucket()}.}
 
 \item{datasetLocation}{Google BigQuery dataset location ("EU" or "US"). Only needs to be
-specified if the data set does not yet exist. It is ignored if it specified and the
-data set already exists.
-This parameter can be found in the Google BigQuery web interface, under "Dataset Details".}
+specified if the dataset does not yet exist. It is ignored if it specified and the
+dataset already exists. Defaults to \code{default_dataset_location()}.}
+
+\item{additionalParameters}{Additional Hadoop parameters}
 
 \item{mode}{Specifies the behavior when data or table already exist. One of "overwrite",
 "append", "ignore" or "error" (default).}
@@ -40,13 +45,43 @@ This parameter can be found in the Google BigQuery web interface, under "Dataset
 \description{
 This function writes data to a Google BigQuery table.
 }
+\examples{
+\dontrun{
+# Required when running outside of Google Cloud Platform
+gcpJsonKeyfile <- "/path/to/your/gcp_json_keyfile.json"
+
+Sys.setenv("GOOGLE_APPLICATION_CREDENTIALS" = gcpJsonKeyfile)
+# or
+config <- spark_config()
+config[["spark.hadoop.google.cloud.auth.service.account.json.keyfile"]] <- gcpJsonKeyfile
+
+sc <- spark_connect(master = "local", config = config)
+
+bigquery_defaults(
+  billingProjectId = "<your_billing_project_id>",
+  gcsBucket = "<your_gcs_bucket>",
+  datasetLocation = "US")
+
+# Copy mtcars to Spark
+spark_mtcars <- dplyr::copy_to(sc, mtcars, "spark_mtcars", overwrite = TRUE)
+
+spark_write_bigquery(
+  data = spark_mtcars,
+  datasetId = "<your_dataset_id>",
+  tableId = "mtcars",
+  datasetLocation = "<your_dataset_location>",
+  mode = "overwrite",
+  additionalParameters = list("mapred.bq.dynamic.file.list.record.reader.poll.interval" = "500"))
+}
+}
 \references{
 \url{https://cloud.google.com/bigquery/docs/datasets}
 \url{https://cloud.google.com/bigquery/docs/tables}
 \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
 }
 \seealso{
-\code{\link[sparklyr]{spark_write_source}}, \code{\link{spark_read_bigquery}}
+\code{\link[sparklyr]{spark_write_source}}, \code{\link{spark_read_bigquery}},
+\code{\link{bigquery_defaults}}
 
 Other Spark serialization routines: \code{\link{spark_read_bigquery}}
 }
