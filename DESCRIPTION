@@ -30,7 +30,7 @@ Depends: R (>= 3.3.2)
 Imports: sparklyr
 Suggests: dplyr, testthat
 License: GPL-3 | file LICENSE
-SystemRequirements: Java (>= 1.8), Spark 2.2.x
+SystemRequirements: Spark 2.2.x
 Encoding: UTF-8
 LazyData: yes
 RoxygenNote: 6.0.1
