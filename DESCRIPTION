@@ -27,7 +27,7 @@ BugReports: https://github.com/miraisolutions/sparkbq/issues
 Description: The 'sparkbq' package is a 'sparklyr' extension package providing an integration with
   Google BigQuery.
 Depends: R (>= 3.3.2)
-Imports: sparklyr
+Imports: sparklyr (>= 0.7.0)
 Suggests: dplyr, testthat
 License: GPL-3 | file LICENSE
 SystemRequirements: Spark 2.2.x
