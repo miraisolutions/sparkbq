@@ -8,9 +8,6 @@
 #' Defaults to \code{billingProjectId}.
 #' @param datasetId Google BigQuery dataset ID (may contain letters, numbers and underscores).
 #' @param tableId Google BigQuery table ID (may contain letters, numbers and underscores).
-#' @param gcsBucket Google Cloud Storage bucket used for temporary BigQuery files.
-#' This should be the name of an existing storage bucket. Defaults to
-#' \code{default_gcs_bucket()}.
 #' @param datasetLocation Google BigQuery dataset location ("EU" or "US"). Only needs to be
 #' specified if the dataset does not yet exist. It is ignored if it specified and the
 #' dataset already exists. Defaults to \code{default_dataset_location()}.
@@ -41,7 +38,6 @@
 #' 
 #' bigquery_defaults(
 #'   billingProjectId = "<your_billing_project_id>",
-#'   gcsBucket = "<your_gcs_bucket>",
 #'   datasetLocation = "US")
 #' 
 #' # Copy mtcars to Spark
@@ -58,15 +54,13 @@
 #' @importFrom sparklyr spark_write_source
 #' @export
 spark_write_bigquery <- function(data, billingProjectId = default_billing_project_id(), 
-                                 projectId = billingProjectId, datasetId, tableId, 
-                                 gcsBucket = default_gcs_bucket(),
+                                 projectId = billingProjectId, datasetId, tableId,
                                  datasetLocation = default_dataset_location(), 
                                  additionalParameters = NULL, mode = "error", ...) {
   parameters <- c(list(
-    "bq.project.id" = billingProjectId,
-    "bq.gcs.bucket" = gcsBucket,
-    "bq.dataset.location" = if(is.null(datasetLocation)) "" else datasetLocation,
-    "table" = sprintf("%s:%s.%s", projectId, datasetId, tableId)
+    "bq.project" = billingProjectId,
+    "bq.staging_dataset.location" = if(is.null(datasetLocation)) "" else datasetLocation,
+    "table" = sprintf("%s.%s.%s", projectId, datasetId, tableId)
   ), additionalParameters)
   
   spark_write_source(

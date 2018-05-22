@@ -41,8 +41,7 @@ sc <- spark_connect(master = "local", config = config)
 
 # Set Google BigQuery default settings
 bigquery_defaults(
-  billingProjectId = "<your_billing_project_id>",
-  gcsBucket = "<your_gcs_bucket>",
+  billingProjectId = "<your_billing_project_id>"
   datasetLocation = "US"
 )
 

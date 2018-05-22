@@ -4,14 +4,11 @@
 \alias{bigquery_defaults}
 \title{Google BigQuery Default Settings}
 \usage{
-bigquery_defaults(billingProjectId, gcsBucket, datasetLocation)
+bigquery_defaults(billingProjectId, datasetLocation)
 }
 \arguments{
 \item{billingProjectId}{Default Google Cloud Platform project ID for billing purposes.
 This is the project on whose behalf to perform BigQuery operations.}
-
-\item{gcsBucket}{Default Google Cloud Storage bucket used for temporary BigQuery files.
-This should be the name of an existing storage bucket.}
 
 \item{datasetLocation}{Default Google BigQuery dataset location ("EU" or "US").}
 }
@@ -23,8 +20,7 @@ Sets default values for several Google BigQuery related settings.
 }
 \seealso{
 \code{\link{spark_read_bigquery}}, \code{\link{spark_write_bigquery}},
-\code{\link{default_billing_project_id}}, \code{\link{default_gcs_bucket}},
-\code{\link{default_dataset_location}}
+\code{\link{default_billing_project_id}}, \code{\link{default_dataset_location}}
 }
 \keyword{connection}
 \keyword{database,}
