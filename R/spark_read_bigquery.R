@@ -13,10 +13,8 @@
 #' @param tableId Google BigQuery table ID (may contain letters, numbers and underscores).
 #' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
 #' @param sqlQuery Google BigQuery SQL query. Either both of \code{datasetId} and \code{tableId}
-#' or \code{sqlQuery} must be specified. The query must be either specified in standard SQL
-#' (SQL-2011) or BigQuery legacy SQL form (see argument \code{useLegacySql}). Tables
-#' are specified as `<project_id>.<dataset_id>.<table_id>` in standard SQL form and
-#' as [<project_id>:<dataset_id>.<table_id>] in legacy SQL form.
+#' or \code{sqlQuery} must be specified. The query must be specified in standard SQL
+#' (SQL-2011). Tables are specified as `<project_id>.<dataset_id>.<table_id>`.
 #' @param useLegacySql \code{logical} specifying whether the SQL query specified with
 #' \code{sqlQuery} is a BigQuery standard SQL query (SQL-2011 dialect) or a BigQuery
 #' legacy SQL query. Defaults to \code{FALSE} (i.e. standard SQL is used).
@@ -80,15 +78,15 @@ spark_read_bigquery <- function(sc, name, billingProjectId = default_billing_pro
                                 datasetLocation = default_dataset_location(),
                                 additionalParameters = NULL, memory = FALSE, ...) {
   parameters <- c(list(
-    "bq.project.id" = billingProjectId,
-    "bq.gcs.bucket" = gcsBucket,
-    "bq.dataset.location" = if(is.null(datasetLocation)) "" else datasetLocation
+    "bq.project" = billingProjectId,
+    "bq.staging_dataset.gcs_bucket" = gcsBucket,
+    "bq.staging_dataset.location" = if(is.null(datasetLocation)) "" else datasetLocation
   ), additionalParameters)
   
   if(!is.null(datasetId) && !is.null(tableId)) {
-    parameters[["table"]] <- sprintf("%s:%s.%s", projectId, datasetId, tableId)
+    parameters[["table"]] <- sprintf("%s.%s.%s", projectId, datasetId, tableId)
   } else if(!is.null(sqlQuery)) {
-    sqlPrefix <- if(useLegacySql) "#legacySQL" else "#standardSQL"
+    sqlPrefix <- "#standardSQL"
     parameters[["sqlQuery"]] <- paste0(sqlPrefix, "\n", sqlQuery)
   } else {
     stop("Either both of 'datasetId' and 'tableId' or 'sqlQuery' must be specified.")
