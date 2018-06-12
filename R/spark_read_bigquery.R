@@ -13,8 +13,16 @@
 #' @param tableId Google BigQuery table ID (may contain letters, numbers and underscores).
 #' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
 #' @param sqlQuery Google BigQuery SQL query. Either both of \code{datasetId} and \code{tableId}
-#' or \code{sqlQuery} must be specified. The query must be specified in standard SQL
-#' (SQL-2011). Tables are specified as `<project_id>.<dataset_id>.<table_id>`.
+#' or \code{sqlQuery} must be specified. The query must be either specified in standard SQL
+#' (SQL-2011) or BigQuery legacy SQL form (see argument \code{useLegacySql}). Tables
+#' are specified as `<project_id>.<dataset_id>.<table_id>` in standard SQL form and
+#' as [<project_id>:<dataset_id>.<table_id>] in legacy SQL form.
+#' @param useLegacySql \code{logical} specifying whether the SQL query specified with
+#' \code{sqlQuery} is a BigQuery standard SQL query (SQL-2011 dialect) or a BigQuery
+#' legacy SQL query. Defaults to \code{FALSE} (i.e. standard SQL is used).
+#' @param gcsBucket Google Cloud Storage bucket used for temporary BigQuery files.
+#' This should be the name of an existing storage bucket. Defaults to
+#' \code{default_gcs_bucket()}.
 #' @param datasetLocation Google BigQuery dataset location ("EU" or "US") used for
 #' temporary staging tables. Defaults to \code{default_dataset_location()}.
 #' @param additionalParameters Additional Hadoop parameters
@@ -29,6 +37,7 @@
 #' \url{https://cloud.google.com/bigquery/docs/datasets}
 #' \url{https://cloud.google.com/bigquery/docs/tables}
 #' \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
+#' \url{https://cloud.google.com/bigquery/docs/reference/legacy-sql}
 #' @family Spark serialization routines
 #' @seealso \code{\link[sparklyr]{spark_read_source}}, \code{\link{spark_write_bigquery}},
 #' \code{\link{bigquery_defaults}}
@@ -47,6 +56,7 @@
 #' 
 #' bigquery_defaults(
 #'   billingProjectId = "<your_billing_project_id>",
+#'   gcsBucket = "<your_gcs_bucket>",
 #'   datasetLocation = "US")
 #' 
 #' # Reading the public shakespeare data table
@@ -65,17 +75,20 @@
 #' @export
 spark_read_bigquery <- function(sc, name, billingProjectId = default_billing_project_id(), 
                                 projectId = billingProjectId, datasetId = NULL, tableId = NULL, 
-                                sqlQuery = NULL, datasetLocation = default_dataset_location(),
+                                sqlQuery = NULL, useLegacySql = FALSE, 
+                                gcsBucket = default_gcs_bucket(), 
+                                datasetLocation = default_dataset_location(),
                                 additionalParameters = NULL, memory = FALSE, ...) {
   parameters <- c(list(
-    "bq.project" = billingProjectId,
-    "bq.staging_dataset.location" = if(is.null(datasetLocation)) "" else datasetLocation
+    "bq.project.id" = billingProjectId,
+    "bq.gcs.bucket" = gcsBucket,
+    "bq.dataset.location" = if(is.null(datasetLocation)) "" else datasetLocation
   ), additionalParameters)
   
   if(!is.null(datasetId) && !is.null(tableId)) {
-    parameters[["table"]] <- sprintf("%s.%s.%s", projectId, datasetId, tableId)
+    parameters[["table"]] <- sprintf("%s:%s.%s", projectId, datasetId, tableId)
   } else if(!is.null(sqlQuery)) {
-    sqlPrefix <- "#standardSQL"
+    sqlPrefix <- if(useLegacySql) "#legacySQL" else "#standardSQL"
     parameters[["sqlQuery"]] <- paste0(sqlPrefix, "\n", sqlQuery)
   } else {
     stop("Either both of 'datasetId' and 'tableId' or 'sqlQuery' must be specified.")

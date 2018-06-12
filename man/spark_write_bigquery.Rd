@@ -6,6 +6,7 @@
 \usage{
 spark_write_bigquery(data, billingProjectId = default_billing_project_id(),
   projectId = billingProjectId, datasetId, tableId,
+  gcsBucket = default_gcs_bucket(),
   datasetLocation = default_dataset_location(), additionalParameters = NULL,
   mode = "error", ...)
 }
@@ -22,6 +23,10 @@ Defaults to \code{billingProjectId}.}
 \item{datasetId}{Google BigQuery dataset ID (may contain letters, numbers and underscores).}
 
 \item{tableId}{Google BigQuery table ID (may contain letters, numbers and underscores).}
+
+\item{gcsBucket}{Google Cloud Storage bucket used for temporary BigQuery files.
+This should be the name of an existing storage bucket. Defaults to
+\code{default_gcs_bucket()}.}
 
 \item{datasetLocation}{Google BigQuery dataset location ("EU" or "US"). Only needs to be
 specified if the dataset does not yet exist. It is ignored if it specified and the
@@ -54,6 +59,7 @@ sc <- spark_connect(master = "local", config = config)
 
 bigquery_defaults(
   billingProjectId = "<your_billing_project_id>",
+  gcsBucket = "<your_gcs_bucket>",
   datasetLocation = "US")
 
 # Copy mtcars to Spark
