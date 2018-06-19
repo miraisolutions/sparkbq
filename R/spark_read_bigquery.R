@@ -80,7 +80,7 @@ spark_read_bigquery <- function(sc, name, billingProjectId = default_billing_pro
   parameters <- c(list(
     "bq.project" = billingProjectId,
     "bq.staging_dataset.gcs_bucket" = gcsBucket,
-    "bq.staging_dataset.location" = if(is.null(datasetLocation)) "" else datasetLocation
+    "bq.location" = if(is.null(datasetLocation)) "" else datasetLocation
   ), additionalParameters)
   
   if(!is.null(datasetId) && !is.null(tableId)) {

@@ -65,7 +65,7 @@ spark_write_bigquery <- function(data, billingProjectId = default_billing_projec
   parameters <- c(list(
     "bq.project" = billingProjectId,
     "bq.staging_dataset.gcs_bucket" = gcsBucket,
-    "bq.staging_dataset.location" = if(is.null(datasetLocation)) "" else datasetLocation,
+    "bq.location" = if(is.null(datasetLocation)) "" else datasetLocation,
     "table" = sprintf("%s.%s.%s", projectId, datasetId, tableId)
   ), additionalParameters)
   
