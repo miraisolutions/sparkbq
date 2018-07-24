@@ -9,7 +9,9 @@
 #' "parquet", "avro", "orc", "json" and "csv". If not set, it defaults to
 #' \code{NULL}, meaning that the default spark-bigquery import/export mechanism
 #' will be used (i.e. "direct"). Please note that only "direct" and "avro"
-#' are supported for both importing and exporting.
+#' are supported for both importing and exporting. \cr
+#' "csv" and "json" are not recommended due to their lack of type safety.
+#' 
 #' See the table below for supported type and import/export combinations.
 #' 
 #' \tabular{lcccccc}{
@@ -18,6 +20,13 @@
 #'   Export from Spark (import to BigQuery) \tab X      \tab X       \tab X    \tab X   \tab      \tab      \cr
 #' }
 #' @return A \code{list} of set options with previous values.
+#' @references
+#' \url{https://github.com/miraisolutions/spark-bigquery}
+#' \url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-parquet}
+#' \url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-avro}
+#' \url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-orc}
+#' \url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-json}
+#' \url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv}
 #' @seealso \code{\link{spark_read_bigquery}}, \code{\link{spark_write_bigquery}},
 #' \code{\link{default_billing_project_id}}, \code{\link{default_gcs_bucket}},
 #' \code{\link{default_dataset_location}}

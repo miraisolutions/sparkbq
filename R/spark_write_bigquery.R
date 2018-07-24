@@ -23,9 +23,13 @@
 #' @param ... Additional arguments passed to \code{\link[sparklyr]{spark_write_source}}.
 #' @return \code{NULL}. This is a side-effecting function.
 #' @references
+#' \url{https://github.com/miraisolutions/spark-bigquery}
 #' \url{https://cloud.google.com/bigquery/docs/datasets}
 #' \url{https://cloud.google.com/bigquery/docs/tables}
 #' \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
+#' \url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-parquet}
+#' \url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-avro}
+#' \url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-orc}
 #' @family Spark serialization routines
 #' @seealso \code{\link[sparklyr]{spark_write_source}}, \code{\link{spark_read_bigquery}},
 #' \code{\link{bigquery_defaults}}

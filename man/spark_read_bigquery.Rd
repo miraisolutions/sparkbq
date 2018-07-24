@@ -94,10 +94,14 @@ shakespeare <-
 }
 }
 \references{
+\url{https://github.com/miraisolutions/spark-bigquery}
 \url{https://cloud.google.com/bigquery/docs/datasets}
 \url{https://cloud.google.com/bigquery/docs/tables}
 \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
 \url{https://cloud.google.com/bigquery/docs/reference/legacy-sql}
+\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-avro}
+\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-json}
+\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv}
 }
 \seealso{
 \code{\link[sparklyr]{spark_read_source}}, \code{\link{spark_write_bigquery}},

@@ -33,10 +33,14 @@
 #' @return A \code{tbl_spark} which provides a \code{dplyr}-compatible reference to a
 #' Spark DataFrame. 
 #' @references
+#' \url{https://github.com/miraisolutions/spark-bigquery}
 #' \url{https://cloud.google.com/bigquery/docs/datasets}
 #' \url{https://cloud.google.com/bigquery/docs/tables}
 #' \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
 #' \url{https://cloud.google.com/bigquery/docs/reference/legacy-sql}
+#' \url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-avro}
+#' \url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-json}
+#' \url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv}
 #' @family Spark serialization routines
 #' @seealso \code{\link[sparklyr]{spark_read_source}}, \code{\link{spark_write_bigquery}},
 #' \code{\link{bigquery_defaults}}

@@ -19,7 +19,9 @@ This should be the name of an existing storage bucket.}
 "parquet", "avro", "orc", "json" and "csv". If not set, it defaults to
 \code{NULL}, meaning that the default spark-bigquery import/export mechanism
 will be used (i.e. "direct"). Please note that only "direct" and "avro"
-are supported for both importing and exporting.
+are supported for both importing and exporting. \cr
+"csv" and "json" are not recommended due to their lack of type safety.
+
 See the table below for supported type and import/export combinations.
 
 \tabular{lcccccc}{
@@ -33,6 +35,14 @@ A \code{list} of set options with previous values.
 }
 \description{
 Sets default values for several Google BigQuery related settings.
+}
+\references{
+\url{https://github.com/miraisolutions/spark-bigquery}
+\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-parquet}
+\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-avro}
+\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-orc}
+\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-json}
+\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv}
 }
 \seealso{
 \code{\link{spark_read_bigquery}}, \code{\link{spark_write_bigquery}},
