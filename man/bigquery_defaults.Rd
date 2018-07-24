@@ -4,7 +4,7 @@
 \alias{bigquery_defaults}
 \title{Google BigQuery Default Settings}
 \usage{
-bigquery_defaults(billingProjectId, gcsBucket, datasetLocation)
+bigquery_defaults(billingProjectId, gcsBucket, datasetLocation, type = NULL)
 }
 \arguments{
 \item{billingProjectId}{Default Google Cloud Platform project ID for billing purposes.
@@ -14,6 +14,18 @@ This is the project on whose behalf to perform BigQuery operations.}
 This should be the name of an existing storage bucket.}
 
 \item{datasetLocation}{Default Google BigQuery dataset location ("EU" or "US").}
+
+\item{type}{Default BigQuery import/export type to use. Options include "direct",
+"parquet", "avro", "orc", "json" and "csv". If not set, it defaults to
+\code{NULL}, meaning that the default spark-bigquery import/export mechanism
+will be used (i.e. "direct").
+See the table below for supported type and import/export combinations.
+
+\tabular{lcccccc}{
+                                         \tab Direct \tab Parquet \tab Avro \tab ORC \tab JSON \tab CSV  \cr
+  Import to Spark (export from BigQuery) \tab X      \tab         \tab X    \tab     \tab X    \tab X    \cr
+  Export from Spark (import to BigQuery) \tab X      \tab X       \tab X    \tab X   \tab      \tab      \cr
+}}
 }
 \value{
 A \code{list} of set options with previous values.

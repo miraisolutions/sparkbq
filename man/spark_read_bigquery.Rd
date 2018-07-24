@@ -5,8 +5,9 @@
 \title{Reading data from Google BigQuery}
 \usage{
 spark_read_bigquery(sc, name, billingProjectId = default_billing_project_id(),
-  projectId = billingProjectId, datasetId = NULL, tableId = NULL,
-  sqlQuery = NULL, useLegacySql = FALSE, gcsBucket = default_gcs_bucket(),
+  projectId = billingProjectId, datasetId = NULL,
+  type = default_bigquery_type(), tableId = NULL, sqlQuery = NULL,
+  gcsBucket = default_gcs_bucket(),
   datasetLocation = default_dataset_location(), additionalParameters = NULL,
   memory = FALSE, ...)
 }
@@ -26,18 +27,17 @@ Defaults to \code{billingProjectId}.}
 \item{datasetId}{Google BigQuery dataset ID (may contain letters, numbers and underscores).
 Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.}
 
+\item{type}{Default BigQuery import/export type to use. Options include "direct",
+"avro", "json" and "csv". Defaults to \code{default_bigquery_type()}.
+See \link{bigquery_defaults} for more details about the supported types.}
+
 \item{tableId}{Google BigQuery table ID (may contain letters, numbers and underscores).
 Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.}
 
 \item{sqlQuery}{Google BigQuery SQL query. Either both of \code{datasetId} and \code{tableId}
-or \code{sqlQuery} must be specified. The query must be either specified in standard SQL
-(SQL-2011) or BigQuery legacy SQL form (see argument \code{useLegacySql}). Tables
-are specified as `<project_id>.<dataset_id>.<table_id>` in standard SQL form and
-as [<project_id>:<dataset_id>.<table_id>] in legacy SQL form.}
-
-\item{useLegacySql}{\code{logical} specifying whether the SQL query specified with
-\code{sqlQuery} is a BigQuery standard SQL query (SQL-2011 dialect) or a BigQuery
-legacy SQL query. Defaults to \code{FALSE} (i.e. standard SQL is used).}
+or \code{sqlQuery} must be specified. The query must be specified in standard SQL
+(SQL-2011). Legacy SQL is not supported. Tables are specified as
+`<project_id>.<dataset_id>.<table_id>`.}
 
 \item{gcsBucket}{Google Cloud Storage bucket used for temporary BigQuery files.
 This should be the name of an existing storage bucket. Defaults to
@@ -77,7 +77,8 @@ sc <- spark_connect(master = "local", config = config)
 bigquery_defaults(
   billingProjectId = "<your_billing_project_id>",
   gcsBucket = "<your_gcs_bucket>",
-  datasetLocation = "US")
+  datasetLocation = "US",
+  type = "direct")
 
 # Reading the public shakespeare data table
 # https://cloud.google.com/bigquery/public-data/

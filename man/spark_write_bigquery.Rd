@@ -5,8 +5,8 @@
 \title{Writing data to Google BigQuery}
 \usage{
 spark_write_bigquery(data, billingProjectId = default_billing_project_id(),
-  projectId = billingProjectId, datasetId, tableId,
-  gcsBucket = default_gcs_bucket(),
+  projectId = billingProjectId, datasetId, type = default_bigquery_type(),
+  tableId, gcsBucket = default_gcs_bucket(),
   datasetLocation = default_dataset_location(), additionalParameters = NULL,
   mode = "error", ...)
 }
@@ -21,6 +21,10 @@ Defaults to \code{default_billing_project_id()}.}
 Defaults to \code{billingProjectId}.}
 
 \item{datasetId}{Google BigQuery dataset ID (may contain letters, numbers and underscores).}
+
+\item{type}{Default BigQuery import/export type to use. Options include "direct",
+"parquet", "avro", "orc". Defaults to \code{default_bigquery_type()}.
+See \link{bigquery_defaults} for more details about the supported types.}
 
 \item{tableId}{Google BigQuery table ID (may contain letters, numbers and underscores).}
 

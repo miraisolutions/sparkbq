@@ -10,14 +10,15 @@
 #' Defaults to \code{billingProjectId}.
 #' @param datasetId Google BigQuery dataset ID (may contain letters, numbers and underscores).
 #' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
+#' @param type Default BigQuery import/export type to use. Options include "direct",
+#' "avro", "json" and "csv". Defaults to \code{default_bigquery_type()}.
+#' See \link{bigquery_defaults} for more details about the supported types.
 #' @param tableId Google BigQuery table ID (may contain letters, numbers and underscores).
 #' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
 #' @param sqlQuery Google BigQuery SQL query. Either both of \code{datasetId} and \code{tableId}
 #' or \code{sqlQuery} must be specified. The query must be specified in standard SQL
-#' (SQL-2011). Tables are specified as `<project_id>.<dataset_id>.<table_id>`.
-#' @param useLegacySql \code{logical} specifying whether the SQL query specified with
-#' \code{sqlQuery} is a BigQuery standard SQL query (SQL-2011 dialect) or a BigQuery
-#' legacy SQL query. Defaults to \code{FALSE} (i.e. standard SQL is used).
+#' (SQL-2011). Legacy SQL is not supported. Tables are specified as
+#' `<project_id>.<dataset_id>.<table_id>`.
 #' @param gcsBucket Google Cloud Storage bucket used for temporary BigQuery files.
 #' This should be the name of an existing storage bucket. Defaults to
 #' \code{default_gcs_bucket()}.
@@ -55,7 +56,8 @@
 #' bigquery_defaults(
 #'   billingProjectId = "<your_billing_project_id>",
 #'   gcsBucket = "<your_gcs_bucket>",
-#'   datasetLocation = "US")
+#'   datasetLocation = "US",
+#'   type = "direct")
 #' 
 #' # Reading the public shakespeare data table
 #' # https://cloud.google.com/bigquery/public-data/
@@ -72,15 +74,16 @@
 #' @importFrom sparklyr spark_read_source
 #' @export
 spark_read_bigquery <- function(sc, name, billingProjectId = default_billing_project_id(), 
-                                projectId = billingProjectId, datasetId = NULL, tableId = NULL, 
-                                sqlQuery = NULL, useLegacySql = FALSE, 
-                                gcsBucket = default_gcs_bucket(), 
+                                projectId = billingProjectId, datasetId = NULL,
+                                type = default_bigquery_type(), tableId = NULL, 
+                                sqlQuery = NULL, gcsBucket = default_gcs_bucket(), 
                                 datasetLocation = default_dataset_location(),
                                 additionalParameters = NULL, memory = FALSE, ...) {
   parameters <- c(list(
     "bq.project" = billingProjectId,
     "bq.staging_dataset.gcs_bucket" = gcsBucket,
-    "bq.location" = if(is.null(datasetLocation)) "" else datasetLocation
+    "bq.location" = if(is.null(datasetLocation)) "" else datasetLocation,
+    "type" = type
   ), additionalParameters)
   
   if(!is.null(datasetId) && !is.null(tableId)) {

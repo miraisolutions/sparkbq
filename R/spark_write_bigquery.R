@@ -7,6 +7,9 @@
 #' @param projectId Google Cloud Platform project ID of BigQuery dataset.
 #' Defaults to \code{billingProjectId}.
 #' @param datasetId Google BigQuery dataset ID (may contain letters, numbers and underscores).
+#' @param type Default BigQuery import/export type to use. Options include "direct",
+#' "parquet", "avro", "orc". Defaults to \code{default_bigquery_type()}.
+#' See \link{bigquery_defaults} for more details about the supported types.
 #' @param tableId Google BigQuery table ID (may contain letters, numbers and underscores).
 #' @param gcsBucket Google Cloud Storage bucket used for temporary BigQuery files.
 #' This should be the name of an existing storage bucket. Defaults to
@@ -58,7 +61,8 @@
 #' @importFrom sparklyr spark_write_source
 #' @export
 spark_write_bigquery <- function(data, billingProjectId = default_billing_project_id(), 
-                                 projectId = billingProjectId, datasetId, tableId, 
+                                 projectId = billingProjectId, datasetId, 
+                                 type = default_bigquery_type(), tableId,
                                  gcsBucket = default_gcs_bucket(),
                                  datasetLocation = default_dataset_location(), 
                                  additionalParameters = NULL, mode = "error", ...) {
@@ -66,7 +70,8 @@ spark_write_bigquery <- function(data, billingProjectId = default_billing_projec
     "bq.project" = billingProjectId,
     "bq.staging_dataset.gcs_bucket" = gcsBucket,
     "bq.location" = if(is.null(datasetLocation)) "" else datasetLocation,
-    "table" = sprintf("%s.%s.%s", projectId, datasetId, tableId)
+    "table" = sprintf("%s.%s.%s", projectId, datasetId, tableId),
+    "type" = type
   ), additionalParameters)
   
   spark_write_source(
