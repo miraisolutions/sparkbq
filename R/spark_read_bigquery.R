@@ -10,8 +10,8 @@
 #' Defaults to \code{billingProjectId}.
 #' @param datasetId Google BigQuery dataset ID (may contain letters, numbers and underscores).
 #' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
-#' @param type Default BigQuery import/export type to use. Options include "direct",
-#' "avro", "json" and "csv". Defaults to \code{default_bigquery_type()}.
+#' @param type BigQuery import type to use. Options include "direct", "avro",
+#' "json" and "csv". Defaults to \code{default_bigquery_type()}.
 #' See \link{bigquery_defaults} for more details about the supported types.
 #' @param tableId Google BigQuery table ID (may contain letters, numbers and underscores).
 #' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
@@ -73,19 +73,23 @@
 #' }
 #' @importFrom sparklyr spark_read_source
 #' @export
-spark_read_bigquery <- function(sc, name, billingProjectId = default_billing_project_id(), 
+spark_read_bigquery <- function(sc, name, billingProjectId = default_billing_project_id(),
                                 projectId = billingProjectId, datasetId = NULL,
-                                type = default_bigquery_type(), tableId = NULL, 
-                                sqlQuery = NULL, gcsBucket = default_gcs_bucket(), 
+                                type = default_bigquery_type(), tableId = NULL,
+                                sqlQuery = NULL, gcsBucket = default_gcs_bucket(),
                                 datasetLocation = default_dataset_location(),
                                 additionalParameters = NULL, memory = FALSE, ...) {
+
+  if(!(type %in% c("direct", "avro", "json", "csv")))
+    stop(sprintf("The import type '%s' is not supported by spark_read_bigquery", type))
+
   parameters <- c(list(
     "bq.project" = billingProjectId,
     "bq.staging_dataset.gcs_bucket" = gcsBucket,
     "bq.location" = if(is.null(datasetLocation)) "" else datasetLocation,
     "type" = type
   ), additionalParameters)
-  
+
   if(!is.null(datasetId) && !is.null(tableId)) {
     parameters[["table"]] <- sprintf("%s.%s.%s", projectId, datasetId, tableId)
   } else if(!is.null(sqlQuery)) {
@@ -94,7 +98,7 @@ spark_read_bigquery <- function(sc, name, billingProjectId = default_billing_pro
   } else {
     stop("Either both of 'datasetId' and 'tableId' or 'sqlQuery' must be specified.")
   }
-  
+
   spark_read_source(
     sc,
     name = name,

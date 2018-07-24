@@ -27,8 +27,8 @@ Defaults to \code{billingProjectId}.}
 \item{datasetId}{Google BigQuery dataset ID (may contain letters, numbers and underscores).
 Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.}
 
-\item{type}{Default BigQuery import/export type to use. Options include "direct",
-"avro", "json" and "csv". Defaults to \code{default_bigquery_type()}.
+\item{type}{BigQuery import type to use. Options include "direct", "avro",
+"json" and "csv". Defaults to \code{default_bigquery_type()}.
 See \link{bigquery_defaults} for more details about the supported types.}
 
 \item{tableId}{Google BigQuery table ID (may contain letters, numbers and underscores).

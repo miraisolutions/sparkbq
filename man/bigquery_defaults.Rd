@@ -18,7 +18,8 @@ This should be the name of an existing storage bucket.}
 \item{type}{Default BigQuery import/export type to use. Options include "direct",
 "parquet", "avro", "orc", "json" and "csv". If not set, it defaults to
 \code{NULL}, meaning that the default spark-bigquery import/export mechanism
-will be used (i.e. "direct").
+will be used (i.e. "direct"). Please note that only "direct" and "avro"
+are supported for both importing and exporting.
 See the table below for supported type and import/export combinations.
 
 \tabular{lcccccc}{

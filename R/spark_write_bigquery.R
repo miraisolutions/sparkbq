@@ -7,8 +7,8 @@
 #' @param projectId Google Cloud Platform project ID of BigQuery dataset.
 #' Defaults to \code{billingProjectId}.
 #' @param datasetId Google BigQuery dataset ID (may contain letters, numbers and underscores).
-#' @param type Default BigQuery import/export type to use. Options include "direct",
-#' "parquet", "avro", "orc". Defaults to \code{default_bigquery_type()}.
+#' @param type BigQuery export type to use. Options include "direct", "parquet",
+#' "avro", "orc". Defaults to \code{default_bigquery_type()}.
 #' See \link{bigquery_defaults} for more details about the supported types.
 #' @param tableId Google BigQuery table ID (may contain letters, numbers and underscores).
 #' @param gcsBucket Google Cloud Storage bucket used for temporary BigQuery files.
@@ -60,12 +60,16 @@
 #' }
 #' @importFrom sparklyr spark_write_source
 #' @export
-spark_write_bigquery <- function(data, billingProjectId = default_billing_project_id(), 
-                                 projectId = billingProjectId, datasetId, 
+spark_write_bigquery <- function(data, billingProjectId = default_billing_project_id(),
+                                 projectId = billingProjectId, datasetId,
                                  type = default_bigquery_type(), tableId,
                                  gcsBucket = default_gcs_bucket(),
-                                 datasetLocation = default_dataset_location(), 
+                                 datasetLocation = default_dataset_location(),
                                  additionalParameters = NULL, mode = "error", ...) {
+
+  if(!(type %in% c("direct", "parquet", "avro", "orc")))
+    stop(sprintf("The export type '%s' is not supported by spark_write_bigquery", type))
+
   parameters <- c(list(
     "bq.project" = billingProjectId,
     "bq.staging_dataset.gcs_bucket" = gcsBucket,
@@ -73,7 +77,7 @@ spark_write_bigquery <- function(data, billingProjectId = default_billing_projec
     "table" = sprintf("%s.%s.%s", projectId, datasetId, tableId),
     "type" = type
   ), additionalParameters)
-  
+
   spark_write_source(
     data,
     source = "bigquery",
@@ -81,6 +85,6 @@ spark_write_bigquery <- function(data, billingProjectId = default_billing_projec
     options = parameters,
     ...
   )
-  
+
   invisible()
 }
