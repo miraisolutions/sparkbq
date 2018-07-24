@@ -49,7 +49,8 @@
 #' bigquery_defaults(
 #'   billingProjectId = "<your_billing_project_id>",
 #'   gcsBucket = "<your_gcs_bucket>",
-#'   datasetLocation = "US")
+#'   datasetLocation = "US",
+#'   type = "direct")
 #' 
 #' # Copy mtcars to Spark
 #' spark_mtcars <- dplyr::copy_to(sc, mtcars, "spark_mtcars", overwrite = TRUE)
