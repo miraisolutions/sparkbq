@@ -5,11 +5,11 @@
 \title{Reading data from Google BigQuery}
 \usage{
 spark_read_bigquery(sc, name, billingProjectId = default_billing_project_id(),
-  projectId = billingProjectId, datasetId = NULL,
-  type = default_bigquery_type(), tableId = NULL, sqlQuery = NULL,
+  projectId = billingProjectId, datasetId = NULL, tableId = NULL,
+  sqlQuery = NULL, type = default_bigquery_type(),
   gcsBucket = default_gcs_bucket(),
-  datasetLocation = default_dataset_location(), additionalParameters = NULL,
-  memory = FALSE, ...)
+  serviceAccountKeyFile = default_service_account_key_file(),
+  additionalParameters = NULL, memory = FALSE, ...)
 }
 \arguments{
 \item{sc}{\code{\link[sparklyr]{spark_connection}} provided by sparklyr.}
@@ -27,10 +27,6 @@ Defaults to \code{billingProjectId}.}
 \item{datasetId}{Google BigQuery dataset ID (may contain letters, numbers and underscores).
 Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.}
 
-\item{type}{BigQuery import type to use. Options include "direct", "avro",
-"json" and "csv". Defaults to \code{default_bigquery_type()}.
-See \link{bigquery_defaults} for more details about the supported types.}
-
 \item{tableId}{Google BigQuery table ID (may contain letters, numbers and underscores).
 Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.}
 
@@ -39,14 +35,22 @@ or \code{sqlQuery} must be specified. The query must be specified in standard SQ
 (SQL-2011). Legacy SQL is not supported. Tables are specified as
 `<project_id>.<dataset_id>.<table_id>`.}
 
-\item{gcsBucket}{Google Cloud Storage bucket used for temporary BigQuery files.
-This should be the name of an existing storage bucket. Defaults to
-\code{default_gcs_bucket()}.}
+\item{type}{BigQuery import type to use. Options include "direct", "avro",
+"json" and "csv". Defaults to \code{default_bigquery_type()}.
+See \link{bigquery_defaults} for more details about the supported types.}
 
-\item{datasetLocation}{Google BigQuery dataset location ("EU" or "US") used for
-temporary staging tables. Defaults to \code{default_dataset_location()}.}
+\item{gcsBucket}{Google Cloud Storage (GCS) bucket to use for storing temporary files.
+Temporary files are used when importing through BigQuery load jobs and exporting through
+BigQuery extraction jobs (i.e. when using data extracts such as Parquet, Avro, ORC, ...).
+The service account specified in \code{serviceAccountKeyFile} needs to be given appropriate
+rights. This should be the name of an existing storage bucket.}
 
-\item{additionalParameters}{Additional Hadoop parameters}
+\item{serviceAccountKeyFile}{Google Cloud service account key file to use for authentication
+with Google Cloud services. The use of service accounts is highly recommended. Specifically,
+the service account will be used to interact with BigQuery and Google Cloud Storage (GCS).}
+
+\item{additionalParameters}{Additional spark-bigquery options. See
+\url{https://github.com/miraisolutions/spark-bigquery} for more information.}
 
 \item{memory}{\code{logical} specifying whether data should be loaded eagerly into
 memory, i.e. whether the table should be cached. Note that eagerly caching prevents
@@ -64,13 +68,7 @@ This function reads data stored in a Google BigQuery table.
 }
 \examples{
 \dontrun{
-# Required when running outside of Google Cloud Platform
-gcpJsonKeyfile <- "/path/to/your/gcp_json_keyfile.json"
-
-Sys.setenv("GOOGLE_APPLICATION_CREDENTIALS" = gcpJsonKeyfile)
-# or
 config <- spark_config()
-config[["spark.hadoop.google.cloud.auth.service.account.json.keyfile"]] <- gcpJsonKeyfile
 
 sc <- spark_connect(master = "local", config = config)
 
@@ -78,6 +76,7 @@ bigquery_defaults(
   billingProjectId = "<your_billing_project_id>",
   gcsBucket = "<your_gcs_bucket>",
   datasetLocation = "US",
+  serviceAccountKeyFile = "<your_service_account_key_file>",
   type = "direct")
 
 # Reading the public shakespeare data table
@@ -89,8 +88,7 @@ shakespeare <-
     name = "shakespeare",
     projectId = "bigquery-public-data",
     datasetId = "samples",
-    tableId = "shakespeare",
-    additionalParameters = list("mapred.bq.dynamic.file.list.record.reader.poll.interval" = "500"))
+    tableId = "shakespeare")
 }
 }
 \references{
@@ -98,10 +96,13 @@ shakespeare <-
 \url{https://cloud.google.com/bigquery/docs/datasets}
 \url{https://cloud.google.com/bigquery/docs/tables}
 \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
-\url{https://cloud.google.com/bigquery/docs/reference/legacy-sql}
 \url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-avro}
 \url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-json}
 \url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv}
+\url{https://cloud.google.com/bigquery/pricing}
+\url{https://cloud.google.com/bigquery/docs/dataset-locations}
+\url{https://cloud.google.com/docs/authentication/}
+\url{https://cloud.google.com/bigquery/docs/authentication/}
 }
 \seealso{
 \code{\link[sparklyr]{spark_read_source}}, \code{\link{spark_write_bigquery}},
