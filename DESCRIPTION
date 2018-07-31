@@ -1,8 +1,8 @@
 Package: sparkbq
 Type: Package
 Title: Google 'BigQuery' Support for 'sparklyr'
-Version: 0.1.0-9000
-Date: 2018-07-24
+Version: 0.1.0
+Date: 2018-07-31
 Authors@R: c(person(family = "Mirai Solutions GmbH", role = "aut",
                     email = "info@mirai-solutions.com"),
              person("Martin", "Studer", role = "cre",

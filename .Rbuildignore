@@ -8,3 +8,4 @@
 ^\.codecov\.yml$
 ^.*\.log$
 ^logs$
+^test\.R$

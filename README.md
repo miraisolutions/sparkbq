@@ -1,16 +1,23 @@
-<img src="man/figures/sparkbq-withborder.png" align="right" width="15%" height="15%"/>
+<img src="man/figures/logo.png" align="right" width="15%" height="15%"/>
 
-# sparkbq: Google BigQuery Support for Sparklyr
+# sparkbq: Google BigQuery Support for sparklyr
+
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/sparkbq)](https://cran.r-project.org/package=sparkbq)
 
 **sparkbq** is a [sparklyr](https://spark.rstudio.com/) [extension](https://spark.rstudio.com/articles/guides-extensions.html) package providing an integration with [Google BigQuery](https://cloud.google.com/bigquery/). It builds on top of [spark-bigquery](https://github.com/miraisolutions/spark-bigquery), which provides a Google BigQuery data source to [Apache Spark](https://spark.apache.org/).
 
 
 ## Version Information
 
-**sparkbq** is under active development and has not been released yet to [CRAN](https://cran.r-project.org/). You can install the latest version through
+You can install the released version of **sparkbq** from CRAN via
+``` r
+install.packages("sparkbq")
+```
+or the latest development version through
 ``` r
 devtools::install_github("miraisolutions/sparkbq", ref = "develop")
 ```
+
 
 The following table provides an overview over supported versions of Apache Spark, Scala, and [Google Dataproc](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions):
 
