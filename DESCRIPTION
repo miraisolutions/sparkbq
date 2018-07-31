@@ -2,35 +2,23 @@ Package: sparkbq
 Type: Package
 Title: Google BigQuery Support for Sparklyr
 Version: 0.1.0-9000
-Date: 2017-10-25
+Date: 2018-07-24
 Authors@R: c(person(family = "Mirai Solutions GmbH", role = "aut",
                     email = "info@mirai-solutions.com"),
              person("Martin", "Studer", role = "cre",
                     email = "martin.studer@mirai-solutions.com"),
-             person("Nicola", "Lambiase", role = c("ctb"),
+             person("Nicola", "Lambiase", role = "ctb",
                     email = "nicola.lambiase@mirai-solutions.com"),
-             person("Ömer", "Demirel", role = c("ctb"),
-                    email = "omer.demirel@mirai-solutions.com"),
-             person(family = "Google", role = c("ctb", "cph")),
-             person(family = "Spotify AB", role = c("ctb", "cph")),
-             person(family = "Databricks", role = c("ctb", "cph")),
-             person(family = "The Apache Software Foundation", role = c("ctb", "cph")),
-             person(family = "The Netty project", role = c("ctb", "cph")),
-             person(family = "Joda.org", role = c("ctb", "cph")),
-             person(family = "QOS.ch", role = c("ctb", "cph")),
-             person(family = "Mort Bay Consulting Pty. Ltd", role = c("ctb", "cph")),
-             person("Taro L.", "Saito", role = c("ctb", "cph")),
-             person("Paul", "Hammant", role = c("ctb", "cph")),
-             person(family = "ThoughtWorks Inc", role = c("ctb", "cph")))
+             person("Omer", "Demirel", role = "ctb"))
 URL: http://www.mirai-solutions.com, https://github.com/miraisolutions/sparkbq
 BugReports: https://github.com/miraisolutions/sparkbq/issues
 Description: The 'sparkbq' package is a 'sparklyr' extension package providing an integration with
   Google BigQuery.
 Depends: R (>= 3.3.2)
 Imports: sparklyr (>= 0.7.0)
-Suggests: dplyr, testthat
+Suggests: dplyr
 License: GPL-3 | file LICENSE
-SystemRequirements: Spark 2.2.x
+SystemRequirements: Spark (>= 2.2.x)
 Encoding: UTF-8
 LazyData: yes
 RoxygenNote: 6.0.1

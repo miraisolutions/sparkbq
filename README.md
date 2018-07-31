@@ -4,6 +4,7 @@
 
 **sparkbq** is a [sparklyr](https://spark.rstudio.com/) [extension](https://spark.rstudio.com/articles/guides-extensions.html) package providing an integration with [Google BigQuery](https://cloud.google.com/bigquery/). It builds on top of [spark-bigquery](https://github.com/miraisolutions/spark-bigquery), which provides a Google BigQuery data source to [Apache Spark](https://spark.apache.org/).
 
+
 ## Version Information
 
 **sparkbq** is under active development and has not been released yet to [CRAN](https://cran.r-project.org/). You can install the latest version through
@@ -11,15 +12,13 @@
 devtools::install_github("miraisolutions/sparkbq", ref = "develop")
 ```
 
-**NOTES**: 
+The following table provides an overview over supported versions of Apache Spark, Scala, and [Google Dataproc](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions):
 
-- Underlying [spark-bigquery](https://github.com/miraisolutions/spark-bigquery) extends [Spotify's spark-bigquery library](https://github.com/spotify/spark-bigquery), which runs queries in [batch mode](https://cloud.google.com/bigquery/docs/running-queries) instead of the interactive mode by default. This may cause queries pending for some time before they could finally run. A [possible improvement](https://github.com/spotify/spark-bigquery/issues/53) has already been accepted by Spotify and will be part of their next release (v0.2.2+).
+| sparkbq | spark-bigquery | Apache Spark    | Scala | Google Dataproc |
+| :-----: | -------------- | --------------- | ----- | --------------- |
+| 0.1.x   | 0.1.0          | 2.2.x and 2.3.x | 2.11  | 1.2.x and 1.3.x |
 
-The following table provides an overview over supported versions of Spark, Scala, and [Google Dataproc](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions):
-
-| sparkbq | Spark | Scala | Google Dataproc | Comment |
-| :-----: | ----- | ----- | --------------- | ------- |
-| 0.1.x | 2.2 | 2.11 | 1.2 | active development |
+**sparkbq** is based on the Spark package [spark-bigquery](https://spark-packages.org/package/miraisolutions/spark-bigquery) which is available in a separate [GitHub repository](https://github.com/miraisolutions/spark-bigquery).
 
 
 ## Example Usage
@@ -29,21 +28,17 @@ library(sparklyr)
 library(sparkbq)
 library(dplyr)
 
-# Required when running outside of Google Cloud Platform
-gcpJsonKeyfile <- "/path/to/your/gcp_json_keyfile.json"
-
-Sys.setenv("GOOGLE_APPLICATION_CREDENTIALS" = gcpJsonKeyfile)
-
 config <- spark_config()
-config[["spark.hadoop.google.cloud.auth.service.account.json.keyfile"]] <- gcpJsonKeyfile
 
-sc <- spark_connect(master = "local", config = config)
+sc <- spark_connect(master = "local[*]", config = config)
 
 # Set Google BigQuery default settings
 bigquery_defaults(
   billingProjectId = "<your_billing_project_id>",
   gcsBucket = "<your_gcs_bucket>",
-  datasetLocation = "US"
+  datasetLocation = "US",
+  serviceAccountKeyFile = "<your_service_account_key_file>",
+  type = "direct"
 )
 
 # Reading the public shakespeare data table
@@ -52,14 +47,37 @@ bigquery_defaults(
 hamlet <- 
   spark_read_bigquery(
     sc,
-    name = "shakespeare",
+    name = "hamlet",
     projectId = "bigquery-public-data",
     datasetId = "samples",
     tableId = "shakespeare") %>%
-  filter(corpus == "hamlet") %>% # NOTE: predicate pushdown to BigQuery!
-  collect()
+  filter(corpus == "hamlet") # NOTE: predicate pushdown to BigQuery!
+  
+# Retrieve results into a local tibble
+hamlet %>% collect()
+
+# Write result into "mysamples" dataset in our BigQuery (billing) project
+spark_write_bigquery(
+  hamlet,
+  datasetId = "mysamples",
+  tableId = "hamlet",
+  mode = "overwrite")
 ```
 
 
-## Notes on Authentication
-**sparkbq** can be used with Google Dataproc and with Spark deployments outside of the Google Cloud Platform (GCP). The difference lies in how you authenticate with BigQuery. When using Google Dataproc you usually [assign a scope or a service account to your cluster](https://cloud.google.com/sdk/gcloud/reference/dataproc/clusters/create) and then you are automatically authenticated through that. There is no need to specify additional Spark/Hadoop configuration options. Outside of GCP, however, you usually need to authenticate through a [service account](https://developers.google.com/identity/protocols/application-default-credentials), e.g. using a JSON key file. 
+## Authentication
+
+When running outside of Google Cloud it is necessary to specify a service account JSON key file. Information on how to generate service account credentials can be found at https://cloud.google.com/storage/docs/authentication#service_accounts. The service account key file can either be passed as parameter `serviceAccountKeyFile` to `bigquery_defaults` or directly to `spark_read_bigquery` and `spark_write_bigquery`. Alternatively, an environment variable `export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/service_account_keyfile.json` can be set (see https://cloud.google.com/docs/authentication/getting-started for more information). When running on Google Cloud, e.g. Google Cloud Dataproc, application default credentials (ADC) may be used in which case it is not necessary to specify a service account key file.
+
+
+## Further Information
+
+* [spark-bigquery on GitHub](https://github.com/miraisolutions/spark-bigquery)
+* [spark-bigquery on Spark Packages](https://spark-packages.org/package/miraisolutions/spark-bigquery)
+
+* [BigQuery pricing](https://cloud.google.com/bigquery/pricing)
+* [BigQuery dataset locations](https://cloud.google.com/bigquery/docs/dataset-locations)
+* [General authentication](https://cloud.google.com/docs/authentication/)
+* [BigQuery authentication](https://cloud.google.com/bigquery/docs/authentication/)
+* [BigQuery: authenticating with a service account key file](https://cloud.google.com/bigquery/docs/authentication/service-account-file)
+* [Cloud Storage authentication](https://cloud.google.com/storage/docs/authentication/)
