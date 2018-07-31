@@ -1,5 +1,5 @@
 spark_dependencies <- function(spark_version, scala_version, ...) {
-  sparkBigQueryVersion = "0.1.0-SNAPSHOT"
+  sparkBigQueryVersion = "0.1.0"
   if(spark_version < "2.2" || scala_version != "2.11") {
     stop("This version of sparkbq currently only supports Spark 2.2 or newer with Scala 2.11")
   }
