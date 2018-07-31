@@ -9,3 +9,4 @@
 ^.*\.log$
 ^logs$
 ^test\.R$
+^spark-warehouse$
