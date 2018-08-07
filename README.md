@@ -2,7 +2,7 @@
 
 # sparkbq: Google BigQuery Support for sparklyr
 
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/sparkbq)](https://cran.r-project.org/package=sparkbq)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/sparkbq)](https://cran.r-project.org/package=sparkbq) [![Rdoc](http://www.rdocumentation.org/badges/version/sparkbq)](http://www.rdocumentation.org/packages/sparkbq)
 
 **sparkbq** is a [sparklyr](https://spark.rstudio.com/) [extension](https://spark.rstudio.com/articles/guides-extensions.html) package providing an integration with [Google BigQuery](https://cloud.google.com/bigquery/). It builds on top of [spark-bigquery](https://github.com/miraisolutions/spark-bigquery), which provides a Google BigQuery data source to [Apache Spark](https://spark.apache.org/).
 
