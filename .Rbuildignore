@@ -1,4 +1,12 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^test.R$
-inst/licenseReportGenerator.R
+^\.project$
+[.]gitignore$
+[.]Rproj$
+^.*\.Rproj$
+^\.travis\.yml$
+^\.codecov\.yml$
+^.*\.log$
+^logs$
+^test\.R$
+^spark-warehouse$

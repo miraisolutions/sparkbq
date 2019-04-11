@@ -7,7 +7,11 @@
 default_dataset_location()
 }
 \description{
-Returns the default Google BigQuery dataset location.
+Returns the default Google BigQuery dataset location. It defaults
+to "US".
+}
+\references{
+\url{https://cloud.google.com/bigquery/docs/dataset-locations}
 }
 \seealso{
 \code{\link{bigquery_defaults}}

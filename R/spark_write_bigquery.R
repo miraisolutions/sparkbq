@@ -8,41 +8,54 @@
 #' Defaults to \code{billingProjectId}.
 #' @param datasetId Google BigQuery dataset ID (may contain letters, numbers and underscores).
 #' @param tableId Google BigQuery table ID (may contain letters, numbers and underscores).
-#' @param gcsBucket Google Cloud Storage bucket used for temporary BigQuery files.
-#' This should be the name of an existing storage bucket. Defaults to
-#' \code{default_gcs_bucket()}.
-#' @param datasetLocation Google BigQuery dataset location ("EU" or "US"). Only needs to be
-#' specified if the dataset does not yet exist. It is ignored if it specified and the
-#' dataset already exists. Defaults to \code{default_dataset_location()}.
-#' @param additionalParameters Additional Hadoop parameters
+#' @param type BigQuery export type to use. Options include "direct", "parquet",
+#' "avro", "orc". Defaults to \code{default_bigquery_type()}.
+#' See \link{bigquery_defaults} for more details about the supported types.
+#' @param gcsBucket Google Cloud Storage (GCS) bucket to use for storing temporary files.
+#' Temporary files are used when importing through BigQuery load jobs and exporting through
+#' BigQuery extraction jobs (i.e. when using data extracts such as Parquet, Avro, ORC, ...).
+#' The service account specified in \code{serviceAccountKeyFile} needs to be given appropriate
+#' rights. This should be the name of an existing storage bucket.
+#' @param datasetLocation Geographic location where newly created datasets should reside.
+#' "EU" or "US". Defaults to "US". Only needs to be specified if the dataset does not yet exist.
+#' It is ignored if it is specified and the dataset already exists.
+#' @param serviceAccountKeyFile Google Cloud service account key file to use for authentication
+#' with Google Cloud services. The use of service accounts is highly recommended. Specifically,
+#' the service account will be used to interact with BigQuery and Google Cloud Storage (GCS).
+#' @param additionalParameters Additional spark-bigquery options. See
+#' \url{https://github.com/miraisolutions/spark-bigquery} for more information.
 #' @param mode Specifies the behavior when data or table already exist. One of "overwrite",
 #' "append", "ignore" or "error" (default).
 #' @param ... Additional arguments passed to \code{\link[sparklyr]{spark_write_source}}.
 #' @return \code{NULL}. This is a side-effecting function.
 #' @references
+#' \url{https://github.com/miraisolutions/spark-bigquery}
 #' \url{https://cloud.google.com/bigquery/docs/datasets}
 #' \url{https://cloud.google.com/bigquery/docs/tables}
 #' \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
+#' \url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-parquet}
+#' \url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-avro}
+#' \url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-orc}
+#' \url{https://cloud.google.com/bigquery/pricing}
+#' \url{https://cloud.google.com/bigquery/docs/dataset-locations}
+#' \url{https://cloud.google.com/docs/authentication/}
+#' \url{https://cloud.google.com/bigquery/docs/authentication/}
 #' @family Spark serialization routines
 #' @seealso \code{\link[sparklyr]{spark_write_source}}, \code{\link{spark_read_bigquery}},
 #' \code{\link{bigquery_defaults}}
 #' @keywords database, connection
 #' @examples
 #' \dontrun{
-#' # Required when running outside of Google Cloud Platform
-#' gcpJsonKeyfile <- "/path/to/your/gcp_json_keyfile.json"
-#' 
-#' Sys.setenv("GOOGLE_APPLICATION_CREDENTIALS" = gcpJsonKeyfile)
-#' # or
 #' config <- spark_config()
-#' config[["spark.hadoop.google.cloud.auth.service.account.json.keyfile"]] <- gcpJsonKeyfile
 #' 
 #' sc <- spark_connect(master = "local", config = config)
 #' 
 #' bigquery_defaults(
 #'   billingProjectId = "<your_billing_project_id>",
 #'   gcsBucket = "<your_gcs_bucket>",
-#'   datasetLocation = "US")
+#'   datasetLocation = "US",
+#'   serviceAccountKeyFile = "<your_service_account_key_file>",
+#'   type = "direct")
 #' 
 #' # Copy mtcars to Spark
 #' spark_mtcars <- dplyr::copy_to(sc, mtcars, "spark_mtcars", overwrite = TRUE)
@@ -51,24 +64,28 @@
 #'   data = spark_mtcars,
 #'   datasetId = "<your_dataset_id>",
 #'   tableId = "mtcars",
-#'   datasetLocation = "<your_dataset_location>",
-#'   mode = "overwrite",
-#'   additionalParameters = list("mapred.bq.dynamic.file.list.record.reader.poll.interval" = "500"))
+#'   mode = "overwrite")
 #' }
 #' @importFrom sparklyr spark_write_source
 #' @export
-spark_write_bigquery <- function(data, billingProjectId = default_billing_project_id(), 
-                                 projectId = billingProjectId, datasetId, tableId, 
-                                 gcsBucket = default_gcs_bucket(),
-                                 datasetLocation = default_dataset_location(), 
+spark_write_bigquery <- function(data, billingProjectId = default_billing_project_id(),
+                                 projectId = billingProjectId, datasetId, tableId,
+                                 type = default_bigquery_type(), gcsBucket = default_gcs_bucket(),
+                                 datasetLocation = default_dataset_location(),
+                                 serviceAccountKeyFile = default_service_account_key_file(),
                                  additionalParameters = NULL, mode = "error", ...) {
+
+  if(!(type %in% c("direct", "parquet", "avro", "orc")))
+    stop(sprintf("The export type '%s' is not supported by spark_write_bigquery", type))
+
   parameters <- c(list(
-    "bq.project.id" = billingProjectId,
-    "bq.gcs.bucket" = gcsBucket,
-    "bq.dataset.location" = if(is.null(datasetLocation)) "" else datasetLocation,
-    "table" = sprintf("%s:%s.%s", projectId, datasetId, tableId)
+    "bq.project" = billingProjectId,
+    "bq.staging_dataset.gcs_bucket" = gcsBucket,
+    "bq.location" = datasetLocation,
+    "table" = sprintf("%s.%s.%s", projectId, datasetId, tableId),
+    "type" = type
   ), additionalParameters)
-  
+
   spark_write_source(
     data,
     source = "bigquery",
@@ -76,6 +93,6 @@ spark_write_bigquery <- function(data, billingProjectId = default_billing_projec
     options = parameters,
     ...
   )
-  
+
   invisible()
 }
