@@ -92,6 +92,7 @@ spark_read_bigquery <- function(sc, name, billingProjectId = default_billing_pro
     "bq.project" = billingProjectId,
     "bq.staging_dataset.gcs_bucket" = gcsBucket,
     "bq.location" = default_dataset_location(),
+    "bq.service_account_key_file" = serviceAccountKeyFile,
     "type" = type
   ), additionalParameters)
 

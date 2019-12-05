@@ -82,6 +82,7 @@ spark_write_bigquery <- function(data, billingProjectId = default_billing_projec
     "bq.project" = billingProjectId,
     "bq.staging_dataset.gcs_bucket" = gcsBucket,
     "bq.location" = datasetLocation,
+    "bq.service_account_key_file" = serviceAccountKeyFile,
     "table" = sprintf("%s.%s.%s", projectId, datasetId, tableId),
     "type" = type
   ), additionalParameters)
