@@ -44,6 +44,7 @@ bigquery_defaults(
   billingProjectId = "<your_billing_project_id>",
   gcsBucket = "<your_gcs_bucket>",
   datasetLocation = "US",
+  serviceAccountKeyFile = "<your_service_account_key_file>",
   type = "direct"
 )
 
@@ -56,7 +57,6 @@ hamlet <-
     name = "hamlet",
     projectId = "bigquery-public-data",
     datasetId = "samples",
-    additionalParameters = list(bq.service_account_key_file = "/path/to/your/service_account_keyfile.json"),
     tableId = "shakespeare") %>%
   filter(corpus == "hamlet") # NOTE: predicate pushdown to BigQuery!
   
@@ -68,18 +68,16 @@ spark_write_bigquery(
   hamlet,
   datasetId = "mysamples",
   tableId = "hamlet",
-  additionalParameters = list(bq.service_account_key_file = "/path/to/your/service_account_keyfile.json"),
   mode = "overwrite")
 ```
 
 ## Authentication
 
-When running outside of Google Cloud it is necessary to specify a service account JSON key file. Information on how to generate service account credentials can be found at https://cloud.google.com/storage/docs/authentication#service_accounts. The service account key file can be passed in the list of additional parameters: `additionalParameters = list(bq.service_account_key_file = "/path/to/your/service_account_keyfile.json")` directly to `spark_read_bigquery` and `spark_write_bigquery`. 
+When running outside of Google Cloud it is necessary to specify a service account JSON key file. The service account key file can be passed as parameter `serviceAccountKeyFile` to `bigquery_defaults` or directly to `spark_read_bigquery` and `spark_write_bigquery`.
 
 Alternatively, an environment variable `export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/service_account_keyfile.json` can be set (see https://cloud.google.com/docs/authentication/getting-started for more information). Make sure the variable is set before starting the R session.
 
 When running on Google Cloud, e.g. Google Cloud Dataproc, application default credentials (ADC) may be used in which case it is not necessary to specify a service account key file.
-
 
 ## Further Information
 
