@@ -4,7 +4,8 @@
 \alias{spark_write_bigquery}
 \title{Writing data to Google BigQuery}
 \usage{
-spark_write_bigquery(data, billingProjectId = default_billing_project_id(),
+spark_write_bigquery(data,
+  billingProjectId = default_billing_project_id(),
   projectId = billingProjectId, datasetId, tableId,
   type = default_bigquery_type(), gcsBucket = default_gcs_bucket(),
   datasetLocation = default_dataset_location(),
@@ -99,5 +100,6 @@ spark_write_bigquery(
 
 Other Spark serialization routines: \code{\link{spark_read_bigquery}}
 }
+\concept{Spark serialization routines}
 \keyword{connection}
-\keyword{database,}
+\keyword{database}

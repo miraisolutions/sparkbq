@@ -43,7 +43,7 @@
 #' @family Spark serialization routines
 #' @seealso \code{\link[sparklyr]{spark_write_source}}, \code{\link{spark_read_bigquery}},
 #' \code{\link{bigquery_defaults}}
-#' @keywords database, connection
+#' @keywords database connection
 #' @examples
 #' \dontrun{
 #' config <- spark_config()

@@ -63,4 +63,4 @@ Sets default values for several Google BigQuery related settings.
 \code{\link{default_dataset_location}}
 }
 \keyword{connection}
-\keyword{database,}
+\keyword{database}

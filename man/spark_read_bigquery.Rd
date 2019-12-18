@@ -4,7 +4,8 @@
 \alias{spark_read_bigquery}
 \title{Reading data from Google BigQuery}
 \usage{
-spark_read_bigquery(sc, name, billingProjectId = default_billing_project_id(),
+spark_read_bigquery(sc, name,
+  billingProjectId = default_billing_project_id(),
   projectId = billingProjectId, datasetId = NULL, tableId = NULL,
   sqlQuery = NULL, type = default_bigquery_type(),
   gcsBucket = default_gcs_bucket(),
@@ -110,5 +111,6 @@ shakespeare <-
 
 Other Spark serialization routines: \code{\link{spark_write_bigquery}}
 }
+\concept{Spark serialization routines}
 \keyword{connection}
-\keyword{database,}
+\keyword{database}

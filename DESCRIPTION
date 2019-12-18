@@ -21,4 +21,4 @@ License: GPL-3 | file LICENSE
 SystemRequirements: Spark (>= 2.2.x)
 Encoding: UTF-8
 LazyData: yes
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1

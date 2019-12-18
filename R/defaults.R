@@ -41,7 +41,7 @@
 #' @seealso \code{\link{spark_read_bigquery}}, \code{\link{spark_write_bigquery}},
 #' \code{\link{default_billing_project_id}}, \code{\link{default_gcs_bucket}},
 #' \code{\link{default_dataset_location}}
-#' @keywords database, connection
+#' @keywords database connection
 #' @export
 bigquery_defaults <- function(billingProjectId, gcsBucket, datasetLocation = "US",
                               serviceAccountKeyFile = NULL, type = "direct") {
