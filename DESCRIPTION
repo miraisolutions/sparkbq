@@ -6,8 +6,7 @@ Authors@R: c(person(family = "Mirai Solutions GmbH", role = "aut",
                     email = "info@mirai-solutions.com"),
              person("Martin", "Studer", role = "cre",
                     email = "martin.studer@mirai-solutions.com"),
-             person("Nicola", "Lambiase", role = "ctb",
-                    email = "nicola.lambiase@mirai-solutions.com"),
+             person("Nicola", "Lambiase", role = "ctb"),
              person("Omer", "Demirel", role = "ctb"))
 URL: http://www.mirai-solutions.com, https://github.com/miraisolutions/sparkbq
 BugReports: https://github.com/miraisolutions/sparkbq/issues
