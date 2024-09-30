@@ -6,6 +6,7 @@
 
 **sparkbq** is a [sparklyr](https://spark.rstudio.com/) [extension](https://spark.rstudio.com/articles/guides-extensions.html) package providing an integration with [Google BigQuery](https://cloud.google.com/bigquery/). It builds on top of [spark-bigquery](https://github.com/miraisolutions/spark-bigquery), which provides a Google BigQuery data source to [Apache Spark](https://spark.apache.org/).
 
+This package leverages the [Google Spark BigQuery Connector](https://github.com/GoogleCloudDataproc/spark-bigquery-connector).
 
 ## Version Information
 
@@ -19,7 +20,7 @@ devtools::install_github("miraisolutions/sparkbq", ref = "develop")
 ```
 
 
-The following table provides an overview over supported versions of Apache Spark, Scala, and [Google Dataproc](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions):
+The following table provides an overview over supported versions of Apache Spark and Scala, and [Google Dataproc](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions):
 
 | sparkbq | spark-bigquery | Apache Spark    | Scala | Google Dataproc |
 | :-----: | -------------- | --------------- | ----- | --------------- |
@@ -42,10 +43,7 @@ sc <- spark_connect(master = "local[*]", config = config)
 # Set Google BigQuery default settings
 bigquery_defaults(
   billingProjectId = "<your_billing_project_id>",
-  gcsBucket = "<your_gcs_bucket>",
-  datasetLocation = "US",
-  serviceAccountKeyFile = "<your_service_account_key_file>",
-  type = "direct"
+  serviceAccountKeyFile = "<your_service_account_key_file>"
 )
 
 # Reading the public shakespeare data table
@@ -81,9 +79,7 @@ When running on Google Cloud, e.g. Google Cloud Dataproc, application default cr
 
 ## Further Information
 
-* [spark-bigquery on GitHub](https://github.com/miraisolutions/spark-bigquery)
-* [spark-bigquery on Spark Packages](https://spark-packages.org/package/miraisolutions/spark-bigquery)
-
+* [Google Spark Bigquery Connector](https://github.com/GoogleCloudDataproc/spark-bigquery-connector)
 * [BigQuery pricing](https://cloud.google.com/bigquery/pricing)
 * [BigQuery dataset locations](https://cloud.google.com/bigquery/docs/dataset-locations)
 * [General authentication](https://cloud.google.com/docs/authentication/)
