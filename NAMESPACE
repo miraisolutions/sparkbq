@@ -2,11 +2,9 @@
 
 export(bigquery_defaults)
 export(default_billing_project_id)
-export(default_gcs_bucket)
 export(default_materialization_dataset)
 export(default_materialization_project)
 export(default_service_account_key_file)
-export(default_write_method)
 export(spark_read_bigquery)
 export(spark_write_bigquery)
 importFrom(sparklyr,spark_read_source)

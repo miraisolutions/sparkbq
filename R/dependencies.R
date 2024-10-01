@@ -1,14 +1,3 @@
-check_supported_spark_version <- function(scala_version,
-                                          spark_version,
-                                          supported_spark_versions) {
-  if (!(spark_version %in% supported_spark_versions)) {
-    stop("Spark version ",
-         spark_version,
-         " is not supported with Scala ",
-         scala_version)
-  }
-}
-
 spark_dependencies <- function(spark_version, scala_version, ...) {
   check_supported_spark_version <- function(supported_spark_versions) {
     if (!(spark_version %in% supported_spark_versions)) {

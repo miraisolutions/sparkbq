@@ -42,7 +42,7 @@ Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be sp
 \item{sqlQuery}{Google BigQuery SQL query. Either both of \code{datasetId} and \code{tableId}
 or \code{sqlQuery} must be specified. The query must be specified in standard SQL
 (SQL-2011). Legacy SQL is not supported. Tables are specified as
-`<project_id>.<dataset_id>.<table_id>`.}
+\code{<project_id>.<dataset_id>.<table_id>}.}
 
 \item{materializationProject}{Project to use for materializing SQL queries. See also
 \code{materializationDataset}. Defaults to billing project
@@ -61,8 +61,7 @@ with Google Cloud services. The use of service accounts is highly recommended. S
 the service account will be used to interact with BigQuery and Google Cloud Storage (GCS).
 Defaults to \code{\link{default_service_account_key_file}}.}
 
-\item{additionalParameters}{Additional Spark BigQuery connector options. See
-\url{https://github.com/GoogleCloudDataproc/spark-bigquery-connector} for more information.}
+\item{additionalParameters}{\href{https://github.com/GoogleCloudDataproc/spark-bigquery-connector?tab=readme-ov-file#properties}{Additional Spark BigQuery connector options}.}
 
 \item{memory}{\code{logical} specifying whether data should be loaded eagerly into
 memory, i.e. whether the table should be cached. Note that eagerly caching prevents
@@ -102,15 +101,19 @@ shakespeare <-
 }
 \references{
 \url{https://github.com/GoogleCloudDataproc/spark-bigquery-connector}
+
 \url{https://cloud.google.com/bigquery/docs/datasets}
+
 \url{https://cloud.google.com/bigquery/docs/tables}
+
 \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
-\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-avro}
-\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-json}
-\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv}
+
 \url{https://cloud.google.com/bigquery/pricing}
+
 \url{https://cloud.google.com/bigquery/docs/dataset-locations}
+
 \url{https://cloud.google.com/docs/authentication/}
+
 \url{https://cloud.google.com/bigquery/docs/authentication/}
 }
 \seealso{

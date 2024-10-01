@@ -15,7 +15,7 @@
 #' @param sqlQuery Google BigQuery SQL query. Either both of \code{datasetId} and \code{tableId}
 #' or \code{sqlQuery} must be specified. The query must be specified in standard SQL
 #' (SQL-2011). Legacy SQL is not supported. Tables are specified as
-#' `<project_id>.<dataset_id>.<table_id>`.
+#' \code{<project_id>.<dataset_id>.<table_id>}.
 #' @param materializationProject Project to use for materializing SQL queries. See also
 #' \code{materializationDataset}. Defaults to billing project
 #' \code{\link{default_materialization_project}}.
@@ -30,8 +30,8 @@
 #' with Google Cloud services. The use of service accounts is highly recommended. Specifically,
 #' the service account will be used to interact with BigQuery and Google Cloud Storage (GCS).
 #' Defaults to \code{\link{default_service_account_key_file}}.
-#' @param additionalParameters Additional Spark BigQuery connector options. See
-#' \url{https://github.com/GoogleCloudDataproc/spark-bigquery-connector} for more information.
+#' @param additionalParameters
+#' \href{https://github.com/GoogleCloudDataproc/spark-bigquery-connector?tab=readme-ov-file#properties}{Additional Spark BigQuery connector options}.
 #' @param memory \code{logical} specifying whether data should be loaded eagerly into
 #' memory, i.e. whether the table should be cached. Note that eagerly caching prevents
 #' predicate pushdown (e.g. in conjunction with \code{\link[dplyr]{filter}}) and therefore
@@ -41,15 +41,19 @@
 #' Spark DataFrame.
 #' @references
 #' \url{https://github.com/GoogleCloudDataproc/spark-bigquery-connector}
+#' 
 #' \url{https://cloud.google.com/bigquery/docs/datasets}
+#' 
 #' \url{https://cloud.google.com/bigquery/docs/tables}
+#' 
 #' \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
-#' \url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-avro}
-#' \url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-json}
-#' \url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv}
+#' 
 #' \url{https://cloud.google.com/bigquery/pricing}
+#' 
 #' \url{https://cloud.google.com/bigquery/docs/dataset-locations}
+#' 
 #' \url{https://cloud.google.com/docs/authentication/}
+#' 
 #' \url{https://cloud.google.com/bigquery/docs/authentication/}
 #' @family Spark serialization routines
 #' @seealso \code{\link[sparklyr]{spark_read_source}}, \code{\link{spark_write_bigquery}},
@@ -103,7 +107,7 @@ spark_read_bigquery <- function(sc,
     parameters[["viewsEnabled"]] <- "true"
     if (is.null(materializationDataset)) {
       stop(
-        "A materialization dataset with table creation permission (present in the billing project) ",
+        "A materialization dataset with table creation permission ",
         "must be specified in order to execute SQL queries."
       )
     }

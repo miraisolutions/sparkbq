@@ -8,9 +8,7 @@ bigquery_defaults(
   billingProjectId,
   materializationProject = billingProjectId,
   materializationDataset = NULL,
-  gcsBucket = NULL,
-  serviceAccountKeyFile = NULL,
-  writeMethod = "direct"
+  serviceAccountKeyFile = NULL
 )
 }
 \arguments{
@@ -18,7 +16,7 @@ bigquery_defaults(
 This is the project on whose behalf to perform BigQuery operations.}
 
 \item{materializationProject}{Project to use for materializing SQL queries. See also
-\code{materializationDataset}. Defaults to billing project (\code{billingProjectId}).}
+\code{materializationDataset}. Defaults to the billing project (\code{billingProjectId}).}
 
 \item{materializationDataset}{Dataset (in materialization project) which is used for
 materializing SQL queries (see argument \code{sqlQuery} in \code{\link{spark_read_bigquery}}).
@@ -27,18 +25,10 @@ that dataset. Note that according to
 \url{https://cloud.google.com/bigquery/docs/writing-results#temporary_and_permanent_tables}
 the queried tables must be in the same location as the materialization dataset.}
 
-\item{gcsBucket}{Google Cloud Storage (GCS) bucket to use for storing temporary files.
-Temporary files are used when importing through BigQuery load jobs and exporting through
-BigQuery extraction jobs (i.e. when using data extracts such as Parquet, Avro, ORC, ...).
-The service account specified in \code{serviceAccountKeyFile} needs to be given appropriate
-rights. This should be the name of an existing storage bucket.}
-
 \item{serviceAccountKeyFile}{Google Cloud service account key file to use for authentication
 with Google Cloud services. The use of service accounts is highly recommended. Specifically,
 the service account will be used to interact with BigQuery and Google Cloud Storage (GCS).
 If not specified, Google application default credentials (ADC) will be used, which is the default.}
-
-\item{writeMethod}{Default BigQuery write method ("direct" or "gcs").}
 }
 \value{
 A \code{list} of set options with previous values.
@@ -48,22 +38,29 @@ Sets default values for several Google BigQuery related settings.
 }
 \references{
 \url{https://github.com/GoogleCloudDataproc/spark-bigquery-connector}
+
 \url{https://cloud.google.com/bigquery/pricing}
+
 \url{https://cloud.google.com/bigquery/docs/dataset-locations}
+
 \url{https://cloud.google.com/bigquery/docs/authentication/service-account-file}
+
 \url{https://cloud.google.com/docs/authentication/}
+
 \url{https://cloud.google.com/bigquery/docs/authentication/}
-\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-parquet}
-\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-avro}
-\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-orc}
-\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-json}
-\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv}
 }
 \seealso{
-\code{\link{spark_read_bigquery}}, \code{\link{spark_write_bigquery}},
-\code{\link{default_billing_project_id}}, \code{\link{default_materialization_project}},
-\code{\link{default_materialization_dataset}}, \code{\link{default_gcs_bucket}},
-\code{\link{default_service_account_key_file}}, \code{\link{default_write_method}}
+\code{\link{spark_read_bigquery}}
+
+\code{\link{spark_write_bigquery}}
+
+\code{\link{default_billing_project_id}}
+
+\code{\link{default_materialization_project}}
+
+\code{\link{default_materialization_dataset}}
+
+\code{\link{default_service_account_key_file}}
 }
 \keyword{connection}
 \keyword{database}

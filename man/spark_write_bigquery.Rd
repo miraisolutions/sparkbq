@@ -10,8 +10,6 @@ spark_write_bigquery(
   projectId = billingProjectId,
   datasetId,
   tableId,
-  writeMethod = default_write_method(),
-  gcsBucket = default_gcs_bucket(),
   serviceAccountKeyFile = default_service_account_key_file(),
   additionalParameters = NULL,
   mode = "error",
@@ -32,21 +30,11 @@ Defaults to \code{billingProjectId}.}
 
 \item{tableId}{Google BigQuery table ID (may contain letters, numbers and underscores).}
 
-\item{writeMethod}{BigQuery write method. One of "direct" or "gcs". Defaults to
-\code{\link{default_write_method}}.}
-
-\item{gcsBucket}{Google Cloud Storage (GCS) bucket to use for storing temporary files.
-Temporary files are used when importing through BigQuery load jobs and exporting through
-BigQuery extraction jobs (i.e. when using data extracts such as Parquet, Avro, ORC, ...).
-The service account specified in \code{serviceAccountKeyFile} needs to be given appropriate
-rights. This should be the name of an existing storage bucket.}
-
 \item{serviceAccountKeyFile}{Google Cloud service account key file to use for authentication
 with Google Cloud services. The use of service accounts is highly recommended. Specifically,
 the service account will be used to interact with BigQuery and Google Cloud Storage (GCS).}
 
-\item{additionalParameters}{Additional Spark BigQuery connector options. See
-\url{https://github.com/GoogleCloudDataproc/spark-bigquery-connector} for more information.}
+\item{additionalParameters}{\href{https://github.com/GoogleCloudDataproc/spark-bigquery-connector?tab=readme-ov-file#properties}{Additional Spark BigQuery connector options}.}
 
 \item{mode}{Specifies the behavior when data or table already exist. One of "overwrite",
 "append", "ignore" or "error" (default).}
@@ -58,6 +46,10 @@ the service account will be used to interact with BigQuery and Google Cloud Stor
 }
 \description{
 This function writes data to a Google BigQuery table.
+}
+\details{
+Data is written directly to BigQuery using the
+\href{https://cloud.google.com/bigquery/docs/write-api}{BigQuery Storage Write API}.
 }
 \examples{
 \dontrun{
@@ -81,16 +73,22 @@ spark_write_bigquery(
 }
 \references{
 \url{https://github.com/GoogleCloudDataproc/spark-bigquery-connector}
+
 \url{https://cloud.google.com/bigquery/docs/datasets}
+
 \url{https://cloud.google.com/bigquery/docs/tables}
+
 \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
-\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-parquet}
-\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-avro}
-\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-orc}
+
 \url{https://cloud.google.com/bigquery/pricing}
+
 \url{https://cloud.google.com/bigquery/docs/dataset-locations}
+
 \url{https://cloud.google.com/docs/authentication/}
+
 \url{https://cloud.google.com/bigquery/docs/authentication/}
+
+\url{https://cloud.google.com/bigquery/docs/write-api}
 }
 \seealso{
 \code{\link[sparklyr]{spark_write_source}}, \code{\link{spark_read_bigquery}},
