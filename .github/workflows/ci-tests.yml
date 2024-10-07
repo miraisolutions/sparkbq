@@ -107,6 +107,12 @@ jobs:
           extra-packages: |
             any::rcmdcheck
             
+      - name: Install Microsoft Visual C++ 2010 SP1 Redistributable Package via Chocolatey
+        if: runner.os == 'Windows'
+        run: |
+          # Install the package using Chocolatey
+          choco install vcredist2010 -y --allow-empty-checksums
+      
       - name: Install Spark
         run: |
           sparklyr::spark_install(version="${{ matrix.config.spark }}")
