@@ -27,8 +27,8 @@ jobs:
         config:
           - os-name: ubuntu
             os-version: latest
-            java: 8
-            spark: "2.3"
+            java: 17
+            spark: "3.5"
             r-version: release
           - os-name: ubuntu
             os-version: "20.04"
