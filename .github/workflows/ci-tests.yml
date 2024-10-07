@@ -132,7 +132,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@main
         with:
-          name: ${{ matrix.config.os-name }}${{matrix.config.os-version}}-Java${{ matrix.config.java }}-R${{ matrix.config.r-version }-Spark${{ matrix.config.spark }}-results
+          name: ${{ matrix.config.os-name }}${{matrix.config.os-version}}-Java${{ matrix.config.java }}-R${{ matrix.config.r-version }}-Spark${{ matrix.config.spark }}-results
           path: |
             check/sparkbq.Rcheck/
             !check/sparkbq.Rcheck/00_pkg_src/
