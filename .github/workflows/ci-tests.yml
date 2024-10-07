@@ -65,7 +65,12 @@ jobs:
             java: 17
             spark: 3.3
             r-version: release
-
+    env:
+      SPARK_VERSION: ${{ matrix.config.spark }}
+      BILLING_PROJECT_ID: ${{ secrets.GCLOUD_BILLING_PROJECT_ID }}
+      MATERIALIZATION_DATASET: test
+      GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/adc.json
+      
     steps:
       - uses: actions/checkout@v4
       
@@ -109,9 +114,35 @@ jobs:
         run: |
           sparklyr::spark_install(version="${{ matrix.config.spark }}")
         shell: Rscript {0}
+        
+      - name: Set Google application default credentials
+        env:
+          ADC: ${{ secrets.GCLOUD_APPLICATION_CREDENTIALS }}
+        shell: bash
+        run: |
+          echo $ADC > $GOOGLE_APPLICATION_CREDENTIALS
       
       - name: Run R CMD check
         uses: r-lib/actions/check-r-package@v2
         with:
           error-on: '"error"'
           check-dir: '"check"'
+      
+      - name: Upload check results
+        if: failure()
+        uses: actions/upload-artifact@main
+        with:
+          name: ${{ matrix.config.os-name }}${{matrix.config.os-version}}-Java${{ matrix.config.java }}-R${{ matrix.config.r-version }-Spark${{ matrix.config.spark }}-results
+          path: |
+            check/sparkbq.Rcheck/
+            !check/sparkbq.Rcheck/00_pkg_src/
+            !adc.json
+
+      - name: Upload successfully built package
+        if: success()
+        uses: actions/upload-artifact@main
+        with:
+          name: ${{ matrix.config.os-name }}${{matrix.config.os-version}}-Java${{ matrix.config.java }}-R${{ matrix.config.r-version }}-Spark${{ matrix.config.spark }}-results
+          path: |
+            check/sparkbq_*.tar.gz
+            !adc.json
