@@ -46,7 +46,7 @@ jobs:
             spark: 3.1
             r-version: release
           - os-name: macos
-            os-name: latest
+            os-version: latest
             java: 17
             spark: 3.4
             r-version: devel
