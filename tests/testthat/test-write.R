@@ -21,7 +21,7 @@ test_that("writing BigQuery tables using direct method works", {
   ) %>% sparklyr::collect()
   
   expect_equal(
-    mtcars %>% arrange_at(names(mtcars)), 
-    as.data.frame(mtcars2) %>% arrange_at(names(mtcars)),
+    mtcars %>% dplyr::arrange_at(names(mtcars)), 
+    as.data.frame(mtcars2) %>% dplyr::arrange_at(names(mtcars)),
     ignore_attr = "row.names")
 })
