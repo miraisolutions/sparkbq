@@ -86,7 +86,7 @@ jobs:
         run: version
         shell: Rscript {0}
         
-       name: R CMD javareconf
+      - name: R CMD javareconf
         if: runner.os != 'Windows'
         run: |
           java -version
