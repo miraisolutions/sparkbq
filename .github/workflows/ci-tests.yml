@@ -1,0 +1,113 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+#
+# See https://github.com/r-lib/actions/tree/master/examples#readme for
+# additional example workflows available for the R community.
+
+name: ci-tests
+
+on:
+  push:
+    branches: [ "feature/google_bigquery_connector" ]
+  pull_request:
+    branches: [ "feature/google_bigquery_connector" ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.config.os-name }}-java-${{ matrix.config.java }}-spark-{{ matrix.config.spark }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - os-name: ubuntu
+            os-version: latest
+            java: 8
+            spark: 2.3
+            r-version: release
+          - os-name: ubuntu
+            os-version: "20.04"
+            java: 11
+            spark: 3.0
+            r-version: oldrel
+          - os-name: ubuntu
+            os-version: "22.04"
+            java: 17
+            spark: 3.5
+            r-version: devel
+          - os-name: macos
+            os-version: latest
+            java: 8
+            spark: 3.1
+            r-version: release
+          - os-name: macos
+            os-name: latest
+            java: 17
+            spark: 3.4
+            r-version: devel
+          - os-name: windows
+            os-version: latest
+            java: 8
+            spark: 2.4
+            r-version: oldrel
+          - os-name: windows
+            os-version: "2019"
+            java: 11
+            spark: 3.2
+            r-version: devel
+          - os-name: windows
+            os-version: "2022"
+            java: 17
+            spark: 3.3
+            r-version: release
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Java
+        uses: actions/setup-java@v4.4.0
+        with:
+          distribution: 'zulu'
+          java-version: ${{ matrix.config.java }}
+          java-package: jdk
+          architecture: x64
+          
+      - name: Print effective Java version
+        run: java -version
+      
+      - name: Set up R ${{ matrix.r-version }}
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: ${{ matrix.r-version }}
+          use-public-rspm: true
+      
+      - name: Print effective R version
+        run: version
+        shell: Rscript {0}
+        
+       name: R CMD javareconf
+        if: runner.os != 'Windows'
+        run: |
+          java -version
+          echo java_home:$JAVA_HOME
+          echo library paths: $LD_LIBRARY_PATH
+          sudo R CMD javareconf JAVA_HOME=$JAVA_HOME
+          
+      - name: Install and cache dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          cache-version: ${{ matrix.config.java }}
+          extra-packages: |
+            any::rcmdcheck
+            
+      - name: Install Spark
+        run: |
+          sparklyr::spark_install(version="${{matrix.config.spark}}")
+        shell: Rscript {0}
+      
+      - name: Run R CMD check
+        uses: r-lib/actions/check-r-package@v2
+        with:
+          error-on: '"error"'
+          check-dir: '"check"'
