@@ -118,17 +118,16 @@ jobs:
           info <- sparklyr::spark_install(version="${{ matrix.config.spark }}")
           if (.Platform$OS.type == "windows") {
             hadoop_path <- file.path(info$sparkVersionDir, "tmp", "hadoop")
-            hadoop_bin_path <- file.path(hadoopPath, "bin")
+            hadoop_bin_path <- file.path(hadoop_path, "bin")
             dir.create(hadoop_bin_path, recursive = TRUE)
             
-            github_env <- Sys.getenv("GITHUB_ENV")
             cat(
               c(
                 paste0("HADOOP_VERSION=", info$hadoopVersion),
                 paste0("HADOOP_HOME=", hadoop_path),
                 paste0("PATH=", Sys.getenv("PATH"), ":", hadoop_bin_path)
               ),
-              file = github_env,
+              file = Sys.getenv("GITHUB_ENV"),
               append = TRUE
             )
           }
