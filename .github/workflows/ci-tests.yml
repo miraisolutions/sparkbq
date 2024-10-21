@@ -66,7 +66,7 @@ jobs:
       BILLING_PROJECT_ID: ${{ secrets.GCLOUD_BILLING_PROJECT_ID }}
       MATERIALIZATION_DATASET: test
       GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/adc.json
-      R_DEFAULT_INTERNET_TIMEOUT: 1200
+      R_DEFAULT_INTERNET_TIMEOUT: 1800
       
     steps:
       - uses: actions/checkout@v4
@@ -113,19 +113,34 @@ jobs:
           # Install the package using Chocolatey
           choco install vcredist2010 -y --allow-empty-checksums
       
+      - name: Install Spark
+        run: |
+          info <- sparklyr::spark_install(version="${{ matrix.config.spark }}")
+          if (.Platform$OS.type == "windows") {
+            hadoop_path <- file.path(info$sparkVersionDir, "tmp", "hadoop")
+            hadoop_bin_path <- file.path(hadoopPath, "bin")
+            dir.create(hadoop_bin_path, recursive = TRUE)
+            
+            github_env <- Sys.getenv("GITHUB_ENV")
+            cat(
+              c(
+                paste0("HADOOP_VERSION=", info$hadoopVersion),
+                paste0("HADOOP_HOME=", hadoop_path),
+                paste0("PATH=", Sys.getenv("PATH"), ":", hadoop_bin_path)
+              ),
+              file = github_env,
+              append = TRUE
+            )
+          }
+        shell: Rscript {0}
+        
       - name: Install Winutils
         if: runner.os == 'Windows'
         run: |
-          git clone https://github.com/cdarlint/winutils.git
-          HADOOP_HOME=${{ github.workspace }}/winutils/hadoop-3.3.6
-          echo "HADOOP_HOME=${HADOOP_HOME}" >> $GITHUB_ENV
-          echo "PATH=$PATH:${HADOOP_HOME}/bin" >> $GITHUB_ENV
+          git clone https://github.com/cdarlint/winutils.git .tmp
+          LATEST_HADOOP_DIR=$(ls -d .tmp/hadoop-${HADOOP_VERSION}* 2>/dev/null | sort -V | tail -n 1)
+          cp -R ${LATEST_HADOOP_DIR}/bin ${HADOOP_HOME}
         shell: bash
-      
-      - name: Install Spark
-        run: |
-          sparklyr::spark_install(version="${{ matrix.config.spark }}")
-        shell: Rscript {0}
         
       - name: Set Google application default credentials
         env:
