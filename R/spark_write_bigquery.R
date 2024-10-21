@@ -80,7 +80,7 @@ spark_write_bigquery <- function(data,
   additionalParameters)
   
   if (!is.null(serviceAccountKeyFile)) {
-    parameters[["credentialsFile"]] = serviceAccountKeyFile
+    parameters[["credentialsFile"]] = normalizePath(serviceAccountKeyFile, winslash = "/")
   }
   
   spark_write_source(data,
