@@ -11,7 +11,9 @@ Returns the default service account key file to use.
 }
 \references{
 \url{https://cloud.google.com/bigquery/docs/authentication/service-account-file}
+
 \url{https://cloud.google.com/docs/authentication/}
+
 \url{https://cloud.google.com/bigquery/docs/authentication/}
 }
 \seealso{

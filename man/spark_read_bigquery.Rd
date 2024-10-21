@@ -4,13 +4,20 @@
 \alias{spark_read_bigquery}
 \title{Reading data from Google BigQuery}
 \usage{
-spark_read_bigquery(sc, name,
-  billingProjectId = default_billing_project_id(),
-  projectId = billingProjectId, datasetId = NULL, tableId = NULL,
-  sqlQuery = NULL, type = default_bigquery_type(),
-  gcsBucket = default_gcs_bucket(),
+spark_read_bigquery(
+  sc,
+  name,
+  projectId = default_project_id(),
+  datasetId = NULL,
+  tableId = NULL,
+  sqlQuery = NULL,
+  materializationProject = default_materialization_project(),
+  materializationDataset = default_materialization_dataset(),
   serviceAccountKeyFile = default_service_account_key_file(),
-  additionalParameters = NULL, memory = FALSE, ...)
+  additionalParameters = NULL,
+  memory = FALSE,
+  ...
+)
 }
 \arguments{
 \item{sc}{\code{\link[sparklyr]{spark_connection}} provided by sparklyr.}
@@ -18,12 +25,8 @@ spark_read_bigquery(sc, name,
 \item{name}{The name to assign to the newly generated table (see also
 \code{\link[sparklyr]{spark_read_source}}).}
 
-\item{billingProjectId}{Google Cloud Platform project ID for billing purposes.
-This is the project on whose behalf to perform BigQuery operations.
-Defaults to \code{default_billing_project_id()}.}
-
 \item{projectId}{Google Cloud Platform project ID of BigQuery dataset.
-Defaults to \code{billingProjectId}.}
+Defaults to \code{\link{default_project_id}}.}
 
 \item{datasetId}{Google BigQuery dataset ID (may contain letters, numbers and underscores).
 Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.}
@@ -34,24 +37,26 @@ Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be sp
 \item{sqlQuery}{Google BigQuery SQL query. Either both of \code{datasetId} and \code{tableId}
 or \code{sqlQuery} must be specified. The query must be specified in standard SQL
 (SQL-2011). Legacy SQL is not supported. Tables are specified as
-`<project_id>.<dataset_id>.<table_id>`.}
+\code{<project_id>.<dataset_id>.<table_id>}.}
 
-\item{type}{BigQuery import type to use. Options include "direct", "avro",
-"json" and "csv". Defaults to \code{default_bigquery_type()}.
-See \link{bigquery_defaults} for more details about the supported types.}
+\item{materializationProject}{Project to use for materializing SQL queries. See also
+\code{materializationDataset}. Defaults to project
+\code{\link{default_materialization_project}}.}
 
-\item{gcsBucket}{Google Cloud Storage (GCS) bucket to use for storing temporary files.
-Temporary files are used when importing through BigQuery load jobs and exporting through
-BigQuery extraction jobs (i.e. when using data extracts such as Parquet, Avro, ORC, ...).
-The service account specified in \code{serviceAccountKeyFile} needs to be given appropriate
-rights. This should be the name of an existing storage bucket.}
+\item{materializationDataset}{Dataset (in materialization project) which is used for
+materializing SQL queries (see \code{sqlQuery}). The GCP user
+(see \code{serviceAccountKeyFile}) needs to have table creation permission in
+that dataset. Note that according to
+\url{https://cloud.google.com/bigquery/docs/writing-results#temporary_and_permanent_tables}
+the queried tables must be in the same location as the materialization dataset.
+Defaults to \code{\link{default_materialization_dataset}}.}
 
 \item{serviceAccountKeyFile}{Google Cloud service account key file to use for authentication
 with Google Cloud services. The use of service accounts is highly recommended. Specifically,
-the service account will be used to interact with BigQuery and Google Cloud Storage (GCS).}
+the service account will be used to interact with BigQuery and Google Cloud Storage (GCS).
+Defaults to \code{\link{default_service_account_key_file}}.}
 
-\item{additionalParameters}{Additional spark-bigquery options. See
-\url{https://github.com/miraisolutions/spark-bigquery} for more information.}
+\item{additionalParameters}{\href{https://github.com/GoogleCloudDataproc/spark-bigquery-connector?tab=readme-ov-file#properties}{Additional Spark BigQuery connector options}.}
 
 \item{memory}{\code{logical} specifying whether data should be loaded eagerly into
 memory, i.e. whether the table should be cached. Note that eagerly caching prevents
@@ -74,11 +79,8 @@ config <- spark_config()
 sc <- spark_connect(master = "local", config = config)
 
 bigquery_defaults(
-  billingProjectId = "<your_billing_project_id>",
-  gcsBucket = "<your_gcs_bucket>",
-  datasetLocation = "US",
-  serviceAccountKeyFile = "<your_service_account_key_file>",
-  type = "direct")
+  projectId = "<your_project_id>",
+  serviceAccountKeyFile = "<your_service_account_key_file>")
 
 # Reading the public shakespeare data table
 # https://cloud.google.com/bigquery/public-data/
@@ -93,23 +95,28 @@ shakespeare <-
 }
 }
 \references{
-\url{https://github.com/miraisolutions/spark-bigquery}
+\url{https://github.com/GoogleCloudDataproc/spark-bigquery-connector}
+
 \url{https://cloud.google.com/bigquery/docs/datasets}
+
 \url{https://cloud.google.com/bigquery/docs/tables}
+
 \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
-\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-avro}
-\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-json}
-\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv}
+
 \url{https://cloud.google.com/bigquery/pricing}
+
 \url{https://cloud.google.com/bigquery/docs/dataset-locations}
+
 \url{https://cloud.google.com/docs/authentication/}
+
 \url{https://cloud.google.com/bigquery/docs/authentication/}
 }
 \seealso{
 \code{\link[sparklyr]{spark_read_source}}, \code{\link{spark_write_bigquery}},
 \code{\link{bigquery_defaults}}
 
-Other Spark serialization routines: \code{\link{spark_write_bigquery}}
+Other Spark serialization routines: 
+\code{\link{spark_write_bigquery}()}
 }
 \concept{Spark serialization routines}
 \keyword{connection}

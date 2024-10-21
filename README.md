@@ -2,10 +2,11 @@
 
 # sparkbq: Google BigQuery Support for sparklyr
 
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/sparkbq)](https://cran.r-project.org/package=sparkbq) [![Rdoc](http://www.rdocumentation.org/badges/version/sparkbq)](http://www.rdocumentation.org/packages/sparkbq)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/sparkbq)](https://cran.r-project.org/package=sparkbq) [![Rdoc](https://www.rdocumentation.org/packages/sparkbq)](https://www.rdocumentation.org/packages/sparkbq)
 
-**sparkbq** is a [sparklyr](https://spark.rstudio.com/) [extension](https://spark.rstudio.com/articles/guides-extensions.html) package providing an integration with [Google BigQuery](https://cloud.google.com/bigquery/). It builds on top of [spark-bigquery](https://github.com/miraisolutions/spark-bigquery), which provides a Google BigQuery data source to [Apache Spark](https://spark.apache.org/).
+**sparkbq** is a [sparklyr](https://spark.posit.co/) [extension](https://spark.posit.co/guides/extensions.html) package providing an integration with [Google BigQuery](https://cloud.google.com/bigquery/). It builds on top of [spark-bigquery](https://github.com/miraisolutions/spark-bigquery), which provides a Google BigQuery data source to [Apache Spark](https://spark.apache.org/).
 
+This package leverages the [Google Spark BigQuery Connector](https://github.com/GoogleCloudDataproc/spark-bigquery-connector).
 
 ## Version Information
 
@@ -18,15 +19,8 @@ or the latest development version through
 devtools::install_github("miraisolutions/sparkbq", ref = "develop")
 ```
 
-
-The following table provides an overview over supported versions of Apache Spark, Scala, and [Google Dataproc](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions):
-
-| sparkbq | spark-bigquery | Apache Spark    | Scala | Google Dataproc |
-| :-----: | -------------- | --------------- | ----- | --------------- |
-| 0.1.x   | 0.1.0          | 2.2.x and 2.3.x | 2.11  | 1.2.x and 1.3.x |
-
-**sparkbq** is based on the Spark package [spark-bigquery](https://spark-packages.org/package/miraisolutions/spark-bigquery) which is available in a separate [GitHub repository](https://github.com/miraisolutions/spark-bigquery).
-
+For supported versions of Apache Spark (and Dataproc) see the [Connector to Spark Compatibility Matrix](https://github.com/GoogleCloudDataproc/spark-bigquery-connector?tab=readme-ov-file#connector-to-spark-compatibility-matrix).
+The relevant connector in the matrix is called `spark-bigquery-with-dependencies_<scala_version>`.
 
 ## Example Usage
 
@@ -42,10 +36,7 @@ sc <- spark_connect(master = "local[*]", config = config)
 # Set Google BigQuery default settings
 bigquery_defaults(
   billingProjectId = "<your_billing_project_id>",
-  gcsBucket = "<your_gcs_bucket>",
-  datasetLocation = "US",
-  serviceAccountKeyFile = "<your_service_account_key_file>",
-  type = "direct"
+  serviceAccountKeyFile = "<your_service_account_key_file>"
 )
 
 # Reading the public shakespeare data table
@@ -81,9 +72,7 @@ When running on Google Cloud, e.g. Google Cloud Dataproc, application default cr
 
 ## Further Information
 
-* [spark-bigquery on GitHub](https://github.com/miraisolutions/spark-bigquery)
-* [spark-bigquery on Spark Packages](https://spark-packages.org/package/miraisolutions/spark-bigquery)
-
+* [Google Spark Bigquery Connector](https://github.com/GoogleCloudDataproc/spark-bigquery-connector)
 * [BigQuery pricing](https://cloud.google.com/bigquery/pricing)
 * [BigQuery dataset locations](https://cloud.google.com/bigquery/docs/dataset-locations)
 * [General authentication](https://cloud.google.com/docs/authentication/)

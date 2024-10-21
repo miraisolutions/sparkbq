@@ -11,3 +11,5 @@
 ^test\.R$
 ^spark-warehouse$
 cran-comments.md
+^\.github$
+^adc.json$

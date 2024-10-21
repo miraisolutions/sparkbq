@@ -4,48 +4,32 @@
 \alias{spark_write_bigquery}
 \title{Writing data to Google BigQuery}
 \usage{
-spark_write_bigquery(data,
-  billingProjectId = default_billing_project_id(),
-  projectId = billingProjectId, datasetId, tableId,
-  type = default_bigquery_type(), gcsBucket = default_gcs_bucket(),
-  datasetLocation = default_dataset_location(),
+spark_write_bigquery(
+  data,
+  projectId = default_project_id(),
+  datasetId,
+  tableId,
   serviceAccountKeyFile = default_service_account_key_file(),
-  additionalParameters = NULL, mode = "error", ...)
+  additionalParameters = NULL,
+  mode = "error",
+  ...
+)
 }
 \arguments{
 \item{data}{Spark DataFrame to write to Google BigQuery.}
 
-\item{billingProjectId}{Google Cloud Platform project ID for billing purposes.
-This is the project on whose behalf to perform BigQuery operations.
-Defaults to \code{default_billing_project_id()}.}
-
 \item{projectId}{Google Cloud Platform project ID of BigQuery dataset.
-Defaults to \code{billingProjectId}.}
+Defaults to \code{default_project_id()}.}
 
 \item{datasetId}{Google BigQuery dataset ID (may contain letters, numbers and underscores).}
 
 \item{tableId}{Google BigQuery table ID (may contain letters, numbers and underscores).}
 
-\item{type}{BigQuery export type to use. Options include "direct", "parquet",
-"avro", "orc". Defaults to \code{default_bigquery_type()}.
-See \link{bigquery_defaults} for more details about the supported types.}
-
-\item{gcsBucket}{Google Cloud Storage (GCS) bucket to use for storing temporary files.
-Temporary files are used when importing through BigQuery load jobs and exporting through
-BigQuery extraction jobs (i.e. when using data extracts such as Parquet, Avro, ORC, ...).
-The service account specified in \code{serviceAccountKeyFile} needs to be given appropriate
-rights. This should be the name of an existing storage bucket.}
-
-\item{datasetLocation}{Geographic location where newly created datasets should reside.
-"EU" or "US". Defaults to "US". Only needs to be specified if the dataset does not yet exist.
-It is ignored if it is specified and the dataset already exists.}
-
 \item{serviceAccountKeyFile}{Google Cloud service account key file to use for authentication
 with Google Cloud services. The use of service accounts is highly recommended. Specifically,
 the service account will be used to interact with BigQuery and Google Cloud Storage (GCS).}
 
-\item{additionalParameters}{Additional spark-bigquery options. See
-\url{https://github.com/miraisolutions/spark-bigquery} for more information.}
+\item{additionalParameters}{\href{https://github.com/GoogleCloudDataproc/spark-bigquery-connector?tab=readme-ov-file#properties}{Additional Spark BigQuery connector options}.}
 
 \item{mode}{Specifies the behavior when data or table already exist. One of "overwrite",
 "append", "ignore" or "error" (default).}
@@ -58,6 +42,10 @@ the service account will be used to interact with BigQuery and Google Cloud Stor
 \description{
 This function writes data to a Google BigQuery table.
 }
+\details{
+Data is written directly to BigQuery using the
+\href{https://cloud.google.com/bigquery/docs/write-api}{BigQuery Storage Write API}.
+}
 \examples{
 \dontrun{
 config <- spark_config()
@@ -65,11 +53,8 @@ config <- spark_config()
 sc <- spark_connect(master = "local", config = config)
 
 bigquery_defaults(
-  billingProjectId = "<your_billing_project_id>",
-  gcsBucket = "<your_gcs_bucket>",
-  datasetLocation = "US",
-  serviceAccountKeyFile = "<your_service_account_key_file>",
-  type = "direct")
+  projectId = "<your_project_id>",
+  serviceAccountKeyFile = "<your_service_account_key_file>")
 
 # Copy mtcars to Spark
 spark_mtcars <- dplyr::copy_to(sc, mtcars, "spark_mtcars", overwrite = TRUE)
@@ -82,23 +67,30 @@ spark_write_bigquery(
 }
 }
 \references{
-\url{https://github.com/miraisolutions/spark-bigquery}
+\url{https://github.com/GoogleCloudDataproc/spark-bigquery-connector}
+
 \url{https://cloud.google.com/bigquery/docs/datasets}
+
 \url{https://cloud.google.com/bigquery/docs/tables}
+
 \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
-\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-parquet}
-\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-avro}
-\url{https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-orc}
+
 \url{https://cloud.google.com/bigquery/pricing}
+
 \url{https://cloud.google.com/bigquery/docs/dataset-locations}
+
 \url{https://cloud.google.com/docs/authentication/}
+
 \url{https://cloud.google.com/bigquery/docs/authentication/}
+
+\url{https://cloud.google.com/bigquery/docs/write-api}
 }
 \seealso{
 \code{\link[sparklyr]{spark_write_source}}, \code{\link{spark_read_bigquery}},
 \code{\link{bigquery_defaults}}
 
-Other Spark serialization routines: \code{\link{spark_read_bigquery}}
+Other Spark serialization routines: 
+\code{\link{spark_read_bigquery}()}
 }
 \concept{Spark serialization routines}
 \keyword{connection}
