@@ -136,8 +136,8 @@ jobs:
       - name: Install Winutils
         if: runner.os == 'Windows'
         run: |
-          git clone https://github.com/cdarlint/winutils.git .tmp
-          LATEST_HADOOP_DIR=$(ls -d .tmp/hadoop-${HADOOP_VERSION}* 2>/dev/null | sort -V | tail -n 1)
+          git clone https://github.com/cdarlint/winutils.git /tmp/winutils
+          LATEST_HADOOP_DIR=$(ls -d /tmp/winutils/hadoop-${HADOOP_VERSION}* 2>/dev/null | sort -V | tail -n 1)
           cp -R ${LATEST_HADOOP_DIR}/bin ${HADOOP_HOME}
         shell: bash
         
