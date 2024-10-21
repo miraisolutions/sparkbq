@@ -63,7 +63,7 @@ jobs:
             r-version: release
     env:
       SPARK_VERSION: ${{ matrix.config.spark }}
-      BIGQUERY_PROJECT_ID: ${{ secrets.GCLOUD_BILLING_PROJECT_ID }}
+      BIGQUERY_PROJECT_ID: mirai-sbb
       BIGQUERY_MATERIALIZATION_DATASET: test
       BIGQUERY_APPLICATION_CREDENTIALS: ${{ github.workspace }}/adc.json
       R_DEFAULT_INTERNET_TIMEOUT: 1800
