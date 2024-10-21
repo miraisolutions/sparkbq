@@ -128,6 +128,7 @@ jobs:
                 paste0("PATH=", Sys.getenv("PATH"), ":", hadoop_bin_path)
               ),
               file = Sys.getenv("GITHUB_ENV"),
+              sep = "\n",
               append = TRUE
             )
           }
