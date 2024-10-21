@@ -7,8 +7,7 @@
 spark_read_bigquery(
   sc,
   name,
-  billingProjectId = default_billing_project_id(),
-  projectId = billingProjectId,
+  projectId = default_project_id(),
   datasetId = NULL,
   tableId = NULL,
   sqlQuery = NULL,
@@ -26,12 +25,8 @@ spark_read_bigquery(
 \item{name}{The name to assign to the newly generated table (see also
 \code{\link[sparklyr]{spark_read_source}}).}
 
-\item{billingProjectId}{Google Cloud Platform project ID for billing purposes.
-This is the project on whose behalf to perform BigQuery operations.
-Defaults to \code{\link{default_billing_project_id}}.}
-
 \item{projectId}{Google Cloud Platform project ID of BigQuery dataset.
-Defaults to \code{billingProjectId}.}
+Defaults to \code{\link{default_project_id}}.}
 
 \item{datasetId}{Google BigQuery dataset ID (may contain letters, numbers and underscores).
 Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.}
@@ -45,7 +40,7 @@ or \code{sqlQuery} must be specified. The query must be specified in standard SQ
 \code{<project_id>.<dataset_id>.<table_id>}.}
 
 \item{materializationProject}{Project to use for materializing SQL queries. See also
-\code{materializationDataset}. Defaults to billing project
+\code{materializationDataset}. Defaults to project
 \code{\link{default_materialization_project}}.}
 
 \item{materializationDataset}{Dataset (in materialization project) which is used for
@@ -84,7 +79,7 @@ config <- spark_config()
 sc <- spark_connect(master = "local", config = config)
 
 bigquery_defaults(
-  billingProjectId = "<your_billing_project_id>",
+  projectId = "<your_project_id>",
   serviceAccountKeyFile = "<your_service_account_key_file>")
 
 # Reading the public shakespeare data table

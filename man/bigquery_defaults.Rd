@@ -5,15 +5,14 @@
 \title{Google BigQuery Default Settings}
 \usage{
 bigquery_defaults(
-  billingProjectId,
-  materializationProject = billingProjectId,
+  projectId,
+  materializationProject = projectId,
   materializationDataset = NULL,
   serviceAccountKeyFile = NULL
 )
 }
 \arguments{
-\item{billingProjectId}{Default Google Cloud Platform (GCP) project ID for billing purposes.
-This is the project on whose behalf to perform BigQuery operations.}
+\item{projectId}{Default Google Cloud Platform (GCP) project ID to use.}
 
 \item{materializationProject}{Project to use for materializing SQL queries. See also
 \code{materializationDataset}. Defaults to the billing project (\code{billingProjectId}).}
@@ -54,7 +53,7 @@ Sets default values for several Google BigQuery related settings.
 
 \code{\link{spark_write_bigquery}}
 
-\code{\link{default_billing_project_id}}
+\code{\link{default_project_id}}
 
 \code{\link{default_materialization_project}}
 

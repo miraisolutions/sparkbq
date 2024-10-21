@@ -4,11 +4,8 @@
 #' Data is written directly to BigQuery using the
 #' \href{https://cloud.google.com/bigquery/docs/write-api}{BigQuery Storage Write API}.
 #' @param data Spark DataFrame to write to Google BigQuery.
-#' @param billingProjectId Google Cloud Platform project ID for billing purposes.
-#' This is the project on whose behalf to perform BigQuery operations.
-#' Defaults to \code{default_billing_project_id()}.
 #' @param projectId Google Cloud Platform project ID of BigQuery dataset.
-#' Defaults to \code{billingProjectId}.
+#' Defaults to \code{default_project_id()}.
 #' @param datasetId Google BigQuery dataset ID (may contain letters, numbers and underscores).
 #' @param tableId Google BigQuery table ID (may contain letters, numbers and underscores).
 #' @param serviceAccountKeyFile Google Cloud service account key file to use for authentication
@@ -50,7 +47,7 @@
 #' sc <- spark_connect(master = "local", config = config)
 #'
 #' bigquery_defaults(
-#'   billingProjectId = "<your_billing_project_id>",
+#'   projectId = "<your_project_id>",
 #'   serviceAccountKeyFile = "<your_service_account_key_file>")
 #'
 #' # Copy mtcars to Spark
@@ -65,8 +62,7 @@
 #' @importFrom sparklyr spark_write_source
 #' @export
 spark_write_bigquery <- function(data,
-                                 billingProjectId = default_billing_project_id(),
-                                 projectId = billingProjectId,
+                                 projectId = default_project_id(),
                                  datasetId,
                                  tableId,
                                  serviceAccountKeyFile = default_service_account_key_file(),

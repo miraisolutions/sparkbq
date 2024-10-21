@@ -6,8 +6,7 @@
 \usage{
 spark_write_bigquery(
   data,
-  billingProjectId = default_billing_project_id(),
-  projectId = billingProjectId,
+  projectId = default_project_id(),
   datasetId,
   tableId,
   serviceAccountKeyFile = default_service_account_key_file(),
@@ -19,12 +18,8 @@ spark_write_bigquery(
 \arguments{
 \item{data}{Spark DataFrame to write to Google BigQuery.}
 
-\item{billingProjectId}{Google Cloud Platform project ID for billing purposes.
-This is the project on whose behalf to perform BigQuery operations.
-Defaults to \code{default_billing_project_id()}.}
-
 \item{projectId}{Google Cloud Platform project ID of BigQuery dataset.
-Defaults to \code{billingProjectId}.}
+Defaults to \code{default_project_id()}.}
 
 \item{datasetId}{Google BigQuery dataset ID (may contain letters, numbers and underscores).}
 
@@ -58,7 +53,7 @@ config <- spark_config()
 sc <- spark_connect(master = "local", config = config)
 
 bigquery_defaults(
-  billingProjectId = "<your_billing_project_id>",
+  projectId = "<your_project_id>",
   serviceAccountKeyFile = "<your_service_account_key_file>")
 
 # Copy mtcars to Spark

@@ -1,7 +1,6 @@
 #' @title Google BigQuery Default Settings
 #' @description Sets default values for several Google BigQuery related settings.
-#' @param billingProjectId Default Google Cloud Platform (GCP) project ID for billing purposes.
-#' This is the project on whose behalf to perform BigQuery operations.
+#' @param projectId Default Google Cloud Platform (GCP) project ID to use.
 #' @param materializationProject Project to use for materializing SQL queries. See also
 #' \code{materializationDataset}. Defaults to the billing project (\code{billingProjectId}).
 #' @param materializationDataset Dataset (in materialization project) which is used for
@@ -32,7 +31,7 @@
 #' 
 #' \code{\link{spark_write_bigquery}}
 #' 
-#' \code{\link{default_billing_project_id}}
+#' \code{\link{default_project_id}}
 #' 
 #' \code{\link{default_materialization_project}}
 #' 
@@ -41,8 +40,8 @@
 #' \code{\link{default_service_account_key_file}}
 #' @keywords database connection
 #' @export
-bigquery_defaults <- function(billingProjectId,
-                              materializationProject = billingProjectId,
+bigquery_defaults <- function(projectId,
+                              materializationProject = projectId,
                               materializationDataset = NULL,
                               serviceAccountKeyFile = NULL) {
   if (is.null(serviceAccountKeyFile)) {
@@ -53,19 +52,19 @@ bigquery_defaults <- function(billingProjectId,
   }
   
   options(
-    "sparkbq.default.billingProjectId" = billingProjectId,
+    "sparkbq.default.projectId" = projectId,
     "sparkbq.default.materializationProject" = materializationProject,
     "sparkbq.default.materializationDataset" = materializationDataset,
     "sparkbq.default.serviceAccountKeyFile" = serviceAccountKeyFile
   )
 }
 
-#' @title Default Google BigQuery Billing Project ID
-#' @description Returns the default Google BigQuery billing project ID.
+#' @title Default Google BigQuery Project ID
+#' @description Returns the default Google BigQuery project ID.
 #' @seealso \code{\link{bigquery_defaults}}
 #' @export
-default_billing_project_id <- function() {
-  getOption("sparkbq.default.billingProjectId")
+default_project_id <- function() {
+  getOption("sparkbq.default.projectId")
 }
 
 #' @title Default Google BigQuery Materialization Project
