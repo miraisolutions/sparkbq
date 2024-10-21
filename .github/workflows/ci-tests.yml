@@ -137,7 +137,7 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           git clone https://github.com/cdarlint/winutils.git C:/tmp/winutils
-          LATEST_HADOOP_DIR=$(ls -d C:/tmp/winutils/hadoop-${HADOOP_VERSION}* 2>/dev/null | sort -V | tail -n 1)
+          LATEST_HADOOP_DIR=$(ls -d C:/tmp/winutils/hadoop-${HADOOP_VERSION}* | sort -V | tail -n 1)
           echo "Latest Hadoop Directory: ${LATEST_HADOOP_DIR}"
           cp -R ${LATEST_HADOOP_DIR}/bin ${HADOOP_HOME}
         shell: bash
