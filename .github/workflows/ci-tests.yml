@@ -113,6 +113,15 @@ jobs:
           # Install the package using Chocolatey
           choco install vcredist2010 -y --allow-empty-checksums
       
+      - name: Install Winutils
+        if: runner.os == 'Windows'
+        run: |
+          git clone https://github.com/cdarlint/winutils.git
+          HADOOP_HOME = ${{ github.workspace }}/winutils/hadoop-3.3.6
+          echo "HADOOP_HOME=${HADOOP_HOME}" >> $GITHUB_ENV
+          echo "PATH=$PATH:${HADOOP_HOME}/bin" >> $GITHUB_ENV
+        shell: bash
+      
       - name: Install Spark
         run: |
           sparklyr::spark_install(version="${{ matrix.config.spark }}")
