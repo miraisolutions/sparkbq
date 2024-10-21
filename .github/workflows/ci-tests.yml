@@ -117,7 +117,7 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           git clone https://github.com/cdarlint/winutils.git
-          HADOOP_HOME = ${{ github.workspace }}/winutils/hadoop-3.3.6
+          HADOOP_HOME=${{ github.workspace }}/winutils/hadoop-3.3.6
           echo "HADOOP_HOME=${HADOOP_HOME}" >> $GITHUB_ENV
           echo "PATH=$PATH:${HADOOP_HOME}/bin" >> $GITHUB_ENV
         shell: bash
