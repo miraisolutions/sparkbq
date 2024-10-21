@@ -148,7 +148,7 @@ jobs:
           ADC: ${{ secrets.GCLOUD_APPLICATION_CREDENTIALS }}
         shell: bash
         run: |
-          echo $ADC > $BIGQUERY_APPLICATION_CREDENTIALS
+          echo $ADC > ${{ github.workspace }}/adc.json
       
       - name: Run R CMD check
         uses: r-lib/actions/check-r-package@v2
