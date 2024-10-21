@@ -2,7 +2,7 @@
 bigquery_defaults(
   billingProjectId = Sys.getenv("BILLING_PROJECT_ID"),
   materializationDataset = Sys.getenv("MATERIALIZATION_DATASET"),
-  serviceAccountKeyFile = normalizePath(Sys.getenv("GOOGLE_APPLICATION_CREDENTIALS"), winslash = "/")
+  serviceAccountKeyFile = Sys.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 )
 
 options(spark.version = Sys.getenv("SPARK_VERSION", "3.5"))

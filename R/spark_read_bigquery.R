@@ -97,7 +97,7 @@ spark_read_bigquery <- function(sc,
                                 ...) {
   parameters <- c(list(), additionalParameters)
   if (!is.null(serviceAccountKeyFile)) {
-    parameters[["credentialsFile"]] = normalizePath(serviceAccountKeyFile, winslash = "/")
+    parameters[["credentialsFile"]] = gsub("\\\\", "/", serviceAccountKeyFile)
   }
   
   if (!is.null(datasetId) && !is.null(tableId)) {
