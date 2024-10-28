@@ -4,7 +4,9 @@
 #' Data is written directly to BigQuery using the
 #' \href{https://cloud.google.com/bigquery/docs/write-api}{BigQuery Storage Write API}.
 #' @param data Spark DataFrame to write to Google BigQuery.
-#' @param projectId Google Cloud Platform project ID of BigQuery dataset.
+#' @param billingProjectId Google Cloud Platform project ID for billing purposes.
+#' Defaults to \code{\link{default_project_id}}.
+#' @param projectId Google Cloud Platform project ID of BigQuery dataset to write to.
 #' Defaults to \code{default_project_id()}.
 #' @param datasetId Google BigQuery dataset ID (may contain letters, numbers and underscores).
 #' @param tableId Google BigQuery table ID (may contain letters, numbers and underscores).
@@ -33,7 +35,7 @@
 #' \url{https://cloud.google.com/docs/authentication/}
 #'
 #' \url{https://cloud.google.com/bigquery/docs/authentication/}
-#' 
+#'
 #' \url{https://cloud.google.com/bigquery/docs/write-api}
 #'
 #' @family Spark serialization routines
@@ -62,6 +64,7 @@
 #' @importFrom sparklyr spark_write_source
 #' @export
 spark_write_bigquery <- function(data,
+                                 billingProjectId = default_project_id(),
                                  projectId = default_project_id(),
                                  datasetId,
                                  tableId,
@@ -69,14 +72,17 @@ spark_write_bigquery <- function(data,
                                  additionalParameters = NULL,
                                  mode = "error",
                                  ...) {
-  parameters <- c(list(
-    table = sprintf("%s.%s.%s", projectId, datasetId, tableId),
-    writeMethod = "direct"
-  ),
-  additionalParameters)
+  parameters <- c(
+    list(
+      parentProject = billingProjectId,
+      table = sprintf("%s.%s.%s", projectId, datasetId, tableId),
+      writeMethod = "direct"
+    ),
+    additionalParameters
+  )
   
   if (!is.null(serviceAccountKeyFile)) {
-    parameters[["credentialsFile"]] = gsub("\\\\", "/", serviceAccountKeyFile)
+    parameters[["credentialsFile"]] <- normalizePath(serviceAccountKeyFile, winslash = "/")
   }
   
   spark_write_source(data,

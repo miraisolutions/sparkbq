@@ -6,6 +6,7 @@
 \usage{
 spark_write_bigquery(
   data,
+  billingProjectId = default_project_id(),
   projectId = default_project_id(),
   datasetId,
   tableId,
@@ -18,7 +19,10 @@ spark_write_bigquery(
 \arguments{
 \item{data}{Spark DataFrame to write to Google BigQuery.}
 
-\item{projectId}{Google Cloud Platform project ID of BigQuery dataset.
+\item{billingProjectId}{Google Cloud Platform project ID for billing purposes.
+Defaults to \code{\link{default_project_id}}.}
+
+\item{projectId}{Google Cloud Platform project ID of BigQuery dataset to write to.
 Defaults to \code{default_project_id()}.}
 
 \item{datasetId}{Google BigQuery dataset ID (may contain letters, numbers and underscores).}

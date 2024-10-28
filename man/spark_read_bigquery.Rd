@@ -7,6 +7,7 @@
 spark_read_bigquery(
   sc,
   name,
+  billingProjectId = default_project_id(),
   projectId = default_project_id(),
   datasetId = NULL,
   tableId = NULL,
@@ -25,7 +26,10 @@ spark_read_bigquery(
 \item{name}{The name to assign to the newly generated table (see also
 \code{\link[sparklyr]{spark_read_source}}).}
 
-\item{projectId}{Google Cloud Platform project ID of BigQuery dataset.
+\item{billingProjectId}{Google Cloud Platform project ID for billing purposes.
+Defaults to \code{\link{default_project_id}}.}
+
+\item{projectId}{Google Cloud Platform project ID of BigQuery dataset to query from.
 Defaults to \code{\link{default_project_id}}.}
 
 \item{datasetId}{Google BigQuery dataset ID (may contain letters, numbers and underscores).

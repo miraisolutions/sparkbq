@@ -13,15 +13,14 @@ test_that("writing BigQuery tables using direct method works", {
     mode = "overwrite"
   )
   
-  mtcars2 <- spark_read_bigquery(
-    sc,
-    name = "shakespeare",
-    datasetId = "test",
-    tableId = "mtcars"
-  ) %>% sparklyr::collect()
+  mtcars2 <- spark_read_bigquery(sc,
+                                 name = "shakespeare",
+                                 datasetId = "test",
+                                 tableId = "mtcars") %>% sparklyr::collect()
   
   expect_equal(
-    mtcars %>% dplyr::arrange_at(names(mtcars)), 
+    mtcars %>% dplyr::arrange_at(names(mtcars)),
     as.data.frame(mtcars2) %>% dplyr::arrange_at(names(mtcars)),
-    ignore_attr = "row.names")
+    ignore_attr = "row.names"
+  )
 })

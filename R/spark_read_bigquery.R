@@ -3,7 +3,9 @@
 #' @param sc \code{\link[sparklyr]{spark_connection}} provided by sparklyr.
 #' @param name The name to assign to the newly generated table (see also
 #' \code{\link[sparklyr]{spark_read_source}}).
-#' @param projectId Google Cloud Platform project ID of BigQuery dataset.
+#' @param billingProjectId Google Cloud Platform project ID for billing purposes.
+#' Defaults to \code{\link{default_project_id}}.
+#' @param projectId Google Cloud Platform project ID of BigQuery dataset to query from.
 #' Defaults to \code{\link{default_project_id}}.
 #' @param datasetId Google BigQuery dataset ID (may contain letters, numbers and underscores).
 #' Either both of \code{datasetId} and \code{tableId} or \code{sqlQuery} must be specified.
@@ -38,19 +40,19 @@
 #' Spark DataFrame.
 #' @references
 #' \url{https://github.com/GoogleCloudDataproc/spark-bigquery-connector}
-#' 
+#'
 #' \url{https://cloud.google.com/bigquery/docs/datasets}
-#' 
+#'
 #' \url{https://cloud.google.com/bigquery/docs/tables}
-#' 
+#'
 #' \url{https://cloud.google.com/bigquery/docs/reference/standard-sql/}
-#' 
+#'
 #' \url{https://cloud.google.com/bigquery/pricing}
-#' 
+#'
 #' \url{https://cloud.google.com/bigquery/docs/dataset-locations}
-#' 
+#'
 #' \url{https://cloud.google.com/docs/authentication/}
-#' 
+#'
 #' \url{https://cloud.google.com/bigquery/docs/authentication/}
 #' @family Spark serialization routines
 #' @seealso \code{\link[sparklyr]{spark_read_source}}, \code{\link{spark_write_bigquery}},
@@ -81,6 +83,7 @@
 #' @export
 spark_read_bigquery <- function(sc,
                                 name,
+                                billingProjectId = default_project_id(),
                                 projectId = default_project_id(),
                                 datasetId = NULL,
                                 tableId = NULL,
@@ -91,9 +94,11 @@ spark_read_bigquery <- function(sc,
                                 additionalParameters = NULL,
                                 memory = FALSE,
                                 ...) {
-  parameters <- c(list(), additionalParameters)
+  parameters <- c(list(parentProject = billingProjectId),
+                  additionalParameters)
+  
   if (!is.null(serviceAccountKeyFile)) {
-    parameters[["credentialsFile"]] = gsub("\\\\", "/", serviceAccountKeyFile)
+    parameters[["credentialsFile"]] <- normalizePath(serviceAccountKeyFile, winslash = "/")
   }
   
   if (!is.null(datasetId) && !is.null(tableId)) {
