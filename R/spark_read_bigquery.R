@@ -102,7 +102,7 @@ spark_read_bigquery <- function(sc,
   }
   
   if (!is.null(datasetId) && !is.null(tableId)) {
-    path <- sprintf("%s.%s.%s", projectId, datasetId, tableId)
+    path <- sprintf("%s:%s.%s", projectId, datasetId, tableId)
   } else if (!is.null(sqlQuery)) {
     path <- sqlQuery
     parameters[["viewsEnabled"]] <- "true"

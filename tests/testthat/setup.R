@@ -8,7 +8,6 @@ bigquery_defaults(
 options(spark.version = Sys.getenv("SPARK_VERSION", "3.5"))
 
 config <- sparklyr::spark_config()
-config$sparklyr.log.invoke <- "TRUE"
 
 sc <- sparklyr::spark_connect(
   master = "local",

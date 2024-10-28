@@ -75,7 +75,7 @@ spark_write_bigquery <- function(data,
   parameters <- c(
     list(
       parentProject = billingProjectId,
-      table = sprintf("%s.%s.%s", projectId, datasetId, tableId),
+      table = sprintf("%s:%s.%s", projectId, datasetId, tableId),
       writeMethod = "direct"
     ),
     additionalParameters
