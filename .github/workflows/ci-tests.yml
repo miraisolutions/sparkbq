@@ -150,6 +150,7 @@ jobs:
         shell: bash
         run: |
           echo "$ADC" > $BIGQUERY_APPLICATION_CREDENTIALS
+          chmod a+r $BIGQUERY_APPLICATION_CREDENTIALS
       
       - name: Run R CMD check
         uses: r-lib/actions/check-r-package@v2

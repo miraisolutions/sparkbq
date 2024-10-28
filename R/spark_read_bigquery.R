@@ -93,7 +93,6 @@ spark_read_bigquery <- function(sc,
                                 ...) {
   parameters <- c(list(), additionalParameters)
   if (!is.null(serviceAccountKeyFile)) {
-    sparklyr::spark_session_config(sc, config = "credentialsFile", value = serviceAccountKeyFile)
     parameters[["credentialsFile"]] = gsub("\\\\", "/", serviceAccountKeyFile)
   }
   
