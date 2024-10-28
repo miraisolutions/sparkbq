@@ -19,7 +19,7 @@ test_that("executing SQL queries works", {
   
   sc <- sparklyr::spark_connect(master = "local", version = getOption("spark.version"))
   
-  shakespeare <- spark_read_bigquery(sc, name = "shakespeare", sqlQuery = "SELECT * FROM bigquery-public-data.samples.shakespeare")
+  shakespeare <- spark_read_bigquery(sc, name = "shakespeare", sqlQuery = "SELECT * FROM `bigquery-public-data.samples.shakespeare`")
   
   expect_equal(shakespeare %>% sparklyr::sdf_nrow(), 164656)
 })
