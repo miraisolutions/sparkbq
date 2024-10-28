@@ -25,11 +25,10 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          # Spark 3.5 seems currently unavailable so we use 3.4 for now
           - os-name: ubuntu
             os-version: latest
             java: 17
-            spark: "3.4"
+            spark: "3.5"
             r-version: release
           # - os-name: ubuntu
           #   os-version: latest
@@ -67,6 +66,7 @@ jobs:
       BIGQUERY_MATERIALIZATION_DATASET: test
       BIGQUERY_APPLICATION_CREDENTIALS: ${{ github.workspace }}/adc.json
       R_DEFAULT_INTERNET_TIMEOUT: 1800
+      R_SPARKINSTALL_INSTALL_INFO_PATH: ${{ github.workspace }}/spark_versions.json
       
     steps:
       - uses: actions/checkout@v4
