@@ -12,7 +12,7 @@
 #' with Google Cloud services. The use of service accounts is highly recommended. Specifically,
 #' the service account will be used to interact with BigQuery and Google Cloud Storage (GCS).
 #' @param additionalParameters
-#' \href{https://github.com/GoogleCloudDataproc/spark-bigquery-connector?tab=readme-ov-file#properties}{Additional Spark BigQuery connector options}.
+#' \href{https://github.com/GoogleCloudDataproc/spark-bigquery-connector?tab=readme-ov-file#properties}{List of additional Spark BigQuery connector options}.
 #' @param mode Specifies the behavior when data or table already exist. One of "overwrite",
 #' "append", "ignore" or "error" (default).
 #' @param ... Additional arguments passed to \code{\link[sparklyr]{spark_write_source}}.

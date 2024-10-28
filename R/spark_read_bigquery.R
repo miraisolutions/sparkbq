@@ -28,7 +28,7 @@
 #' the service account will be used to interact with BigQuery and Google Cloud Storage (GCS).
 #' Defaults to \code{\link{default_service_account_key_file}}.
 #' @param additionalParameters
-#' \href{https://github.com/GoogleCloudDataproc/spark-bigquery-connector?tab=readme-ov-file#properties}{Additional Spark BigQuery connector options}.
+#' \href{https://github.com/GoogleCloudDataproc/spark-bigquery-connector?tab=readme-ov-file#properties}{List of additional Spark BigQuery connector options}.
 #' @param memory \code{logical} specifying whether data should be loaded eagerly into
 #' memory, i.e. whether the table should be cached. Note that eagerly caching prevents
 #' predicate pushdown (e.g. in conjunction with \code{\link[dplyr]{filter}}) and therefore

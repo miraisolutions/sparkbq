@@ -29,7 +29,7 @@ Defaults to \code{default_project_id()}.}
 with Google Cloud services. The use of service accounts is highly recommended. Specifically,
 the service account will be used to interact with BigQuery and Google Cloud Storage (GCS).}
 
-\item{additionalParameters}{\href{https://github.com/GoogleCloudDataproc/spark-bigquery-connector?tab=readme-ov-file#properties}{Additional Spark BigQuery connector options}.}
+\item{additionalParameters}{\href{https://github.com/GoogleCloudDataproc/spark-bigquery-connector?tab=readme-ov-file#properties}{List of additional Spark BigQuery connector options}.}
 
 \item{mode}{Specifies the behavior when data or table already exist. One of "overwrite",
 "append", "ignore" or "error" (default).}
