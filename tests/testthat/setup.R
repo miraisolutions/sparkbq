@@ -5,6 +5,4 @@ bigquery_defaults(
   serviceAccountKeyFile = Sys.getenv("BIGQUERY_APPLICATION_CREDENTIALS")
 )
 
-print(.Options)
-
 options(spark.version = Sys.getenv("SPARK_VERSION", "3.5"))
