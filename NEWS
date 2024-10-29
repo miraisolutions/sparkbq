@@ -1,5 +1,8 @@
 # News
 
+## 0.2.0 2024-10-??
+  *  Upgrade to official Google Spark Bigquery Connector (https://github.com/GoogleCloudDataproc/spark-bigquery-connector)
+  
 ## 0.1.1 2019-12-18
   * Use newer spark-bigquery spark package, updates gcloud dependencies (#14)
   * Fix service account key file parameter passing (#13, #15)
